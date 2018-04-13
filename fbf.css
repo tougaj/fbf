@@ -1,0 +1,16 @@
+#fmGetFriends {
+  margin-top: 10px;
+}
+#fmGetFriends .btn-group {
+  margin-top: 10px;
+}
+#divFriends {
+  clear: both;
+}
+#divFriends > div {
+  margin: 10px auto;
+}
+#divFriends > div .media-left .media-object {
+  height: 100px;
+  width: auto;
+}
