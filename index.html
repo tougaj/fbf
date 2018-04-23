@@ -18,16 +18,15 @@
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="fbf.css">
-        <link href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
-
+		<link rel="stylesheet" href="fbf.css?rev=0">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="text-center">Додайте html-код в текстову область та оберіть дію</h3>
-                    <textarea name="ta" id="ta" class="form-control" rows="10" placeholder="html-код елементу, що містить записи про друзів" autocomplete1="off"></textarea>
+                    <textarea name="ta" id="ta" class="form-control" rows="10" placeholder="html-код елементу, що містить записи про друзів" autocomplete="off"></textarea>
                     <form name="fmGetFriends" id="fmGetFriends" action="getFriends.php" method="post" class="form-inline" target="_blank">
                         <div class="form-group">
                             <label for="smID">Соціальна мережа</label>
@@ -53,9 +52,6 @@
                             <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-default" id="btnFriends"><i class="fa fa-user fa-lg"></i> Показати друзів <span></span></button>
                             </div>
-<!--                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary" id="btnDownload"><i class="fa fa-download fa-lg"></i> Отримати файл</button>
-                            </div> -->
                             <div class="btn-group" role="group">
                                 <button type="submit" class="btn btn-primary" id="btnDownload"><i class="fa fa-download fa-lg"></i> Отримати файл</button>
                             </div>
@@ -68,8 +64,26 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>		
         <script src="fbf.js?rev=0"></script>
+
+        <!-- Шаблон для отрисовки пользователя -->
+        <script type="text/template" id="tmplUserAccount">
+            <div class="col-md-4">
+                <a target="_blank" href="<%-link%>">
+                    <div class="media" data-id="<%-id%>">
+                        <div class="media-left">
+                            <img class="media-object img-thumbnail imf-rounded" src="<%-img%>">
+                        </div>
+                        <div class="media-body media-middle">
+                            <h4><%-title%></h4>
+                            <small>(ID: <%-id%>)</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </script>
     </body>
 </html>

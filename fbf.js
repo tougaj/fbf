@@ -14,7 +14,6 @@ var fbf = {
 			site: 'https://ok.ru/',
 			idPrefix: 'profile/',
 		},
-
 	},
 	nSMID: 0,
 	
@@ -82,54 +81,27 @@ var fbf = {
 				});
 				break;
 		}
-		console.log(fbf.arFriends);
+		// console.log(fbf.arFriends);
 
+		// Отрисовка найденных пользователей
 		div = $('#divFriends').empty();
 		$('span', '#btnFriends').text('('+nCnt+')');
+		var userTemplate = _.template($('#tmplUserAccount').html());
 		fbf.arFriends.forEach(function callback(v, i, a) {
-			sLink = fbf.arSM[fbf.nSMID].site+fbf.arSM[fbf.nSMID].idPrefix+v.fbID;
-			$('<div class="col-md-4"></div>')
-				.append(
-					$('<a target="_blank" href="'+sLink+'"></a>')
-						.append(
-							$('<div class="media" data-id="'+v.fbID+'"></div')
-								.append('<div class="media-left"><img class="media-object img-thumbnail imf-rounded" src="'+(fbf.nSMID === 1 ? v.face : 'man.jpg')+'"></div>')
-								.append(
-									$('<div class="media-body media-middle"></div>')
-										.append('<h4>'+v.title+'</h4><small>(ID: '+v.fbID+')</small>')
-								)
-						)
-				)
-				.appendTo(div);
+			let sUser = userTemplate({
+				id: v.fbID,
+				title: v.title,
+				link: fbf.arSM[fbf.nSMID].site+fbf.arSM[fbf.nSMID].idPrefix+v.fbID,
+				img: fbf.nSMID === 1 ? v.face : 'man.jpg',
+			});
+			$(sUser).appendTo(div);
 		});
 		$('input[name=withfaces]', '#fmGetFriends').prop('checked', fbf.arFriends.length <= fbf.WITH_FACES_MAX_COUNT);
 	},
-
-   //  downloadFile: function(ar, nFileNo){
-   //  	var TIME_DELTA = 5000;
-   //  	setTimeout(function(){
-			// var s = encodeURIComponent(JSON.stringify(ar));
-	  //       $('input[name=data]', '#fmGetFriends').val(s);
-	  //       $('input[name=fileno]', '#fmGetFriends').val(nFileNo);
-	  //       $('#fmGetFriends').submit();
-   //  	}, nFileNo*TIME_DELTA);
-   //  },
-
-   //  downloadFiles: function(){
-   //  	var FRIENDS_MAX_COUNT = 200;
-   //  	var nFilesCount = Math.ceil(fbf.arFriends.length/FRIENDS_MAX_COUNT);
-   //  	for (var i = 0; i < nFilesCount; i++){
-   //  		var nFirst = i*FRIENDS_MAX_COUNT;
-   //  		var nLast = (i+1)*FRIENDS_MAX_COUNT;
-   //  		var ar = fbf.arFriends.slice(nFirst, nLast);
-   //  		if (i === 0) fbf.downloadFile(ar, i);
-   //  	}
-   //  }
 };
 
 $(document).ready(function(){
 	$('#btnFriends').click(fbf.getFriends);
-	// $('#btnDownload').click(fbf.downloadFiles);
 	
 	$('#fmGetFriends').submit(function(){
 		if (fbf.arFriends.length === 0){
