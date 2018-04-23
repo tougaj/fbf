@@ -1,3 +1,8 @@
+<?php
+header('Cache-Control: public, max-age=900');
+header('Content-Type: text/html; charset=utf-8');
+$nRevision = 2;
+?>
 <!DOCTYPE html>
 <html lang="ua">
     <head>
@@ -18,7 +23,7 @@
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="fbf.css?rev=0">
+		<link rel="stylesheet" href="fbf.css?rev=<?php echo $nRevision; ?>">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
@@ -26,31 +31,41 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="text-center">Додайте html-код в текстову область та оберіть дію</h3>
-                    <textarea name="ta" id="ta" class="form-control" rows="10" placeholder="html-код елементу, що містить записи про друзів" autocomplete="off"></textarea>
-                    <form name="fmGetFriends" id="fmGetFriends" action="getFriends.php" method="post" class="form-inline" target="_blank">
+                    <textarea name="ta" id="ta" class="form-control" rows="10" placeholder="html-код елементу, що містить записи про друзів (підписників)" autocomplete="off"></textarea>
+                    <form name="fmGetFriends" id="fmGetFriends" action="getFriends.php" method="post" class="form-inline text-center" target="_blank">
+                        <input type="hidden" name="smID" id="smID">
                         <div class="form-group">
-                            <label for="smID">Соціальна мережа</label>
-                            <select name="smID" id="smID" class="form-control" autocomplete="off" readonly="readonly">
+                            <label for="fake_smID">Соціальна мережа</label>
+                            <select name="fake_smID" id="fake_smID" class="form-control" autocomplete="off" readonly="readonly" disabled>
                                 <option value="0" disabled selected>Не визначено</option>
                                 <option value="1">Facebook</option>
                                 <option value="2">Вконтакте</option>
                                 <option value="3">Одноклассники</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <input type="hidden" name="relationType" id="relationType">
+                        <div class="form-group ml-2">
+                            <label for="fake_relationType">Тип відношень</label>
+                            <select name="fake_relationType" id="fake_relationType" class="form-control" autocomplete="off" readonly="readonly" disabled>
+                                <option value="0" disabled selected>Не визначено</option>
+                                <option value="1">Друзі</option>
+                                <option value="2">Підписники</option>
+                            </select>
+                        </div>
+                        <div class="form-group ml-2">
                             <label for="filename">Ім'я вихідного файлу</label>
                             <input type="text" class="form-control" name="filename" id="filename" placeholder="Ім'я вихідного файлу" autocomplete="off">
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input name="withfaces" type="checkbox" checked autocomplete="off"> Додати до вихідного файлу зображення друзів
+                                <input name="withfaces" type="checkbox" checked autocomplete="off"> Додати до вихідного файлу зображення обліковок
                             </label>
                         </div>
                         <input type="hidden" name="data">
                         <input type="hidden" name="fileno" value="0">
                         <div class="btn-group btn-group-lg btn-group-justified" role="group">
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-default" id="btnFriends"><i class="fa fa-user fa-lg"></i> Показати друзів <span></span></button>
+                                <button type="button" class="btn btn-default" id="btnFriends"><i class="fa fa-user fa-lg"></i> Показати обліковки <span></span></button>
                             </div>
                             <div class="btn-group" role="group">
                                 <button type="submit" class="btn btn-primary" id="btnDownload"><i class="fa fa-download fa-lg"></i> Отримати файл</button>
@@ -67,7 +82,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>		
-        <script src="fbf.js?rev=0"></script>
+        <script src="fbf.js?rev=<?php echo $nRevision; ?>"></script>
 
         <!-- Шаблон для отрисовки пользователя -->
         <script type="text/template" id="tmplUserAccount">
@@ -80,6 +95,7 @@
                         <div class="media-body media-middle">
                             <h4><%-title%></h4>
                             <small>(ID: <%-id%>)</small>
+                            <i class="fa fa-<%-icon%> fa-lg fa-fw"></i>
                         </div>
                     </div>
                 </a>
