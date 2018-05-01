@@ -4,6 +4,7 @@
   "description": "Помимо парсинга друзей, необходим также парсинг подписчиков.",
   "main": "fbf.js",
   "scripts": {
+    "less": "lessc src\\fbf.less .\\fbf.css",
     "build": "babel src -d . --presets es2015 --minified",
     "watch": "babel src -d . --presets es2015 -w"
   },
