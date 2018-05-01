@@ -17,6 +17,7 @@
 В каталоге программы выполняем команду:
 
 	npm install babel-cli babel-core babel-preset-es2015 --save-dev
+	npm install --save-dev gulp-babel
 
 Для определения параметров работы `babel` в основном каталоге создаем файл `.babelrc` со следующим содержимым:
 
@@ -42,6 +43,17 @@
 Типичная команда для **less**:
 
 	> lessc src\fbf.less .\fbf.css
+
+#### Установка gulp
+
+```
+npm install gulp-cli -g
+npm install gulp -D
+touch gulpfile.js
+gulp --help
+```
+Выполняем скрипт с помощью команды `> gulp`.
+
 
 ### Установка на другой компьютер
 
