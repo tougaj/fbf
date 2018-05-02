@@ -7,6 +7,7 @@ var cleanCSS = require('gulp-clean-css');
 // var postcss = require('gulp-postcss');
 var path = require('path');
 var changed = require('gulp-changed');
+var csslint = require('gulp-csslint');
 
 function onFilesChange(event) {
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
@@ -36,10 +37,16 @@ gulp.task('babel', function () {
 
 gulp.task('less', function () {
     return gulp.src('src/*.less')
+        .pipe(changed('.'))
         .pipe(less({
             paths: [ path.join(__dirname, 'less', 'includes') ]
         }))
-        .pipe(changed('.'))
+        .pipe(csslint({
+            lookup: false,
+            ids: false,
+            shorthand: true
+        }))
+        .pipe(csslint.formatter())
         .pipe(gulp.dest('.'))
         .pipe(cleanCSS())
         // .pipe(postcss(processors))
