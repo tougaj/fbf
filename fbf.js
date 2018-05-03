@@ -1,6 +1,8 @@
 'use strict';
 
 var fbf = new function () {
+	'use strict';
+
 	var WITH_FACES_MAX_COUNT = 200;
 	var arFriends = [];
 
@@ -43,10 +45,10 @@ var fbf = new function () {
 		defineDataType(s);
 
 		var arTemp = [];
+		var f = $(s);
 		if (nRelationType === 1) {
 			switch (nSMID) {
 				case 1:
-					var f = $(s);
 					$('li>[data-testid="friend_list_item"]', f).each(function () {
 						var a = $('a[data-hovercard]', this).eq(0);
 						var sID = a.data('hovercard');
@@ -65,7 +67,6 @@ var fbf = new function () {
 					break;
 
 				case 2:
-					var f = $(s);
 					$('.friends_user_row', f).each(function () {
 						var sID = $(this).attr('id');
 						var m = sID.match(/friends_user_row(\d+)/);
@@ -82,7 +83,6 @@ var fbf = new function () {
 					});
 					break;
 				case 3:
-					var f = $(s);
 					$('.ugrid_i', f).each(function () {
 						var nID = $('.entity-item', this).data('entity-id');
 						var sName = $('.ucard-w_t a', this).html().replace(/<br>/ig, ' ');
@@ -98,7 +98,6 @@ var fbf = new function () {
 		} else {
 			switch (nSMID) {
 				case 1:
-					var f = $(s);
 					$('li.fbProfileBrowserListItem', f).each(function () {
 						var a = $('a[data-hovercard]', this).eq(0);
 						var sID = a.data('hovercard');
@@ -136,7 +135,7 @@ var fbf = new function () {
 		var div = $('#divFriends').empty();
 		$('span', '#btnFriends').text('(' + arFriends.length + ')');
 		var userTemplate = _.template($('#tmplUserAccount').html());
-		arFriends.forEach(function (v, i, a) {
+		arFriends.forEach(function (v) {
 			var sUser = userTemplate({
 				id: v.fbID,
 				title: v.title,
@@ -181,6 +180,8 @@ var fbf = new function () {
 }();
 
 $(document).ready(function () {
+	'use strict';
+
 	$('#btnFriends').click(fbf.getFriends);
 	$('#fmGetFriends').submit(fbf.loadFriends);
 });
