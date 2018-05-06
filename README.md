@@ -12,6 +12,13 @@
 
 Она создаст файл с параметрами по умолчанию. В самом начале в файле отсутствует раздел `devDependencies`.
 
+#### Установка typescript
+
+В каталоге программы выполняем команду:
+
+	npm install -g typescript tslint
+	npm install --save-dev gulp-typescript
+
 #### Установка babel
 
 В каталоге программы выполняем команду:

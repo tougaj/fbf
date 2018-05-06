@@ -1,187 +1,186 @@
-'use strict';
-
-var fbf = new function () {
-	'use strict';
-
-	var WITH_FACES_MAX_COUNT = 200;
-	var arFriends = [];
-
-	var arSM = {
-		1: {
-			site: 'https://www.facebook.com/',
-			idPrefix: ''
-		},
-		2: {
-			site: 'https://vk.com/',
-			idPrefix: 'id'
-		},
-		3: {
-			site: 'https://ok.ru/',
-			idPrefix: 'profile/'
-		}
-	};
-	var nSMID = 0;
-
-	var nRelationType = 0;
-
-	function setDataTypeValues(ASMID, ARelationType) {
-		nSMID = ASMID;
-		nRelationType = ARelationType;
-		$('#smID,#fake_smID').val(nSMID);
-		$('#relationType,#fake_relationType').val(nRelationType);
-	}
-
-	function defineDataType(sHTML) {
-		if (/\.userapi\.com/i.test(sHTML)) return setDataTypeValues(2, 1);
-		if (/i\.mycdn\.me/i.test(sHTML)) return setDataTypeValues(3, 1);
-		if (/friend_list_item/i.test(sHTML)) return setDataTypeValues(1, 1);
-
-		if (/fbProfileBrowserListItem/i.test(sHTML)) return setDataTypeValues(1, 2);
-		return setDataTypeValues(0, 0);
-	}
-
-	function getFriends() {
-		var s = $('#ta').val();
-		defineDataType(s);
-
-		var arTemp = [];
-		var f = $(s);
-		if (nRelationType === 1) {
-			switch (nSMID) {
-				case 1:
-					$('li>[data-testid="friend_list_item"]', f).each(function () {
-						var a = $('a[data-hovercard]', this).eq(0);
-						var sID = a.data('hovercard');
-						var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
-						if (m && m[1]) {
-							var nID = m[1];
-							var sName = $('img[role="img"]', this).attr('aria-label');
-							var sFace = $('img[role="img"]', this).attr('src');
-							arTemp.push({
-								fbID: nID,
-								title: sName,
-								face: _.unescape(sFace)
-							});
-						}
-					});
-					break;
-
-				case 2:
-					$('.friends_user_row', f).each(function () {
-						var sID = $(this).attr('id');
-						var m = sID.match(/friends_user_row(\d+)/);
-						if (m && m[1]) {
-							var nID = m[1];
-							var sName = $('.friends_field_title a', this).html().replace(/<br>/ig, ' ');
-							var sFace = $('img.friends_photo_img', this).attr('src');
-							arTemp.push({
-								fbID: nID,
-								title: sName,
-								face: _.unescape(sFace)
-							});
-						}
-					});
-					break;
-				case 3:
-					$('.ugrid_i', f).each(function () {
-						var nID = $('.entity-item', this).data('entity-id');
-						var sName = $('.ucard-w_t a', this).html().replace(/<br>/ig, ' ');
-						var sFace = 'https:' + $('img.photo_img', this).attr('src');
-						arTemp.push({
-							fbID: nID,
-							title: sName,
-							face: _.unescape(sFace)
-						});
-					});
-					break;
-			}
-		} else {
-			switch (nSMID) {
-				case 1:
-					$('li.fbProfileBrowserListItem', f).each(function () {
-						var a = $('a[data-hovercard]', this).eq(0);
-						var sID = a.data('hovercard');
-						var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
-						if (m && m[1]) {
-							var nID = m[1];
-							var sName = $('img[role="img"]', this).attr('aria-label');
-							var sFace = $('img[role="img"]', this).attr('src');
-							arTemp.push({
-								fbID: nID,
-								title: sName,
-								face: _.unescape(sFace)
-							});
-						}
-					});
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-			}
-		}
-		arFriends = _.map(arTemp, function (item) {
-			item.smID = nSMID;
-			item.relationType = nRelationType;
-			return item;
-		});
-
-
-		drawUsers();
-		$('input[name=withfaces]', '#fmGetFriends').prop('checked', arFriends.length <= WITH_FACES_MAX_COUNT);
-	}
-
-	function drawUsers() {
-		var div = $('#divFriends').empty();
-		$('span', '#btnFriends').text('(' + arFriends.length + ')');
-		var userTemplate = _.template($('#tmplUserAccount').html());
-		arFriends.forEach(function (v) {
-			var sUser = userTemplate({
-				id: v.fbID,
-				title: v.title,
-				link: arSM[nSMID].site + arSM[nSMID].idPrefix + v.fbID,
-				img: nSMID === 1 ? v.face : 'man.jpg',
-				icon: nRelationType === 1 ? 'handshake-o' : 'rss'
-			});
-			$(sUser).appendTo(div);
-		});
-	}
-
-	function loadFriends() {
-		if (arFriends.length === 0) {
-			alert('Список друзів пустий. Можливо, Ви забули натиснути на кнопку показу друзів.');
-			return false;
-		}
-
-		if ($.trim($('#filename').val()) === '') {
-			alert('Введіть, будь ласка, назву вихідного файлу');
-			$('#filename').focus();
-			return false;
-		}
-		var s = encodeURIComponent(JSON.stringify(arFriends));
-
-		if (WITH_FACES_MAX_COUNT < arFriends.length) {
-			$('input[name=withfaces]', '#fmGetFriends').prop('checked', false);
-		}
-		$('input[name=data]', '#fmGetFriends').val(s);
-
-		setTimeout(function () {
-			$('#ta,#filename').val('');
-			$('#divFriends').empty();
-			$('span', '#btnFriends').text('');
-			setDataTypeValues(0, 0);
-			arFriends = [];
-		}, 1000);
-		return true;
-	}
-
-	this.getFriends = getFriends;
-	this.loadFriends = loadFriends;
-}();
-
+"use strict";
+var Fbf = (function () {
+    function Fbf() {
+    }
+    Fbf.setDataTypeValues = function (ASMID, ARelationType) {
+        Fbf.nSMID = ASMID;
+        Fbf.nRelationType = ARelationType;
+        $('#smID,#fake_smID').val(Fbf.nSMID);
+        $('#relationType,#fake_relationType').val(Fbf.nRelationType);
+        return 0;
+    };
+    Fbf.defineDataType = function (sHTML) {
+        if (/\.userapi\.com/i.test(sHTML))
+            return Fbf.setDataTypeValues(2, 1);
+        if (/i\.mycdn\.me/i.test(sHTML))
+            return Fbf.setDataTypeValues(3, 1);
+        if (/friend_list_item/i.test(sHTML))
+            return Fbf.setDataTypeValues(1, 1);
+        if (/fbProfileBrowserListItem/i.test(sHTML))
+            return Fbf.setDataTypeValues(1, 2);
+        return Fbf.setDataTypeValues(0, 0);
+    };
+    Fbf.prototype.getFriends = function () {
+        var sElementHTML = $('#ta').val();
+        Fbf.defineDataType(sElementHTML);
+        var arTemp = [];
+        var f = $(sElementHTML);
+        if (Fbf.nRelationType === 1) {
+            switch (Fbf.nSMID) {
+                case 1:
+                    $('li>[data-testid="friend_list_item"]', f).each(function () {
+                        var item = this;
+                        var a = $('a[data-hovercard]', item).eq(0);
+                        var sID = a.data('hovercard');
+                        var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
+                        if (m && m[1]) {
+                            var nID = m[1];
+                            var sName = $('img[role="img"]', item).attr('aria-label');
+                            var sFace = $('img[role="img"]', item).attr('src');
+                            arTemp.push({
+                                fbID: nID,
+                                title: sName,
+                                face: _.unescape(sFace),
+                            });
+                        }
+                    });
+                    break;
+                case 2:
+                    $('.friends_user_row', f).each(function () {
+                        var item = this;
+                        var sID = $(item).attr('id');
+                        var m = sID.match(/friends_user_row(\d+)/);
+                        if (m && m[1]) {
+                            var nID = m[1];
+                            var sName = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+                            var sFace = $('img.friends_photo_img', item).attr('src');
+                            arTemp.push({
+                                fbID: nID,
+                                title: sName,
+                                face: _.unescape(sFace),
+                            });
+                        }
+                    });
+                    break;
+                case 3:
+                    $('.ugrid_i', f).each(function () {
+                        var item = this;
+                        var nID = $('.entity-item', item).data('entity-id');
+                        var sName = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
+                        var sFace = 'https:' + $('img.photo_img', item).attr('src');
+                        arTemp.push({
+                            fbID: nID,
+                            title: sName,
+                            face: _.unescape(sFace),
+                        });
+                    });
+                    break;
+            }
+        }
+        else {
+            switch (Fbf.nSMID) {
+                case 1:
+                    $('li.fbProfileBrowserListItem', f).each(function () {
+                        var item = this;
+                        var a = $('a[data-hovercard]', item).eq(0);
+                        var sID = a.data('hovercard');
+                        var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
+                        if (m && m[1]) {
+                            var nID = m[1];
+                            var sName = $('img[role="img"]', item).attr('aria-label');
+                            var sFace = $('img[role="img"]', item).attr('src');
+                            arTemp.push({
+                                fbID: nID,
+                                title: sName,
+                                face: _.unescape(sFace),
+                            });
+                        }
+                    });
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        }
+        Fbf.arFriends = _.map(arTemp, function (item) {
+            item.smID = Fbf.nSMID;
+            item.relationType = Fbf.nRelationType;
+            return item;
+        });
+        Fbf.drawUsers();
+        $('input[name=withfaces]', '#fmGetFriends').prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
+    };
+    Fbf.drawUsers = function () {
+        var div = $('#divFriends').empty();
+        $('span', '#btnFriends').text('(' + Fbf.arFriends.length + ')');
+        var userTemplate = _.template($('#tmplUserAccount').html());
+        var nIndex = Fbf.nSMID;
+        Fbf.arFriends.forEach(function (v) {
+            var sUser = userTemplate({
+                id: v.fbID,
+                title: v.title,
+                link: Fbf.arSM[nIndex].site + Fbf.arSM[nIndex].idPrefix + v.fbID,
+                img: Fbf.nSMID === 1 ? v.face : 'man.jpg',
+                icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
+            });
+            $(sUser).appendTo(div);
+        });
+    };
+    Fbf.prototype.loadFriends = function () {
+        if (Fbf.arFriends.length === 0) {
+            alert('Список друзів пустий. Можливо, Ви забули натиснути на кнопку показу друзів.');
+            return false;
+        }
+        if ($.trim($('#filename').val()) === '') {
+            alert('Введіть, будь ласка, назву вихідного файлу');
+            $('#filename').focus();
+            return false;
+        }
+        var s = encodeURIComponent(JSON.stringify(Fbf.arFriends));
+        if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length) {
+            $('input[name=withfaces]', '#fmGetFriends').prop('checked', false);
+        }
+        $('input[name=data]', '#fmGetFriends').val(s);
+        setTimeout(function () {
+            $('#ta,#filename').val('');
+            $('#divFriends').empty();
+            $('span', '#btnFriends').text('');
+            Fbf.setDataTypeValues(0, 0);
+            Fbf.arFriends = [];
+        }, 1000);
+        return true;
+    };
+    Fbf.WITH_FACES_MAX_COUNT = 200;
+    Fbf.arFriends = [];
+    Fbf.arSM = {
+        1: {
+            site: 'https://www.facebook.com/',
+            idPrefix: '',
+        },
+        2: {
+            site: 'https://vk.com/',
+            idPrefix: 'id',
+        },
+        3: {
+            site: 'https://ok.ru/',
+            idPrefix: 'profile/',
+        },
+    };
+    Fbf.nSMID = 0;
+    Fbf.nRelationType = 0;
+    return Fbf;
+}());
+;
+var fbf = new Fbf();
 $(document).ready(function () {
-	'use strict';
-
-	$('#btnFriends').click(fbf.getFriends);
-	$('#fmGetFriends').submit(fbf.loadFriends);
+    $('#btnFriends').click(fbf.getFriends);
+    $('#fmGetFriends').submit(fbf.loadFriends);
+    $.ajax({
+        type: "get",
+        url: "fbf.txt",
+        data: 'rev=0',
+        dataType: "text",
+        success: function (response) { return $('#ta').val(response); }
+    });
 });

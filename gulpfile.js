@@ -1,26 +1,32 @@
 var gulp = require('gulp');
-var babel = require('gulp-babel');
-var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var changed = require('gulp-changed');
+
+var ts = require('gulp-typescript');
+// var babel = require('gulp-babel');
+var uglify = require('gulp-uglify');
+
 var less = require('gulp-less');
 var cleanCSS = require('gulp-clean-css');
 var path = require('path');
-var changed = require('gulp-changed');
 var csslint = require('gulp-csslint');
-var eslint = require('gulp-eslint');
+// var eslint = require('gulp-eslint');
 
 function onFilesChange(event) {
 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 }
 
-gulp.task('babel', function () {
-	return gulp.src('src/*.js')
+var tsProject = ts.createProject('src/tsconfig.json');
+
+gulp.task('ts', function () {
+	return gulp.src('src/*.ts')
 		.pipe(changed('.'))
-		.pipe(eslint())
-		.pipe(eslint.format())
+		.pipe(tsProject())
+		// .pipe(eslint())
+		// .pipe(eslint.format())
 		// .pipe(eslint.failAfterError())
-		.pipe(babel())
-		.pipe(gulp.dest('.'))
+		// .pipe(babel())
+		.js.pipe(gulp.dest('.'))
 		.pipe(uglify())
 		// .pipe(rename('fbf.min.js'))
 		// .pipe(rename(function (path) {
@@ -59,15 +65,14 @@ gulp.task('less', function () {
 	
 });
 
-gulp.task('watch:js', function () {
-	gulp.watch('src/*.js', ['babel'])
+gulp.task('watch:ts', function () {
+	gulp.watch('src/*.ts', ['ts'])
 		.on('change', onFilesChange);
-})
+});
 
 gulp.task('watch:css', function () {
 	gulp.watch('src/*.less', ['less'])
 		.on('change', onFilesChange);
-})
+});
 
-// gulp.task('default', ['babel', 'less']);
-gulp.task('default', ['babel', 'less', 'watch:js', 'watch:css']);
+gulp.task('default', ['ts', 'less', 'watch:ts', 'watch:css']);
