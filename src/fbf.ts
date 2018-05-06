@@ -207,11 +207,11 @@ $(document).ready(function () {
 	$('#fmGetFriends').submit(fbf.loadFriends);
 
 	// for debug
-	$.ajax({
-		type: "get",
-		url: "fbf.txt",
-		data: 'rev=0',
-		dataType: "text",
-		success: (response: any)  => $('#ta').val(response)
-	});
+	// $.ajax({
+	// 	type: "get",
+	// 	url: "fbf.txt",
+	// 	data: 'rev=0',
+	// 	dataType: "text",
+	// 	success: (response: any)  => $('#ta').val(response)
+	// });
 });

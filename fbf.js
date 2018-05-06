@@ -176,11 +176,4 @@ var fbf = new Fbf();
 $(document).ready(function () {
     $('#btnFriends').click(fbf.getFriends);
     $('#fmGetFriends').submit(fbf.loadFriends);
-    $.ajax({
-        type: "get",
-        url: "fbf.txt",
-        data: 'rev=0',
-        dataType: "text",
-        success: function (response) { return $('#ta').val(response); }
-    });
 });
