@@ -1,3 +1,11 @@
+interface IFriend {
+	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
+	title: string;
+	face: string;
+	smID: number;
+	relationType: number;
+}
+
 class Fbf{
 	static WITH_FACES_MAX_COUNT: number = 200;
 	static arFriends = [];
@@ -53,7 +61,7 @@ class Fbf{
 		let sElementHTML: string = $('#ta').val();
 		Fbf.defineDataType(sElementHTML);
 
-		let arTemp: any = [];
+		let arTemp: IFriend[] = [];
 		let f = $(sElementHTML);
 		if (Fbf.nRelationType === 1) {
 			switch (Fbf.nSMID) {
@@ -61,16 +69,18 @@ class Fbf{
 				$('li>[data-testid="friend_list_item"]', f).each(function () {
 					let item = this;
 					var a = $('a[data-hovercard]', item).eq(0);
-					var sID = a.data('hovercard');
+					var sID: string = a.data('hovercard');
 					var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
 					if (m && m[1]) {
-						var nID = m[1];
-						var sName = $('img[role="img"]', item).attr('aria-label');
-						var sFace = $('img[role="img"]', item).attr('src');
+						var nID: string = m[1];
+						var sName: string = $('img[role="img"]', item).attr('aria-label');
+						var sFace: string = $('img[role="img"]', item).attr('src');
 						arTemp.push({
 							fbID: nID,
 							title: sName,
 							face: _.unescape(sFace),
+							smID: Fbf.nSMID,
+							relationType: Fbf.nRelationType,
 						});
 					}
 				});
@@ -88,16 +98,18 @@ class Fbf{
 			case 2:
 				$('.friends_user_row', f).each(function () {
 					let item = this;
-					var sID = $(item).attr('id');
+					var sID: string = $(item).attr('id');
 					var m = sID.match(/friends_user_row(\d+)/);
 					if (m && m[1]) {
-						var nID = m[1];
-						var sName = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
-						var sFace = $('img.friends_photo_img', item).attr('src');
+						var nID: string = m[1];
+						var sName: string = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+						var sFace: string = $('img.friends_photo_img', item).attr('src');
 						arTemp.push({
 							fbID: nID,
 							title: sName,
 							face: _.unescape(sFace),
+							smID: Fbf.nSMID,
+							relationType: Fbf.nRelationType,
 						});
 					}
 				});
@@ -105,14 +117,16 @@ class Fbf{
 			case 3:
 				$('.ugrid_i', f).each(function () {
 					let item = this;
-					var nID = $('.entity-item', item).data('entity-id');
-					var sName = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
-					var sFace = 'https:' + $('img.photo_img', item).attr('src');
+					var nID: string = $('.entity-item', item).data('entity-id');
+					var sName: string = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
+					var sFace: string = 'https:' + $('img.photo_img', item).attr('src');
 					arTemp.push({
 						fbID: nID,
 						title: sName,
 						face: _.unescape(sFace),
-					});
+						smID: Fbf.nSMID,
+						relationType: Fbf.nRelationType,
+				});
 				});
 				break;
 			}
@@ -122,16 +136,18 @@ class Fbf{
 				$('li.fbProfileBrowserListItem', f).each(function () {
 					let item = this;
 					let a = $('a[data-hovercard]', item).eq(0);
-					var sID = a.data('hovercard');
+					var sID: string = a.data('hovercard');
 					var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
 					if (m && m[1]) {
-						var nID = m[1];
-						var sName = $('img[role="img"]', item).attr('aria-label');
-						var sFace = $('img[role="img"]', item).attr('src');
+						var nID: string = m[1];
+						var sName: string = $('img[role="img"]', item).attr('aria-label');
+						var sFace: string = $('img[role="img"]', item).attr('src');
 						arTemp.push({
 							fbID: nID,
 							title: sName,
 							face: _.unescape(sFace),
+							smID: Fbf.nSMID,
+							relationType: Fbf.nRelationType,
 						});
 					}
 				});
@@ -142,11 +158,6 @@ class Fbf{
 				break;
 			}
 		}
-		Fbf.arFriends = _.map(arTemp, function (item: any) {
-			item.smID = Fbf.nSMID;
-			item.relationType = Fbf.nRelationType;
-			return item;
-		});
 		// console.log(arFriends);
 
 		Fbf.drawUsers();
@@ -158,8 +169,8 @@ class Fbf{
 		let div = $('#divFriends').empty();
 		$('span', '#btnFriends').text('(' + Fbf.arFriends.length + ')');
 		var userTemplate = _.template($('#tmplUserAccount').html());
-		let nIndex = Fbf.nSMID;
-		Fbf.arFriends.forEach((v: any) => {
+		let nIndex: number = Fbf.nSMID;
+		Fbf.arFriends.forEach((v: IFriend) => {
 			let sUser = userTemplate({
 				id: v.fbID,
 				title: v.title,

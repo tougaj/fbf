@@ -41,6 +41,8 @@ var Fbf = (function () {
                                 fbID: nID,
                                 title: sName,
                                 face: _.unescape(sFace),
+                                smID: Fbf.nSMID,
+                                relationType: Fbf.nRelationType,
                             });
                         }
                     });
@@ -58,6 +60,8 @@ var Fbf = (function () {
                                 fbID: nID,
                                 title: sName,
                                 face: _.unescape(sFace),
+                                smID: Fbf.nSMID,
+                                relationType: Fbf.nRelationType,
                             });
                         }
                     });
@@ -72,6 +76,8 @@ var Fbf = (function () {
                             fbID: nID,
                             title: sName,
                             face: _.unescape(sFace),
+                            smID: Fbf.nSMID,
+                            relationType: Fbf.nRelationType,
                         });
                     });
                     break;
@@ -93,6 +99,8 @@ var Fbf = (function () {
                                 fbID: nID,
                                 title: sName,
                                 face: _.unescape(sFace),
+                                smID: Fbf.nSMID,
+                                relationType: Fbf.nRelationType,
                             });
                         }
                     });
@@ -103,11 +111,6 @@ var Fbf = (function () {
                     break;
             }
         }
-        Fbf.arFriends = _.map(arTemp, function (item) {
-            item.smID = Fbf.nSMID;
-            item.relationType = Fbf.nRelationType;
-            return item;
-        });
         Fbf.drawUsers();
         $('input[name=withfaces]', '#fmGetFriends').prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
     };
