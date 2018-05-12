@@ -1,11 +1,3 @@
-interface IFriend {
-	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
-	title: string;
-	face: string;
-	smID: number;
-	relationType: number;
-}
-
 class Fbf{
 	static WITH_FACES_MAX_COUNT: number = 200;
 	static arFriends = [];
