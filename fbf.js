@@ -5,8 +5,8 @@ var Fbf = (function () {
     Fbf.setDataTypeValues = function (ASMID, ARelationType) {
         Fbf.nSMID = ASMID;
         Fbf.nRelationType = ARelationType;
-        $('#smID,#fake_smID').val(Fbf.nSMID);
-        $('#relationType,#fake_relationType').val(Fbf.nRelationType);
+        $('#smID,#fake_smID').val(Fbf.nSMID.toString());
+        $('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());
         return 0;
     };
     Fbf.defineDataType = function (sHTML) {
