@@ -5,12 +5,16 @@ interface IFriend {
 	smID: number;
 	relationType: number;
 }
+interface ISocialMedia {
+	site: string;
+	idPrefix: string;
+}
 
 class Fbf{
 	static WITH_FACES_MAX_COUNT: number = 200;
 	static arFriends = [];
 
-	static arSM = {
+	static arSM: { [i: number]: ISocialMedia; } = {
 		1: {
 			site: 'https://www.facebook.com/',
 			idPrefix: '',
