@@ -39,8 +39,8 @@ class Fbf{
 	static setDataTypeValues(ASMID: number, ARelationType: number) {
 		Fbf.nSMID = ASMID;
 		Fbf.nRelationType = ARelationType;
-		$('#smID,#fake_smID').val(Fbf.nSMID);
-		$('#relationType,#fake_relationType').val(Fbf.nRelationType);
+		$('#smID,#fake_smID').val(Fbf.nSMID.toString());
+		$('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());
 		return 0;
 	}
 
