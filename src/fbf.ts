@@ -1,9 +1,12 @@
+/// <reference path="./jquery.d.ts" />
+/// <reference path="./lodash.d.ts" />
+
 interface IFriend {
 	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
 	title: string;
 	face: string;
-	smID: number;
-	relationType: number;
+	smID?: number;
+	relationType?: number;
 }
 interface ISocialMedia {
 	site: string;
@@ -12,7 +15,7 @@ interface ISocialMedia {
 
 class Fbf{
 	static WITH_FACES_MAX_COUNT: number = 200;
-	static arFriends = [];
+	static arFriends: IFriend[] = [];
 
 	static arSM: { [i: number]: ISocialMedia; } = {
 		1: {
@@ -70,7 +73,7 @@ class Fbf{
 		if (Fbf.nRelationType === 1) {
 			switch (Fbf.nSMID) {
 			case 1:
-				$('li>[data-testid="friend_list_item"]', f).each(function () {
+				$('li>[data-testid="friend_list_item"]', f).each(function (this: Element) {
 					let item = this;
 					var a = $('a[data-hovercard]', item).eq(0);
 					var sID: string = a.data('hovercard');
@@ -83,8 +86,6 @@ class Fbf{
 							fbID: nID,
 							title: sName,
 							face: _.unescape(sFace),
-							smID: Fbf.nSMID,
-							relationType: Fbf.nRelationType,
 						});
 					}
 				});
@@ -100,7 +101,7 @@ class Fbf{
 				// }
 				// break;
 			case 2:
-				$('.friends_user_row', f).each(function () {
+				$('.friends_user_row', f).each(function (this: Element) {
 					let item = this;
 					var sID: string = $(item).attr('id');
 					var m = sID.match(/friends_user_row(\d+)/);
@@ -112,14 +113,12 @@ class Fbf{
 							fbID: nID,
 							title: sName,
 							face: _.unescape(sFace),
-							smID: Fbf.nSMID,
-							relationType: Fbf.nRelationType,
 						});
 					}
 				});
 				break;
 			case 3:
-				$('.ugrid_i', f).each(function () {
+				$('.ugrid_i', f).each(function (this: Element) {
 					let item = this;
 					var nID: string = $('.entity-item', item).data('entity-id');
 					var sName: string = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
@@ -128,8 +127,6 @@ class Fbf{
 						fbID: nID,
 						title: sName,
 						face: _.unescape(sFace),
-						smID: Fbf.nSMID,
-						relationType: Fbf.nRelationType,
 				});
 				});
 				break;
@@ -137,7 +134,7 @@ class Fbf{
 		} else {
 			switch (Fbf.nSMID) {
 			case 1:
-				$('li.fbProfileBrowserListItem', f).each(function () {
+				$('li.fbProfileBrowserListItem', f).each(function (this: Element) {
 					let item = this;
 					let a = $('a[data-hovercard]', item).eq(0);
 					var sID: string = a.data('hovercard');
@@ -150,8 +147,6 @@ class Fbf{
 							fbID: nID,
 							title: sName,
 							face: _.unescape(sFace),
-							smID: Fbf.nSMID,
-							relationType: Fbf.nRelationType,
 						});
 					}
 				});
@@ -162,6 +157,11 @@ class Fbf{
 				break;
 			}
 		}
+		Fbf.arFriends = arTemp.map(function(friend: IFriend){
+			friend.smID = Fbf.nSMID;
+			friend.relationType = Fbf.nRelationType;
+			return friend;
+		})
 		// console.log(arFriends);
 
 		Fbf.drawUsers();

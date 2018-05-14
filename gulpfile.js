@@ -20,7 +20,7 @@ var tsProject = ts.createProject('src/tsconfig.json');
 
 gulp.task('ts', function () {
 	return gulp.src('src/*.ts')
-		.pipe(changed('.'))
+		.pipe(changed('.'), {extension: '.js'})
 		.pipe(tsProject())
 		// .pipe(eslint())
 		// .pipe(eslint.format())
