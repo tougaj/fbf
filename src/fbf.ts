@@ -1,5 +1,6 @@
-/// <reference path="./jquery.d.ts" />
-/// <reference path="./lodash.d.ts" />
+///<reference path="./d.ts/jquery.d.ts" />
+/// <reference path="./d.ts/lodash.d.ts" />
+// <reference path="./globals.d.ts" />
 
 interface IFriend {
 	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
