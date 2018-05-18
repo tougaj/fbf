@@ -1,7 +1,8 @@
 <?php
 header('Cache-Control: public, max-age=900');
 header('Content-Type: text/html; charset=utf-8');
-$nRevision = 2;
+// $nRevision = 2;
+$nRevision = time(); // for debug
 ?>
 <!DOCTYPE html>
 <html lang="ua">
@@ -35,7 +36,7 @@ $nRevision = 2;
                     <form name="fmGetFriends" id="fmGetFriends" action="getFriends.php" method="post" class="form-inline text-center" target="_blank">
                         <input type="hidden" name="smID" id="smID">
                         <div class="form-group">
-                            <label for="fake_smID">Соціальна мережа</label>
+                            <label class="control-label" for="fake_smID">Соціальна мережа</label>
                             <select name="fake_smID" id="fake_smID" class="form-control" autocomplete="off" readonly="readonly" disabled>
                                 <option value="0" disabled selected>Не визначено</option>
                                 <option value="1">Facebook</option>
@@ -43,17 +44,16 @@ $nRevision = 2;
                                 <option value="3">Одноклассники</option>
                             </select>
                         </div>
-                        <input type="hidden" name="relationType" id="relationType">
                         <div class="form-group ml-2">
-                            <label for="fake_relationType">Тип відношень</label>
-                            <select name="fake_relationType" id="fake_relationType" class="form-control" autocomplete="off" readonly="readonly" disabled>
+                            <label class="control-label" for="relationType">Тип відношень</label>
+                            <select name="relationType" id="relationType" class="form-control" autocomplete="off">
                                 <option value="0" disabled selected>Не визначено</option>
                                 <option value="1">Друзі</option>
                                 <option value="2">Підписники</option>
                             </select>
                         </div>
                         <div class="form-group ml-2">
-                            <label for="filename">Ім'я вихідного файлу</label>
+                            <label class="control-label" for="filename">Ім'я вихідного файлу</label>
                             <input type="text" class="form-control" name="filename" id="filename" placeholder="Ім'я вихідного файлу" autocomplete="off">
                         </div>
                         <div class="checkbox">

@@ -20,9 +20,12 @@ declare class Fbf {
     static nSMID: number;
     static nRelationType: number;
     static setDataTypeValues(ASMID: number, ARelationType: number): number;
+    changeRelationType(nNewRelationType: number): void;
     static defineDataType(sHTML: string): number;
-    getFriends(): void;
+    getFriends(fNeedDefineType?: boolean): void;
+    fillFriendTable(sElementHTML: string): void;
     static drawUsers(): void;
     loadFriends(): boolean;
+    onChangeRelationType(): void;
 }
 declare let fbf: Fbf;

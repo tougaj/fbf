@@ -33,7 +33,7 @@ gulp.task('ts', function () {
 				suffix: '.min',
 			}))
 			.pipe(gulp.dest('dist')),
-		tsResult.dts.pipe(gulp.dest('src'))
+		tsResult.dts.pipe(gulp.dest('dist/definition'))
 	]);
 
 	// return gulp.src(sTSSource)

@@ -53,118 +53,167 @@ class Fbf{
 	}
 
 	/**
+	 * Изменяет тип отношений между аккаунтами
+	 * @param nNewRelationType новое значение типа отношений
+	 */
+	changeRelationType(nNewRelationType: number){
+		Fbf.setDataTypeValues(Fbf.nSMID, nNewRelationType);
+		this.getFriends(false);
+	}
+
+	/**
 	 * По контенту определяет: социальную сеть, тип связей
 	 * @param {string} sHTML - код страницы
 	 */
 	static defineDataType(sHTML: string) {
-		if (/\.userapi\.com/i.test(sHTML)) return Fbf.setDataTypeValues(2, 1);
-		if (/i\.mycdn\.me/i.test(sHTML)) return Fbf.setDataTypeValues(3, 1);
+		// Вконтакте
+		if (/\.userapi\.com/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
+		// Одноклассники
+		if (/i\.mycdn\.me/i.test(sHTML)){
+			if (/friendSubscribers/i.test(sHTML))
+				return Fbf.setDataTypeValues(3, 2);
+			else
+				return Fbf.setDataTypeValues(3, 1);
+		}
+		// Фейсбук дрвзья
 		if (/friend_list_item/i.test(sHTML)) return Fbf.setDataTypeValues(1, 1);
 
+		// Фейсбук подписчики
 		if (/fbProfileBrowserListItem/i.test(sHTML)) return Fbf.setDataTypeValues(1, 2);
+		// if (/fans_fan_row/i.test(sHTML)) return Fbf.setDataTypeValues(2, 2);
 		return Fbf.setDataTypeValues(0, 0);
 	}
 
-	getFriends() {
+	getFriends(fNeedDefineType: boolean = true) {
 		let sElementHTML: string = $('#ta').val();
-		Fbf.defineDataType(sElementHTML);
+		if (fNeedDefineType) Fbf.defineDataType(sElementHTML);
+		fbf.fillFriendTable(sElementHTML);
+	}
 
+	fillFriendTable(sElementHTML: string) {
 		let arTemp: IFriend[] = [];
-		let f = $(sElementHTML);
-		if (Fbf.nRelationType === 1) {
-			switch (Fbf.nSMID) {
-			case 1:
-				$('li>[data-testid="friend_list_item"]', f).each(function (this: Element) {
-					let item = this;
-					var a = $('a[data-hovercard]', item).eq(0);
-					var sID: string = a.data('hovercard');
-					var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
-					if (m && m[1]) {
-						var nID: string = m[1];
-						var sName: string = $('img[role="img"]', item).attr('aria-label');
-						var sFace: string = $('img[role="img"]', item).attr('src');
-						arTemp.push({
-							fbID: nID,
-							title: sName,
-							face: _.unescape(sFace),
+		let div = $(sElementHTML);
+		Fbf.arFriends = [];
+		if (Fbf.nRelationType !== 0) {
+			if (Fbf.nRelationType === 1) {
+				switch (Fbf.nSMID) {
+					case 1:
+						$('li>[data-testid="friend_list_item"]', div).each(function (this: Element) {
+							let item = this;
+							var a = $('a[data-hovercard]', item).eq(0);
+							var sID: string = a.data('hovercard');
+							var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
+							if (m && m[1]) {
+								var nID: string = m[1];
+								var sName: string = $('img[role="img"]', item).attr('aria-label');
+								var sFace: string = $('img[role="img"]', item).attr('src');
+								arTemp.push({
+									fbID: nID,
+									title: sName,
+									face: _.unescape(sFace),
+								});
+							}
 						});
-					}
-				});
-				break;
-
-				// var re = /<a\b[^>]+data-hovercard="\/ajax\/hovercard\/user.php\?id=(\d+)[^>]+><img\b[^>]+src="([^>"]+)"[^>]+aria-label="([^>"]+)"[^>]+>/ig;
-				// while ((r = re.exec(s)) !== null){
-				// 	arTemp.push({
-				// 		fbID: r[1],
-				// 		title: r[3],
-				// 		face: r[2].replace(/&amp;/ig, '&'),
-				// 	});
-				// }
-				// break;
-			case 2:
-				$('.friends_user_row', f).each(function (this: Element) {
-					let item = this;
-					var sID: string = $(item).attr('id');
-					var m = sID.match(/friends_user_row(\d+)/);
-					if (m && m[1]) {
-						var nID: string = m[1];
-						var sName: string = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
-						var sFace: string = $('img.friends_photo_img', item).attr('src');
-						arTemp.push({
-							fbID: nID,
-							title: sName,
-							face: _.unescape(sFace),
+						break;
+						// var re = /<a\b[^>]+data-hovercard="\/ajax\/hovercard\/user.php\?id=(\d+)[^>]+><img\b[^>]+src="([^>"]+)"[^>]+aria-label="([^>"]+)"[^>]+>/ig;
+						// while ((r = re.exec(s)) !== null){
+						// 	arTemp.push({
+						// 		fbID: r[1],
+						// 		title: r[3],
+						// 		face: r[2].replace(/&amp;/ig, '&'),
+						// 	});
+						// }
+						// break;
+					case 2:
+						$('.friends_user_row', div).each(function (this: Element) {
+							let item = this;
+							var sID: string = $(item).attr('id');
+							var m = sID.match(/friends_user_row(\d+)/);
+							if (m && m[1]) {
+								var nID: string = m[1];
+								var sName: string = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+								var sFace: string = $('img.friends_photo_img', item).attr('src');
+								arTemp.push({
+									fbID: nID,
+									title: sName,
+									face: _.unescape(sFace),
+								});
+							}
 						});
-					}
-				});
-				break;
-			case 3:
-				$('.ugrid_i', f).each(function (this: Element) {
-					let item = this;
-					var nID: string = $('.entity-item', item).data('entity-id');
-					var sName: string = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
-					var sFace: string = 'https:' + $('img.photo_img', item).attr('src');
-					arTemp.push({
-						fbID: nID,
-						title: sName,
-						face: _.unescape(sFace),
-				});
-				});
-				break;
+						break;
+					case 3:
+						$('.ugrid_i', div).each(function (this: Element) {
+							let item = this;
+							var nID: string = $('.entity-item', item).data('entity-id');
+							var sName: string = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
+							var sFace: string = 'https:' + $('img.photo_img', item).attr('src');
+							arTemp.push({
+								fbID: nID,
+								title: sName,
+								face: _.unescape(sFace),
+							});
+						});
+						break;
+				}
+			} else {
+				switch (Fbf.nSMID) {
+					case 1:
+						$('li.fbProfileBrowserListItem', div).each(function (this: Element) {
+							let item = this;
+							let a = $('a[data-hovercard]', item).eq(0);
+							var sID: string = a.data('hovercard');
+							var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
+							if (m && m[1]) {
+								var nID: string = m[1];
+								var sName: string = $('img[role="img"]', item).attr('aria-label');
+								var sFace: string = $('img[role="img"]', item).attr('src');
+								arTemp.push({
+									fbID: nID,
+									title: sName,
+									face: _.unescape(sFace),
+								});
+							}
+						});
+						break;
+					case 2:
+						$('.friends_user_row', div).each(function (this: Element) {
+							let item = this;
+							var sID: string = $(item).attr('id');
+							var m = sID.match(/friends_user_row(\d+)/);
+							if (m && m[1]) {
+								var nID: string = m[1];
+								var sName: string = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+								var sFace: string = $('img.friends_photo_img', item).attr('src');
+								arTemp.push({
+									fbID: nID,
+									title: sName,
+									face: _.unescape(sFace),
+								});
+							}
+						});
+						break;
+					case 3:
+						$('.ugrid_i', div).each(function (this: Element) {
+							let item = this;
+							var nID: string = $('.__l', item).data('id');
+							var sName: string = $('.caption .ellip a', item).html().replace(/<br>/ig, ' ');
+							var sFace: string = 'https:' + $('img.photo_img', item).attr('src');
+							arTemp.push({
+								fbID: nID,
+								title: sName,
+								face: _.unescape(sFace),
+							});
+						});
+						break;
+				}
 			}
-		} else {
-			switch (Fbf.nSMID) {
-			case 1:
-				$('li.fbProfileBrowserListItem', f).each(function (this: Element) {
-					let item = this;
-					let a = $('a[data-hovercard]', item).eq(0);
-					var sID: string = a.data('hovercard');
-					var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
-					if (m && m[1]) {
-						var nID: string = m[1];
-						var sName: string = $('img[role="img"]', item).attr('aria-label');
-						var sFace: string = $('img[role="img"]', item).attr('src');
-						arTemp.push({
-							fbID: nID,
-							title: sName,
-							face: _.unescape(sFace),
-						});
-					}
-				});
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			}
+			Fbf.arFriends = arTemp.map(function (friend: IFriend) {
+				friend.smID = Fbf.nSMID;
+				friend.relationType = Fbf.nRelationType;
+				return friend;
+			});
 		}
-		Fbf.arFriends = arTemp.map(function(friend: IFriend){
-			friend.smID = Fbf.nSMID;
-			friend.relationType = Fbf.nRelationType;
-			return friend;
-		})
-		// console.log(arFriends);
-
+		// console.log(Fbf.arFriends);
 		Fbf.drawUsers();
 		$('input[name=withfaces]', '#fmGetFriends').prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
 	}
@@ -172,6 +221,11 @@ class Fbf{
 	// Отрисовка найденных пользователей
 	static drawUsers() {
 		let div = $('#divFriends').empty();
+		if (Fbf.nSMID === 0 || Fbf.nRelationType === 0){
+			$('#relationType').focus().closest('.form-group').addClass('has-error');;
+			alert('Не можливо визначити тип відношень для даної соціальної мережі. Оберіть, будь ласка, тип відношень');
+			return;
+		}
 		$('span', '#btnFriends').text('(' + Fbf.arFriends.length + ')');
 		var userTemplate = _.template($('#tmplUserAccount').html());
 		let nIndex: number = Fbf.nSMID;
@@ -214,6 +268,16 @@ class Fbf{
 		}, 1000);
 		return true;
 	}
+
+	onChangeRelationType(){
+		if (Fbf.nSMID == 2){
+			$(this).closest('.form-group').removeClass('has-error');
+			fbf.changeRelationType(parseInt($(this).val()));
+		} else {
+			$(this).val(Fbf.nRelationType.toString());
+			alert('Не можливо змінити тип відношень для даної соціальної мережі!');
+		}
+	}
 };
 
 let fbf: Fbf = new Fbf();
@@ -221,6 +285,7 @@ let fbf: Fbf = new Fbf();
 $(document).ready(function () {
 	$('#btnFriends').click(fbf.getFriends);
 	$('#fmGetFriends').submit(fbf.loadFriends);
+	$('#relationType').change(fbf.onChangeRelationType);
 
 	// for debug
 	// $.ajax({
