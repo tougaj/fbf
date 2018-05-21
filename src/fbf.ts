@@ -67,7 +67,8 @@ class Fbf{
 	 */
 	static defineDataType(sHTML: string) {
 		// Вконтакте
-		if (/\.userapi\.com/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
+		// if (/\.userapi\.com/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
+		if (/id="friends_user_row\d+"/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
 		// Одноклассники
 		if (/i\.mycdn\.me/i.test(sHTML)){
 			if (/friendSubscribers/i.test(sHTML))

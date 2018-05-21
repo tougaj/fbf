@@ -14,7 +14,7 @@ var Fbf = (function () {
         this.getFriends(false);
     };
     Fbf.defineDataType = function (sHTML) {
-        if (/\.userapi\.com/i.test(sHTML))
+        if (/id="friends_user_row\d+"/i.test(sHTML))
             return Fbf.setDataTypeValues(2, 0);
         if (/i\.mycdn\.me/i.test(sHTML)) {
             if (/friendSubscribers/i.test(sHTML))
