@@ -22,8 +22,11 @@ $nRevision = time(); // for debug
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Facebook Friends</title>
 
+        <link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Sans+Pro" rel="stylesheet">
+
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"> -->
+        <link rel="stylesheet" href="eden.css">
 		<link rel="stylesheet" href="fbf.css?rev=<?php echo $nRevision; ?>">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
