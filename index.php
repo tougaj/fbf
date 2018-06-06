@@ -1,8 +1,8 @@
 <?php
 header('Cache-Control: public, max-age=900');
 header('Content-Type: text/html; charset=utf-8');
-// $nRevision = 2;
-$nRevision = time(); // for debug
+$nRevision = 3;
+// $nRevision = time(); // for debug
 ?>
 <!DOCTYPE html>
 <html lang="ua">
