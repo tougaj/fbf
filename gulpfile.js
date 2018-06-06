@@ -65,7 +65,7 @@ gulp.task('ts', function () {
 let sLessSource = 'src/*.less';
 gulp.task('less', function () {
 	return gulp.src(sLessSource)
-		.pipe(changed('.'))
+		.pipe(changed('.', {extension: '.css'}))
 		.pipe(less({
 			paths: [ path.join(__dirname, 'less', 'includes') ]
 		}))
