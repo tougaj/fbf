@@ -2,7 +2,7 @@
   "name": "fbf",
   "version": "1.0.0",
   "description": "Помимо парсинга друзей, необходим также парсинг подписчиков.",
-  "main": "fbf.js",
+  "main": "index.php",
   "scripts": {
     "less": "lessc src/fbf.less ./fbf.css",
     "build": "babel src -d . --minified",
@@ -24,6 +24,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
+    "browser-sync": "^2.24.6",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-changed": "^3.2.0",

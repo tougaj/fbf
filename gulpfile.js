@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var rename = require('gulp-rename');
 var changed = require('gulp-changed');
 var merge = require('merge2');
+let browserSync = require('browser-sync').create();
 
 var ts = require('gulp-typescript');
 // var babel = require('gulp-babel');
@@ -28,6 +29,7 @@ gulp.task('ts', function () {
 
 	return merge([
 		tsResult.js.pipe(gulp.dest('.'))
+			.pipe(browserSync.reload({stream: true}))
 			.pipe(uglify())
 			.pipe(rename({
 				suffix: '.min',
@@ -76,6 +78,7 @@ gulp.task('less', function () {
 		}))
 		.pipe(csslint.formatter())
 		.pipe(gulp.dest('.'))
+		.pipe(browserSync.reload({stream: true}))
 		.pipe(cleanCSS())
 		.pipe(rename({
 			suffix: '.min',
@@ -85,9 +88,20 @@ gulp.task('less', function () {
 });
 
 gulp.task('default', ['ts', 'less'], function(callback){
+	browserSync.init({
+		// server: {
+		// 	files: ['./*.css', './*.js', './*.php']
+		// 	// serveStatic: ['.', './app/css']			
+		// },
+		proxy: 'localhost:8080/fbf/'
+		// serveStatic: ['./*.css', './*.js', './*.php']
+	});
+
+
 	gulp.watch(sTSSource, ['ts'])
 		.on('change', onFilesChange);
 	gulp.watch(sLessSource, ['less'])
 		.on('change', onFilesChange);
+	gulp.watch('./index.php').on('change', browserSync.reload);
 	return callback;
 });
