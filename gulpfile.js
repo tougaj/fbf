@@ -13,6 +13,7 @@ var cleanCSS = require('gulp-clean-css');
 var path = require('path');
 var csslint = require('gulp-csslint');
 // var eslint = require('gulp-eslint');
+const autoprefixer = require('gulp-autoprefixer');
 
 function onFilesChange(event) {
 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
@@ -71,6 +72,10 @@ gulp.task('less', function () {
 		.pipe(less({
 			paths: [ path.join(__dirname, 'less', 'includes') ]
 		}))
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			// cascade: false
+		}))		
 		.pipe(csslint({
 			lookup: false,
 			ids: false,
