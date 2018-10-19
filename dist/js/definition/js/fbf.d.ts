@@ -1,17 +1,17 @@
 /// <reference path="d.ts/jquery.d.ts" />
 /// <reference path="d.ts/lodash.d.ts" />
-interface IFriend {
+export interface IFriend {
     fbID: string;
     title: string;
     face: string;
     smID?: number;
     relationType?: number;
 }
-interface ISocialMedia {
+export interface ISocialMedia {
     site: string;
     idPrefix: string;
 }
-declare class Fbf {
+export declare class Fbf {
     static WITH_FACES_MAX_COUNT: number;
     static arFriends: IFriend[];
     static arSM: {
@@ -28,4 +28,4 @@ declare class Fbf {
     loadFriends(): boolean;
     onChangeRelationType(): void;
 }
-declare let fbf: Fbf;
+export declare let fbf: Fbf;

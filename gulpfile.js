@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var rename = require('gulp-rename');
+// var rename = require('gulp-rename');
 var changed = require('gulp-changed');
 var merge = require('merge2');
 let browserSync = require('browser-sync').create();
@@ -7,6 +7,7 @@ let browserSync = require('browser-sync').create();
 var ts = require('gulp-typescript');
 // var babel = require('gulp-babel');
 var uglify = require('gulp-uglify');
+const webpack = require('webpack-stream');
 
 // var less = require('gulp-less');
 var cleanCSS = require('gulp-clean-css');
@@ -26,19 +27,39 @@ let tsProject = ts.createProject('src/js/tsconfig.json');
 
 gulp.task('ts', function () {
 	let tsResult = gulp.src(sTSSource)
-		// .pipe(changed('./js', {extension: '.js'}))
+		.pipe(changed('./js', {extension: '.js'}))
 		.pipe(tsProject());
 
 	return merge([
-		tsResult.js.pipe(gulp.dest('.'))
-			.pipe(browserSync.reload({stream: true}))
-			.pipe(uglify())
-			.pipe(rename({
-				suffix: '.min',
-			}))
-			.pipe(gulp.dest('dist')),
+		tsResult.js.pipe(gulp.dest('.')),
+		// .pipe(browserSync.reload({stream: true}))
+		// .pipe(uglify())
+		// .pipe(rename({
+		// 	suffix: '.min',
+		// }))
+		// .pipe(gulp.dest('dist')),
 		tsResult.dts.pipe(gulp.dest('dist/js/definition'))
 	]);
+});
+
+gulp.task('webpack', ['ts'], function(){
+	return gulp.src('js/**/*.js')
+		.pipe(webpack({
+			entry: './js/main.js',
+			// mode: 'none',
+			mode: 'development',
+			// mode: 'production',
+			output: {
+				filename: 'bundle.js',
+				// path: __dirname + '/test'
+			},
+			externals: {
+				'react': 'React',
+				'react-dom': 'ReactDOM'
+			}
+		}))
+		.pipe(gulp.dest('js'))
+		.pipe(browserSync.reload({stream: true}));
 });
 
 // let sLessSource = 'src/*.less';
@@ -83,15 +104,44 @@ gulp.task('sass', function () {
 		}))
 		.pipe(csslint.formatter())
 		.pipe(gulp.dest('.'))
-		.pipe(browserSync.reload({stream: true}))
-		.pipe(cleanCSS())
-		.pipe(rename({
-			suffix: '.min',
-		}))
-		.pipe(gulp.dest('dist'));
+		.pipe(browserSync.reload({stream: true}));
+	// .pipe(cleanCSS())
+	// .pipe(rename({
+	// 	suffix: '.min',
+	// }))
+	// .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['ts', 'sass'], function(callback){
+gulp.task('production', ['ts', 'sass'], function(callback){
+	gulp.src('css/**/*.css')
+		.pipe(cleanCSS())
+		// .pipe(rename({
+		// 	suffix: '.min',
+		// }))
+		.pipe(gulp.dest('dist/css'));
+
+	gulp.src('js/**/*.js')
+		.pipe(uglify())
+		.pipe(webpack({
+			entry: './js/main.js',
+			// mode: 'none',
+			// mode: 'development',
+			mode: 'production',
+			output: {
+				filename: 'bundle.js',
+				// path: __dirname + '/test'
+			},
+			externals: {
+				'react': 'React',
+				'react-dom': 'ReactDOM'
+			}
+		}))
+		.pipe(gulp.dest('dist/js'));
+
+	return callback;
+});
+
+gulp.task('default', ['webpack', 'sass'], function(callback){
 	browserSync.init({
 		// server: {
 		// 	files: ['./*.css', './*.js', './*.php']
@@ -101,11 +151,17 @@ gulp.task('default', ['ts', 'sass'], function(callback){
 		// serveStatic: ['./*.css', './*.js', './*.php']
 	});
 
+	gulp.watch(sTSSource, ['webpack'])
+		.on('change', onFilesChange);	
 
-	gulp.watch(sTSSource, ['ts'])
-		.on('change', onFilesChange);
+	// const sJSSource = ['js/**/*.js', '!js/bundle.js'];
+	// gulp.watch(sJSSource, ['webpack'])
+	// 	.on('change', onFilesChange);
+
 	gulp.watch(sSassSource, ['sass'])
 		.on('change', onFilesChange);
+
 	gulp.watch('./index.php').on('change', browserSync.reload);
+
 	return callback;
 });

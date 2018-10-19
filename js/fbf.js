@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Fbf = (function () {
     function Fbf() {
     }
@@ -33,7 +34,7 @@ var Fbf = (function () {
         var sElementHTML = $('#ta').val();
         if (fNeedDefineType)
             Fbf.defineDataType(sElementHTML);
-        fbf.fillFriendTable(sElementHTML);
+        exports.fbf.fillFriendTable(sElementHTML);
     };
     Fbf.prototype.fillFriendTable = function (sElementHTML) {
         var arTemp = [];
@@ -202,7 +203,7 @@ var Fbf = (function () {
     Fbf.prototype.onChangeRelationType = function () {
         if (Fbf.nSMID == 2) {
             $(this).closest('.form-group').removeClass('has-error');
-            fbf.changeRelationType(parseInt($(this).val()));
+            exports.fbf.changeRelationType(parseInt($(this).val()));
         }
         else {
             $(this).val(Fbf.nRelationType.toString());
@@ -229,10 +230,6 @@ var Fbf = (function () {
     Fbf.nRelationType = 0;
     return Fbf;
 }());
+exports.Fbf = Fbf;
 ;
-var fbf = new Fbf();
-$(document).ready(function () {
-    $('#btnFriends').click(fbf.getFriends);
-    $('#fmGetFriends').submit(fbf.loadFriends);
-    $('#relationType').change(fbf.onChangeRelationType);
-});
+exports.fbf = new Fbf();

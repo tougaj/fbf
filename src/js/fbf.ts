@@ -1,20 +1,20 @@
-///<reference path="./d.ts/jquery.d.ts" />
+/// <reference path="./d.ts/jquery.d.ts" />
 /// <reference path="./d.ts/lodash.d.ts" />
 // <reference path="./globals.d.ts" />
 
-interface IFriend {
+export interface IFriend {
 	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
 	title: string;
 	face: string;
 	smID?: number;
 	relationType?: number;
 }
-interface ISocialMedia {
+export interface ISocialMedia {
 	site: string;
 	idPrefix: string;
 }
 
-class Fbf{
+export class Fbf{
 	static WITH_FACES_MAX_COUNT: number = 200;
 	static arFriends: IFriend[] = [];
 
@@ -281,19 +281,4 @@ class Fbf{
 	}
 };
 
-let fbf: Fbf = new Fbf();
-
-$(document).ready(function () {
-	$('#btnFriends').click(fbf.getFriends);
-	$('#fmGetFriends').submit(fbf.loadFriends);
-	$('#relationType').change(fbf.onChangeRelationType);
-
-	// for debug
-	// $.ajax({
-	// 	type: "get",
-	// 	url: "test_data/fbf.txt",
-	// 	data: 'rev=0',
-	// 	dataType: "text",
-	// 	success: (response: any)  => $('#ta').val(response)
-	// });
-});
+export let fbf: Fbf = new Fbf();

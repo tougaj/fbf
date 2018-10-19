@@ -83,7 +83,7 @@ $nRevision = 4;
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>		
-        <script src="js/fbf.js?rev=<?php echo $nRevision; ?>"></script>
+        <script src="js/bundle.js?rev=<?php echo $nRevision; ?>"></script>
 
         <!-- Шаблон для отрисовки пользователя -->
         <script type="text/template" id="tmplUserAccount">
