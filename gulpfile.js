@@ -22,7 +22,7 @@ function onFilesChange(event) {
 }
 
 var sTSSource = ['src/**/*.ts', '!src/**/*.d.ts'];
-let tsProject = ts.createProject('src/tsconfig.json');
+let tsProject = ts.createProject('src/js/tsconfig.json');
 
 gulp.task('ts', function () {
 	let tsResult = gulp.src(sTSSource)
