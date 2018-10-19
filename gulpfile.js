@@ -21,12 +21,12 @@ function onFilesChange(event) {
 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 }
 
-var sTSSource = ['src/*.ts', '!src/*.d.ts'];
+var sTSSource = ['src/**/*.ts', '!src/**/*.d.ts'];
 let tsProject = ts.createProject('src/tsconfig.json');
 
 gulp.task('ts', function () {
 	let tsResult = gulp.src(sTSSource)
-		.pipe(changed('.', {extension: '.js'}))
+		// .pipe(changed('./js', {extension: '.js'}))
 		.pipe(tsProject());
 
 	return merge([
@@ -37,7 +37,7 @@ gulp.task('ts', function () {
 				suffix: '.min',
 			}))
 			.pipe(gulp.dest('dist')),
-		tsResult.dts.pipe(gulp.dest('dist/definition'))
+		tsResult.dts.pipe(gulp.dest('dist/js/definition'))
 	]);
 });
 
@@ -67,10 +67,10 @@ gulp.task('ts', function () {
 // 		.pipe(gulp.dest('dist'));
 // });
 
-let sSassSource = 'src/*.sass';
+let sSassSource = 'src/**/*.sass';
 gulp.task('sass', function () {
 	return gulp.src(sSassSource)
-		.pipe(changed('.', {extension: '.css'}))
+		.pipe(changed('./css', {extension: '.css'}))
 		.pipe(sass().on('error', sass.logError))
 		.pipe(autoprefixer({
 			browsers: ['last 2 versions'],

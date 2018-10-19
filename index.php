@@ -1,7 +1,7 @@
 <?php
 header('Cache-Control: public, max-age=900');
 header('Content-Type: text/html; charset=utf-8');
-$nRevision = 3;
+$nRevision = 4;
 // $nRevision = time(); // for debug
 ?>
 <!DOCTYPE html>
@@ -26,8 +26,8 @@ $nRevision = 3;
 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"> -->
-        <link rel="stylesheet" href="eden.css">
-		<link rel="stylesheet" href="fbf.css?rev=<?php echo $nRevision; ?>">
+        <link rel="stylesheet" href="css/eden.css">
+		<link rel="stylesheet" href="css/fbf.css?rev=<?php echo $nRevision; ?>">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
@@ -83,7 +83,7 @@ $nRevision = 3;
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>		
-        <script src="fbf.js?rev=<?php echo $nRevision; ?>"></script>
+        <script src="js/fbf.js?rev=<?php echo $nRevision; ?>"></script>
 
         <!-- Шаблон для отрисовки пользователя -->
         <script type="text/template" id="tmplUserAccount">

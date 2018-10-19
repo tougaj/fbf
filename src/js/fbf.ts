@@ -235,7 +235,7 @@ class Fbf{
 				id: v.fbID,
 				title: v.title,
 				link: Fbf.arSM[nIndex].site + Fbf.arSM[nIndex].idPrefix + v.fbID,
-				img: Fbf.nSMID === 1 ? v.face : 'man.jpg',
+				img: Fbf.nSMID === 1 ? v.face : 'img/man.jpg',
 				icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
 			});
 			$(sUser).appendTo(div);
@@ -291,7 +291,7 @@ $(document).ready(function () {
 	// for debug
 	// $.ajax({
 	// 	type: "get",
-	// 	url: "fbf.txt",
+	// 	url: "test_data/fbf.txt",
 	// 	data: 'rev=0',
 	// 	dataType: "text",
 	// 	success: (response: any)  => $('#ta').val(response)

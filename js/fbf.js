@@ -1,7 +1,14 @@
-"use strict";
-var Fbf = (function () {
+///<reference path="./d.ts/jquery.d.ts" />
+/// <reference path="./d.ts/lodash.d.ts" />
+// <reference path="./globals.d.ts" />
+var Fbf = /** @class */ (function () {
     function Fbf() {
     }
+    /**
+     * Сохраняет в локальных переменных: социальную сеть, тип связей
+     * @param {int} ASMID - социальная сеть
+     * @param {int} ARelationType - тип связи
+     */
     Fbf.setDataTypeValues = function (ASMID, ARelationType) {
         Fbf.nSMID = ASMID;
         Fbf.nRelationType = ARelationType;
@@ -9,23 +16,37 @@ var Fbf = (function () {
         $('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());
         return 0;
     };
+    /**
+     * Изменяет тип отношений между аккаунтами
+     * @param nNewRelationType новое значение типа отношений
+     */
     Fbf.prototype.changeRelationType = function (nNewRelationType) {
         Fbf.setDataTypeValues(Fbf.nSMID, nNewRelationType);
         this.getFriends(false);
     };
+    /**
+     * По контенту определяет: социальную сеть, тип связей
+     * @param {string} sHTML - код страницы
+     */
     Fbf.defineDataType = function (sHTML) {
+        // Вконтакте
+        // if (/\.userapi\.com/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
         if (/id="friends_user_row\d+"/i.test(sHTML))
             return Fbf.setDataTypeValues(2, 0);
+        // Одноклассники
         if (/i\.mycdn\.me/i.test(sHTML)) {
             if (/friendSubscribers/i.test(sHTML))
                 return Fbf.setDataTypeValues(3, 2);
             else
                 return Fbf.setDataTypeValues(3, 1);
         }
+        // Фейсбук дрвзья
         if (/friend_list_item/i.test(sHTML))
             return Fbf.setDataTypeValues(1, 1);
+        // Фейсбук подписчики
         if (/fbProfileBrowserListItem/i.test(sHTML))
             return Fbf.setDataTypeValues(1, 2);
+        // if (/fans_fan_row/i.test(sHTML)) return Fbf.setDataTypeValues(2, 2);
         return Fbf.setDataTypeValues(0, 0);
     };
     Fbf.prototype.getFriends = function (fNeedDefineType) {
@@ -55,11 +76,20 @@ var Fbf = (function () {
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: _.unescape(sFace)
                                 });
                             }
                         });
                         break;
+                    // var re = /<a\b[^>]+data-hovercard="\/ajax\/hovercard\/user.php\?id=(\d+)[^>]+><img\b[^>]+src="([^>"]+)"[^>]+aria-label="([^>"]+)"[^>]+>/ig;
+                    // while ((r = re.exec(s)) !== null){
+                    // 	arTemp.push({
+                    // 		fbID: r[1],
+                    // 		title: r[3],
+                    // 		face: r[2].replace(/&amp;/ig, '&'),
+                    // 	});
+                    // }
+                    // break;
                     case 2:
                         $('.friends_user_row', div).each(function () {
                             var item = this;
@@ -72,7 +102,7 @@ var Fbf = (function () {
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: _.unescape(sFace)
                                 });
                             }
                         });
@@ -86,7 +116,7 @@ var Fbf = (function () {
                             arTemp.push({
                                 fbID: nID,
                                 title: sName,
-                                face: _.unescape(sFace),
+                                face: _.unescape(sFace)
                             });
                         });
                         break;
@@ -107,7 +137,7 @@ var Fbf = (function () {
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: _.unescape(sFace)
                                 });
                             }
                         });
@@ -124,7 +154,7 @@ var Fbf = (function () {
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: _.unescape(sFace)
                                 });
                             }
                         });
@@ -138,7 +168,7 @@ var Fbf = (function () {
                             arTemp.push({
                                 fbID: nID,
                                 title: sName,
-                                face: _.unescape(sFace),
+                                face: _.unescape(sFace)
                             });
                         });
                         break;
@@ -150,9 +180,11 @@ var Fbf = (function () {
                 return friend;
             });
         }
+        // console.log(Fbf.arFriends);
         Fbf.drawUsers();
         $('input[name=withfaces]', '#fmGetFriends').prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
     };
+    // Отрисовка найденных пользователей
     Fbf.drawUsers = function () {
         var div = $('#divFriends').empty();
         if (Fbf.nSMID === 0 || Fbf.nRelationType === 0) {
@@ -169,7 +201,7 @@ var Fbf = (function () {
                 id: v.fbID,
                 title: v.title,
                 link: Fbf.arSM[nIndex].site + Fbf.arSM[nIndex].idPrefix + v.fbID,
-                img: Fbf.nSMID === 1 ? v.face : 'man.jpg',
+                img: Fbf.nSMID === 1 ? v.face : 'img/man.jpg',
                 icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
             });
             $(sUser).appendTo(div);
@@ -186,6 +218,7 @@ var Fbf = (function () {
             return false;
         }
         var s = encodeURIComponent(JSON.stringify(Fbf.arFriends));
+        // if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length || nSMID === 2){
         if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length) {
             $('input[name=withfaces]', '#fmGetFriends').prop('checked', false);
         }
@@ -214,18 +247,21 @@ var Fbf = (function () {
     Fbf.arSM = {
         1: {
             site: 'https://www.facebook.com/',
-            idPrefix: '',
+            idPrefix: ''
         },
         2: {
             site: 'https://vk.com/',
-            idPrefix: 'id',
+            idPrefix: 'id'
         },
         3: {
             site: 'https://ok.ru/',
-            idPrefix: 'profile/',
-        },
+            idPrefix: 'profile/'
+        }
     };
     Fbf.nSMID = 0;
+    // Определяет тип связи:
+    // 1 - друзья;
+    // 2 - подписчики.
     Fbf.nRelationType = 0;
     return Fbf;
 }());
@@ -235,4 +271,12 @@ $(document).ready(function () {
     $('#btnFriends').click(fbf.getFriends);
     $('#fmGetFriends').submit(fbf.loadFriends);
     $('#relationType').change(fbf.onChangeRelationType);
+    // for debug
+    // $.ajax({
+    // 	type: "get",
+    // 	url: "test_data/fbf.txt",
+    // 	data: 'rev=0',
+    // 	dataType: "text",
+    // 	success: (response: any)  => $('#ta').val(response)
+    // });
 });
