@@ -1,7 +1,8 @@
 import {fbf} from './fbf';
+// import $ from "jquery";
 
 $(document).ready(function () {
-	$('#btnFriends').click(fbf.getFriends);
+	$('#btnFriends').click(() => fbf.getFriends());
 	$('#fmGetFriends').submit(fbf.loadFriends);
 	$('#relationType').change(fbf.onChangeRelationType);
 

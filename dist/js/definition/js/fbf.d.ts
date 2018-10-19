@@ -1,5 +1,3 @@
-/// <reference path="d.ts/jquery.d.ts" />
-/// <reference path="d.ts/lodash.d.ts" />
 export interface IFriend {
     fbID: string;
     title: string;

@@ -1,5 +1,8 @@
-/// <reference path="./d.ts/jquery.d.ts" />
-/// <reference path="./d.ts/lodash.d.ts" />
+import $ from "jquery";
+import _ from "lodash";
+
+// <reference path="./d.ts/jquery.d.ts" />
+// <reference path="./d.ts/lodash.d.ts" />
 // <reference path="./globals.d.ts" />
 
 export interface IFriend {
@@ -86,7 +89,7 @@ export class Fbf{
 	}
 
 	getFriends(fNeedDefineType: boolean = true) {
-		let sElementHTML: string = $('#ta').val();
+		let sElementHTML: string = $('#ta').val() as string;
 		if (fNeedDefineType) Fbf.defineDataType(sElementHTML);
 		fbf.fillFriendTable(sElementHTML);
 	}
@@ -106,8 +109,8 @@ export class Fbf{
 							var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
 							if (m && m[1]) {
 								var nID: string = m[1];
-								var sName: string = $('img[role="img"]', item).attr('aria-label');
-								var sFace: string = $('img[role="img"]', item).attr('src');
+								var sName: string = $('img[role="img"]', item).attr('aria-label') as string;
+								var sFace: string = $('img[role="img"]', item).attr('src') as string;
 								arTemp.push({
 									fbID: nID,
 									title: sName,
@@ -128,12 +131,12 @@ export class Fbf{
 					case 2:
 						$('.friends_user_row', div).each(function (this: Element) {
 							let item = this;
-							var sID: string = $(item).attr('id');
+							var sID: string = $(item).attr('id') as string;
 							var m = sID.match(/friends_user_row(\d+)/);
 							if (m && m[1]) {
 								var nID: string = m[1];
 								var sName: string = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
-								var sFace: string = $('img.friends_photo_img', item).attr('src');
+								var sFace: string = $('img.friends_photo_img', item).attr('src') as string;
 								arTemp.push({
 									fbID: nID,
 									title: sName,
@@ -166,8 +169,8 @@ export class Fbf{
 							var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
 							if (m && m[1]) {
 								var nID: string = m[1];
-								var sName: string = $('img[role="img"]', item).attr('aria-label');
-								var sFace: string = $('img[role="img"]', item).attr('src');
+								var sName: string = $('img[role="img"]', item).attr('aria-label') as string;
+								var sFace: string = $('img[role="img"]', item).attr('src') as string;
 								arTemp.push({
 									fbID: nID,
 									title: sName,
@@ -179,12 +182,12 @@ export class Fbf{
 					case 2:
 						$('.friends_user_row', div).each(function (this: Element) {
 							let item = this;
-							var sID: string = $(item).attr('id');
+							var sID: string = $(item).attr('id') as string;
 							var m = sID.match(/friends_user_row(\d+)/);
 							if (m && m[1]) {
 								var nID: string = m[1];
 								var sName: string = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
-								var sFace: string = $('img.friends_photo_img', item).attr('src');
+								var sFace: string = $('img.friends_photo_img', item).attr('src') as string;
 								arTemp.push({
 									fbID: nID,
 									title: sName,
@@ -216,7 +219,7 @@ export class Fbf{
 		}
 		// console.log(Fbf.arFriends);
 		Fbf.drawUsers();
-		$('input[name=withfaces]', '#fmGetFriends').prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
+		$('input[name=withfaces]', $('#fmGetFriends')).prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
 	}
 
 	// Отрисовка найденных пользователей
@@ -227,7 +230,7 @@ export class Fbf{
 			alert('Не можливо визначити тип відношень для даної соціальної мережі. Оберіть, будь ласка, тип відношень');
 			return;
 		}
-		$('span', '#btnFriends').text('(' + Fbf.arFriends.length + ')');
+		$('span', $('#btnFriends')).text('(' + Fbf.arFriends.length + ')');
 		var userTemplate = _.template($('#tmplUserAccount').html());
 		let nIndex: number = Fbf.nSMID;
 		Fbf.arFriends.forEach((v: IFriend) => {
@@ -248,7 +251,7 @@ export class Fbf{
 			return false;
 		}
 
-		if ($.trim($('#filename').val()) === '') {
+		if ($.trim($('#filename').val() as string) === '') {
 			alert('Введіть, будь ласка, назву вихідного файлу');
 			$('#filename').focus();
 			return false;
@@ -256,14 +259,14 @@ export class Fbf{
 		var s = encodeURIComponent(JSON.stringify(Fbf.arFriends));
 		// if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length || nSMID === 2){
 		if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length) {
-			$('input[name=withfaces]', '#fmGetFriends').prop('checked', false);
+			$('input[name=withfaces]', $('#fmGetFriends')).prop('checked', false);
 		}
-		$('input[name=data]', '#fmGetFriends').val(s);
+		$('input[name=data]', $('#fmGetFriends')).val(s);
 
 		setTimeout(() => {
 			$('#ta,#filename').val('');
 			$('#divFriends').empty();
-			$('span', '#btnFriends').text('');
+			$('span', $('#btnFriends')).text('');
 			Fbf.setDataTypeValues(0, 0);
 			Fbf.arFriends = [];
 		}, 1000);
@@ -273,7 +276,7 @@ export class Fbf{
 	onChangeRelationType(){
 		if (Fbf.nSMID == 2){
 			$(this).closest('.form-group').removeClass('has-error');
-			fbf.changeRelationType(parseInt($(this).val()));
+			fbf.changeRelationType(parseInt($(this).val() as string));
 		} else {
 			$(this).val(Fbf.nRelationType.toString());
 			alert('Не можливо змінити тип відношень для даної соціальної мережі!');

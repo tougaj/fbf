@@ -55,7 +55,9 @@ gulp.task('webpack', ['ts'], function(){
 			},
 			externals: {
 				'react': 'React',
-				'react-dom': 'ReactDOM'
+				'react-dom': 'ReactDOM',
+				jquery: '$',
+				lodash: '_',
 			}
 		}))
 		.pipe(gulp.dest('js'))
@@ -133,7 +135,9 @@ gulp.task('production', ['ts', 'sass'], function(callback){
 			},
 			externals: {
 				'react': 'React',
-				'react-dom': 'ReactDOM'
+				'react-dom': 'ReactDOM',
+				jquery: '$',
+				lodash: '_',
 			}
 		}))
 		.pipe(gulp.dest('dist/js'));

@@ -1,13 +1,18 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var jquery_1 = __importDefault(require("jquery"));
+var lodash_1 = __importDefault(require("lodash"));
 var Fbf = (function () {
     function Fbf() {
     }
     Fbf.setDataTypeValues = function (ASMID, ARelationType) {
         Fbf.nSMID = ASMID;
         Fbf.nRelationType = ARelationType;
-        $('#smID,#fake_smID').val(Fbf.nSMID.toString());
-        $('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());
+        jquery_1.default('#smID,#fake_smID').val(Fbf.nSMID.toString());
+        jquery_1.default('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());
         return 0;
     };
     Fbf.prototype.changeRelationType = function (nNewRelationType) {
@@ -31,63 +36,63 @@ var Fbf = (function () {
     };
     Fbf.prototype.getFriends = function (fNeedDefineType) {
         if (fNeedDefineType === void 0) { fNeedDefineType = true; }
-        var sElementHTML = $('#ta').val();
+        var sElementHTML = jquery_1.default('#ta').val();
         if (fNeedDefineType)
             Fbf.defineDataType(sElementHTML);
         exports.fbf.fillFriendTable(sElementHTML);
     };
     Fbf.prototype.fillFriendTable = function (sElementHTML) {
         var arTemp = [];
-        var div = $(sElementHTML);
+        var div = jquery_1.default(sElementHTML);
         Fbf.arFriends = [];
         if (Fbf.nRelationType !== 0) {
             if (Fbf.nRelationType === 1) {
                 switch (Fbf.nSMID) {
                     case 1:
-                        $('li>[data-testid="friend_list_item"]', div).each(function () {
+                        jquery_1.default('li>[data-testid="friend_list_item"]', div).each(function () {
                             var item = this;
-                            var a = $('a[data-hovercard]', item).eq(0);
+                            var a = jquery_1.default('a[data-hovercard]', item).eq(0);
                             var sID = a.data('hovercard');
                             var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
                             if (m && m[1]) {
                                 var nID = m[1];
-                                var sName = $('img[role="img"]', item).attr('aria-label');
-                                var sFace = $('img[role="img"]', item).attr('src');
+                                var sName = jquery_1.default('img[role="img"]', item).attr('aria-label');
+                                var sFace = jquery_1.default('img[role="img"]', item).attr('src');
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: lodash_1.default.unescape(sFace),
                                 });
                             }
                         });
                         break;
                     case 2:
-                        $('.friends_user_row', div).each(function () {
+                        jquery_1.default('.friends_user_row', div).each(function () {
                             var item = this;
-                            var sID = $(item).attr('id');
+                            var sID = jquery_1.default(item).attr('id');
                             var m = sID.match(/friends_user_row(\d+)/);
                             if (m && m[1]) {
                                 var nID = m[1];
-                                var sName = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
-                                var sFace = $('img.friends_photo_img', item).attr('src');
+                                var sName = jquery_1.default('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+                                var sFace = jquery_1.default('img.friends_photo_img', item).attr('src');
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: lodash_1.default.unescape(sFace),
                                 });
                             }
                         });
                         break;
                     case 3:
-                        $('.ugrid_i', div).each(function () {
+                        jquery_1.default('.ugrid_i', div).each(function () {
                             var item = this;
-                            var nID = $('.entity-item', item).data('entity-id');
-                            var sName = $('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
-                            var sFace = 'https:' + $('img.photo_img', item).attr('src');
+                            var nID = jquery_1.default('.entity-item', item).data('entity-id');
+                            var sName = jquery_1.default('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
+                            var sFace = 'https:' + jquery_1.default('img.photo_img', item).attr('src');
                             arTemp.push({
                                 fbID: nID,
                                 title: sName,
-                                face: _.unescape(sFace),
+                                face: lodash_1.default.unescape(sFace),
                             });
                         });
                         break;
@@ -96,50 +101,50 @@ var Fbf = (function () {
             else {
                 switch (Fbf.nSMID) {
                     case 1:
-                        $('li.fbProfileBrowserListItem', div).each(function () {
+                        jquery_1.default('li.fbProfileBrowserListItem', div).each(function () {
                             var item = this;
-                            var a = $('a[data-hovercard]', item).eq(0);
+                            var a = jquery_1.default('a[data-hovercard]', item).eq(0);
                             var sID = a.data('hovercard');
                             var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
                             if (m && m[1]) {
                                 var nID = m[1];
-                                var sName = $('img[role="img"]', item).attr('aria-label');
-                                var sFace = $('img[role="img"]', item).attr('src');
+                                var sName = jquery_1.default('img[role="img"]', item).attr('aria-label');
+                                var sFace = jquery_1.default('img[role="img"]', item).attr('src');
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: lodash_1.default.unescape(sFace),
                                 });
                             }
                         });
                         break;
                     case 2:
-                        $('.friends_user_row', div).each(function () {
+                        jquery_1.default('.friends_user_row', div).each(function () {
                             var item = this;
-                            var sID = $(item).attr('id');
+                            var sID = jquery_1.default(item).attr('id');
                             var m = sID.match(/friends_user_row(\d+)/);
                             if (m && m[1]) {
                                 var nID = m[1];
-                                var sName = $('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
-                                var sFace = $('img.friends_photo_img', item).attr('src');
+                                var sName = jquery_1.default('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+                                var sFace = jquery_1.default('img.friends_photo_img', item).attr('src');
                                 arTemp.push({
                                     fbID: nID,
                                     title: sName,
-                                    face: _.unescape(sFace),
+                                    face: lodash_1.default.unescape(sFace),
                                 });
                             }
                         });
                         break;
                     case 3:
-                        $('.ugrid_i', div).each(function () {
+                        jquery_1.default('.ugrid_i', div).each(function () {
                             var item = this;
-                            var nID = $('.__l', item).data('id');
-                            var sName = $('.caption .ellip a', item).html().replace(/<br>/ig, ' ');
-                            var sFace = 'https:' + $('img.photo_img', item).attr('src');
+                            var nID = jquery_1.default('.__l', item).data('id');
+                            var sName = jquery_1.default('.caption .ellip a', item).html().replace(/<br>/ig, ' ');
+                            var sFace = 'https:' + jquery_1.default('img.photo_img', item).attr('src');
                             arTemp.push({
                                 fbID: nID,
                                 title: sName,
-                                face: _.unescape(sFace),
+                                face: lodash_1.default.unescape(sFace),
                             });
                         });
                         break;
@@ -152,18 +157,18 @@ var Fbf = (function () {
             });
         }
         Fbf.drawUsers();
-        $('input[name=withfaces]', '#fmGetFriends').prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
+        jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
     };
     Fbf.drawUsers = function () {
-        var div = $('#divFriends').empty();
+        var div = jquery_1.default('#divFriends').empty();
         if (Fbf.nSMID === 0 || Fbf.nRelationType === 0) {
-            $('#relationType').focus().closest('.form-group').addClass('has-error');
+            jquery_1.default('#relationType').focus().closest('.form-group').addClass('has-error');
             ;
             alert('Не можливо визначити тип відношень для даної соціальної мережі. Оберіть, будь ласка, тип відношень');
             return;
         }
-        $('span', '#btnFriends').text('(' + Fbf.arFriends.length + ')');
-        var userTemplate = _.template($('#tmplUserAccount').html());
+        jquery_1.default('span', jquery_1.default('#btnFriends')).text('(' + Fbf.arFriends.length + ')');
+        var userTemplate = lodash_1.default.template(jquery_1.default('#tmplUserAccount').html());
         var nIndex = Fbf.nSMID;
         Fbf.arFriends.forEach(function (v) {
             var sUser = userTemplate({
@@ -173,7 +178,7 @@ var Fbf = (function () {
                 img: Fbf.nSMID === 1 ? v.face : 'img/man.jpg',
                 icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
             });
-            $(sUser).appendTo(div);
+            jquery_1.default(sUser).appendTo(div);
         });
     };
     Fbf.prototype.loadFriends = function () {
@@ -181,20 +186,20 @@ var Fbf = (function () {
             alert('Список друзів пустий. Можливо, Ви забули натиснути на кнопку показу друзів.');
             return false;
         }
-        if ($.trim($('#filename').val()) === '') {
+        if (jquery_1.default.trim(jquery_1.default('#filename').val()) === '') {
             alert('Введіть, будь ласка, назву вихідного файлу');
-            $('#filename').focus();
+            jquery_1.default('#filename').focus();
             return false;
         }
         var s = encodeURIComponent(JSON.stringify(Fbf.arFriends));
         if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length) {
-            $('input[name=withfaces]', '#fmGetFriends').prop('checked', false);
+            jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', false);
         }
-        $('input[name=data]', '#fmGetFriends').val(s);
+        jquery_1.default('input[name=data]', jquery_1.default('#fmGetFriends')).val(s);
         setTimeout(function () {
-            $('#ta,#filename').val('');
-            $('#divFriends').empty();
-            $('span', '#btnFriends').text('');
+            jquery_1.default('#ta,#filename').val('');
+            jquery_1.default('#divFriends').empty();
+            jquery_1.default('span', jquery_1.default('#btnFriends')).text('');
             Fbf.setDataTypeValues(0, 0);
             Fbf.arFriends = [];
         }, 1000);
@@ -202,11 +207,11 @@ var Fbf = (function () {
     };
     Fbf.prototype.onChangeRelationType = function () {
         if (Fbf.nSMID == 2) {
-            $(this).closest('.form-group').removeClass('has-error');
-            exports.fbf.changeRelationType(parseInt($(this).val()));
+            jquery_1.default(this).closest('.form-group').removeClass('has-error');
+            exports.fbf.changeRelationType(parseInt(jquery_1.default(this).val()));
         }
         else {
-            $(this).val(Fbf.nRelationType.toString());
+            jquery_1.default(this).val(Fbf.nRelationType.toString());
             alert('Не можливо змінити тип відношень для даної соціальної мережі!');
         }
     };
