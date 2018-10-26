@@ -22,7 +22,7 @@ function onFilesChange(event) {
 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
 }
 
-var sTSSource = ['src/**/*.ts', '!src/**/*.d.ts'];
+var sTSSource = ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.d.ts'];
 let tsProject = ts.createProject('src/js/tsconfig.json');
 
 gulp.task('ts', function () {
@@ -38,7 +38,7 @@ gulp.task('ts', function () {
 		// 	suffix: '.min',
 		// }))
 		// .pipe(gulp.dest('dist')),
-		tsResult.dts.pipe(gulp.dest('dist/js/definition'))
+		tsResult.dts.pipe(gulp.dest('js/definition'))
 	]);
 });
 

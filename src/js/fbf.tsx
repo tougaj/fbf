@@ -1,6 +1,10 @@
 import $ from "jquery";
 import _ from "lodash";
 
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {FriendList} from "./сomponents/FriendList";
+
 // <reference path="./d.ts/jquery.d.ts" />
 // <reference path="./d.ts/lodash.d.ts" />
 // <reference path="./globals.d.ts" />
@@ -12,29 +16,11 @@ export interface IFriend {
 	smID?: number;
 	relationType?: number;
 }
-export interface ISocialMedia {
-	site: string;
-	idPrefix: string;
-}
 
 export class Fbf{
 	static WITH_FACES_MAX_COUNT: number = 200;
 	static arFriends: IFriend[] = [];
 
-	static arSM: { [i: number]: ISocialMedia; } = {
-		1: {
-			site: 'https://www.facebook.com/',
-			idPrefix: '',
-		},
-		2: {
-			site: 'https://vk.com/',
-			idPrefix: 'id',
-		},
-		3: {
-			site: 'https://ok.ru/',
-			idPrefix: 'profile/',
-		},
-	};
 	static nSMID: number = 0;
 
 	// Определяет тип связи:
@@ -224,25 +210,31 @@ export class Fbf{
 
 	// Отрисовка найденных пользователей
 	static drawUsers() {
-		let div = $('#divFriends').empty();
+		// let div = $('#divFriends').empty();
 		if (Fbf.nSMID === 0 || Fbf.nRelationType === 0){
 			$('#relationType').focus().closest('.form-group').addClass('has-error');;
 			alert('Не можливо визначити тип відношень для даної соціальної мережі. Оберіть, будь ласка, тип відношень');
 			return;
 		}
 		$('span', $('#btnFriends')).text('(' + Fbf.arFriends.length + ')');
-		var userTemplate = _.template($('#tmplUserAccount').html());
-		let nIndex: number = Fbf.nSMID;
-		Fbf.arFriends.forEach((v: IFriend) => {
-			let sUser = userTemplate({
-				id: v.fbID,
-				title: v.title,
-				link: Fbf.arSM[nIndex].site + Fbf.arSM[nIndex].idPrefix + v.fbID,
-				img: Fbf.nSMID === 1 ? v.face : 'img/man.jpg',
-				icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
-			});
-			$(sUser).appendTo(div);
-		});
+		
+		ReactDOM.render(
+			(<FriendList friends={Fbf.arFriends} SMID={Fbf.nSMID} relationType={Fbf.nRelationType} />),
+			document.getElementById("divFriends")
+		);
+
+		// var userTemplate = _.template($('#tmplUserAccount').html());
+		// let nIndex: number = Fbf.nSMID;
+		// Fbf.arFriends.forEach((v: IFriend) => {
+		// 	let sUser = userTemplate({
+		// 		id: v.fbID,
+		// 		title: v.title,
+		// 		link: Fbf.arSM[nIndex].site + Fbf.arSM[nIndex].idPrefix + v.fbID,
+		// 		img: Fbf.nSMID === 1 ? v.face : 'img/man.jpg',
+		// 		icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
+		// 	});
+		// 	$(sUser).appendTo(div);
+		// });
 	}
 
 	loadFriends() {

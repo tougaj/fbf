@@ -5,16 +5,9 @@ export interface IFriend {
     smID?: number;
     relationType?: number;
 }
-export interface ISocialMedia {
-    site: string;
-    idPrefix: string;
-}
 export declare class Fbf {
     static WITH_FACES_MAX_COUNT: number;
     static arFriends: IFriend[];
-    static arSM: {
-        [i: number]: ISocialMedia;
-    };
     static nSMID: number;
     static nRelationType: number;
     static setDataTypeValues(ASMID: number, ARelationType: number): number;

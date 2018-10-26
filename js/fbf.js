@@ -2,9 +2,19 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var jquery_1 = __importDefault(require("jquery"));
 var lodash_1 = __importDefault(require("lodash"));
+var React = __importStar(require("react"));
+var ReactDOM = __importStar(require("react-dom"));
+var FriendList_1 = require("./\u0441omponents/FriendList");
 var Fbf = (function () {
     function Fbf() {
     }
@@ -160,7 +170,6 @@ var Fbf = (function () {
         jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
     };
     Fbf.drawUsers = function () {
-        var div = jquery_1.default('#divFriends').empty();
         if (Fbf.nSMID === 0 || Fbf.nRelationType === 0) {
             jquery_1.default('#relationType').focus().closest('.form-group').addClass('has-error');
             ;
@@ -168,18 +177,7 @@ var Fbf = (function () {
             return;
         }
         jquery_1.default('span', jquery_1.default('#btnFriends')).text('(' + Fbf.arFriends.length + ')');
-        var userTemplate = lodash_1.default.template(jquery_1.default('#tmplUserAccount').html());
-        var nIndex = Fbf.nSMID;
-        Fbf.arFriends.forEach(function (v) {
-            var sUser = userTemplate({
-                id: v.fbID,
-                title: v.title,
-                link: Fbf.arSM[nIndex].site + Fbf.arSM[nIndex].idPrefix + v.fbID,
-                img: Fbf.nSMID === 1 ? v.face : 'img/man.jpg',
-                icon: Fbf.nRelationType === 1 ? 'handshake-o' : 'rss'
-            });
-            jquery_1.default(sUser).appendTo(div);
-        });
+        ReactDOM.render((React.createElement(FriendList_1.FriendList, { friends: Fbf.arFriends, SMID: Fbf.nSMID, relationType: Fbf.nRelationType })), document.getElementById("divFriends"));
     };
     Fbf.prototype.loadFriends = function () {
         if (Fbf.arFriends.length === 0) {
@@ -217,20 +215,6 @@ var Fbf = (function () {
     };
     Fbf.WITH_FACES_MAX_COUNT = 200;
     Fbf.arFriends = [];
-    Fbf.arSM = {
-        1: {
-            site: 'https://www.facebook.com/',
-            idPrefix: '',
-        },
-        2: {
-            site: 'https://vk.com/',
-            idPrefix: 'id',
-        },
-        3: {
-            site: 'https://ok.ru/',
-            idPrefix: 'profile/',
-        },
-    };
     Fbf.nSMID = 0;
     Fbf.nRelationType = 0;
     return Fbf;
