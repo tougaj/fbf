@@ -19,9 +19,9 @@ const autoprefixer = require('gulp-autoprefixer');
 
 var sass = require('gulp-sass');
 
-function onFilesChange(event) {
-	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-}
+// function onFilesChange(event) {
+// 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+// }
 
 var sTSSource = ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.d.ts'];
 let tsProject = ts.createProject('src/js/tsconfig.json');
@@ -157,19 +157,22 @@ gulp.task('default', ['webpack', 'sass'], function(callback){
 		// 	files: ['./*.css', './*.js', './*.php']
 		// 	// serveStatic: ['.', './app/css']			
 		// },
+		// server: {
+		// 	baseDir: "./"
+		// }
 		proxy: 'localhost:8080/fbf/'
 		// serveStatic: ['./*.css', './*.js', './*.php']
 	});
 
-	gulp.watch(sTSSource, ['webpack'])
-		.on('change', onFilesChange);	
+	gulp.watch(sTSSource, ['webpack']);
+	// .on('change', onFilesChange);	
 
 	// const sJSSource = ['js/**/*.js', '!js/bundle.js'];
 	// gulp.watch(sJSSource, ['webpack'])
 	// 	.on('change', onFilesChange);
 
-	gulp.watch(sSassSource, ['sass'])
-		.on('change', onFilesChange);
+	gulp.watch(sSassSource, ['sass']);
+	// .on('change', onFilesChange);
 
 	gulp.watch('./index.php').on('change', browserSync.reload);
 
