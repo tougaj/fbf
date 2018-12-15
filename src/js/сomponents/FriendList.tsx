@@ -3,13 +3,13 @@ import * as React from 'react';
 import {Friend} from './Friend';
 import {IFriend} from '../fbf';
 
-export interface IFriendListProps {
+interface IFriendListProps {
     friends: IFriend[];
     SMID: number;
     relationType: number;
 }
 
-export const FriendList = (props: IFriendListProps) => {
+export const FriendList = ({friends, SMID, relationType}: IFriendListProps) => {
     interface ISocialMedia {
         site: string;
         idPrefix: string;
@@ -29,7 +29,6 @@ export const FriendList = (props: IFriendListProps) => {
 		},
 	};
 
-    const {friends, SMID, relationType} = props;
     const icon = 'fa fa-lg fa-fw fa-'+(relationType === 1 ? 'handshake-o' : 'rss');
     return (<div>
         {friends.map((friend: IFriend) => 

@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var changed = require('gulp-changed');
 var merge = require('merge2');
 let browserSync = require('browser-sync').create();
+const replace = require('gulp-replace');
 
 var ts = require('gulp-typescript');
 // var babel = require('gulp-babel');
@@ -58,7 +59,8 @@ gulp.task('webpack', ['ts'], function(){
 				'react-dom': 'ReactDOM',
 				jquery: '$',
 				lodash: '_',
-			}
+			},
+			devtool: 'source-map'
 		}))
 		.pipe(gulp.dest('js'))
 		.pipe(browserSync.reload({stream: true}));
@@ -114,35 +116,39 @@ gulp.task('sass', function () {
 	// .pipe(gulp.dest('dist'));
 });
 
-gulp.task('production', ['ts', 'sass'], function(callback){
-	gulp.src('css/**/*.css')
-		.pipe(cleanCSS())
-		// .pipe(rename({
-		// 	suffix: '.min',
-		// }))
-		.pipe(gulp.dest('dist/css'));
-
-	gulp.src('js/**/*.js')
-		.pipe(uglify())
-		.pipe(webpack({
-			entry: './js/main.js',
-			// mode: 'none',
-			// mode: 'development',
-			mode: 'production',
-			output: {
-				filename: 'bundle.js',
-				// path: __dirname + '/test'
-			},
-			externals: {
-				'react': 'React',
-				'react-dom': 'ReactDOM',
-				jquery: '$',
-				lodash: '_',
-			}
-		}))
-		.pipe(gulp.dest('dist/js'));
-
-	return callback;
+gulp.task('production', ['ts', 'sass'], function(){
+	const sDistDir = './dist';
+	return merge([
+		gulp.src('css/**/*.css')
+			.pipe(cleanCSS())
+			// .pipe(rename({
+			// 	suffix: '.min',
+			// }))
+			.pipe(gulp.dest(`${sDistDir}/css`)),
+		gulp.src('js/**/*.js')
+			.pipe(uglify())
+			.pipe(webpack({
+				entry: './js/main.js',
+				// mode: 'none',
+				// mode: 'development',
+				mode: 'production',
+				output: {
+					filename: 'bundle.js',
+					// path: __dirname + '/test'
+				},
+				externals: {
+					'react': 'React',
+					'react-dom': 'ReactDOM',
+					jquery: '$',
+					lodash: '_',
+				}
+			}))
+			.pipe(gulp.dest(`${sDistDir}/js`)),
+		gulp.src('./*.php')
+			.pipe(replace(/ts=\[\[0000000000\]\]/ig, `ts=${new Date().valueOf()}`))
+			.pipe(replace(/(\/umd\/react[^.]*\.)development\.js/ig, '$1production.min.js'))
+			.pipe(gulp.dest(sDistDir))
+	]);
 });
 
 gulp.task('default', ['webpack', 'sass'], function(callback){

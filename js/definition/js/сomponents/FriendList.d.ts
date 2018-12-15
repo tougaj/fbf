@@ -1,8 +1,9 @@
 /// <reference types="react" />
 import { IFriend } from '../fbf';
-export interface IFriendListProps {
+interface IFriendListProps {
     friends: IFriend[];
     SMID: number;
     relationType: number;
 }
-export declare const FriendList: (props: IFriendListProps) => JSX.Element;
+export declare const FriendList: ({ friends, SMID, relationType }: IFriendListProps) => JSX.Element;
+export {};

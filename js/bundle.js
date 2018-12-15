@@ -94,7 +94,231 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar jquery_1 = __importDefault(__webpack_require__(/*! jquery */ \"jquery\"));\nvar lodash_1 = __importDefault(__webpack_require__(/*! lodash */ \"lodash\"));\nvar React = __importStar(__webpack_require__(/*! react */ \"react\"));\nvar ReactDOM = __importStar(__webpack_require__(/*! react-dom */ \"react-dom\"));\nvar FriendList_1 = __webpack_require__(/*! ./сomponents/FriendList */ \"./js/сomponents/FriendList.js\");\nvar Fbf = (function () {\n    function Fbf() {\n    }\n    Fbf.setDataTypeValues = function (ASMID, ARelationType) {\n        Fbf.nSMID = ASMID;\n        Fbf.nRelationType = ARelationType;\n        jquery_1.default('#smID,#fake_smID').val(Fbf.nSMID.toString());\n        jquery_1.default('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());\n        return 0;\n    };\n    Fbf.prototype.changeRelationType = function (nNewRelationType) {\n        Fbf.setDataTypeValues(Fbf.nSMID, nNewRelationType);\n        this.getFriends(false);\n    };\n    Fbf.defineDataType = function (sHTML) {\n        if (/id=\"friends_user_row\\d+\"/i.test(sHTML))\n            return Fbf.setDataTypeValues(2, 0);\n        if (/i\\.mycdn\\.me/i.test(sHTML)) {\n            if (/friendSubscribers/i.test(sHTML))\n                return Fbf.setDataTypeValues(3, 2);\n            else\n                return Fbf.setDataTypeValues(3, 1);\n        }\n        if (/friend_list_item/i.test(sHTML))\n            return Fbf.setDataTypeValues(1, 1);\n        if (/fbProfileBrowserListItem/i.test(sHTML))\n            return Fbf.setDataTypeValues(1, 2);\n        return Fbf.setDataTypeValues(0, 0);\n    };\n    Fbf.prototype.getFriends = function (fNeedDefineType) {\n        if (fNeedDefineType === void 0) { fNeedDefineType = true; }\n        var sElementHTML = jquery_1.default('#ta').val();\n        if (fNeedDefineType)\n            Fbf.defineDataType(sElementHTML);\n        exports.fbf.fillFriendTable(sElementHTML);\n    };\n    Fbf.prototype.fillFriendTable = function (sElementHTML) {\n        var arTemp = [];\n        var div = jquery_1.default(sElementHTML);\n        Fbf.arFriends = [];\n        if (Fbf.nRelationType !== 0) {\n            if (Fbf.nRelationType === 1) {\n                switch (Fbf.nSMID) {\n                    case 1:\n                        jquery_1.default('li>[data-testid=\"friend_list_item\"]', div).each(function () {\n                            var item = this;\n                            var a = jquery_1.default('a[data-hovercard]', item).eq(0);\n                            var sID = a.data('hovercard');\n                            var m = sID.match(/hovercard\\/user.php\\?id=(\\d+)/);\n                            if (m && m[1]) {\n                                var nID = m[1];\n                                var sName = jquery_1.default('img[role=\"img\"]', item).attr('aria-label');\n                                var sFace = jquery_1.default('img[role=\"img\"]', item).attr('src');\n                                arTemp.push({\n                                    fbID: nID,\n                                    title: sName,\n                                    face: lodash_1.default.unescape(sFace),\n                                });\n                            }\n                        });\n                        break;\n                    case 2:\n                        jquery_1.default('.friends_user_row', div).each(function () {\n                            var item = this;\n                            var sID = jquery_1.default(item).attr('id');\n                            var m = sID.match(/friends_user_row(\\d+)/);\n                            if (m && m[1]) {\n                                var nID = m[1];\n                                var sName = jquery_1.default('.friends_field_title a', item).html().replace(/<br>/ig, ' ');\n                                var sFace = jquery_1.default('img.friends_photo_img', item).attr('src');\n                                arTemp.push({\n                                    fbID: nID,\n                                    title: sName,\n                                    face: lodash_1.default.unescape(sFace),\n                                });\n                            }\n                        });\n                        break;\n                    case 3:\n                        jquery_1.default('.ugrid_i', div).each(function () {\n                            var item = this;\n                            var nID = jquery_1.default('.entity-item', item).data('entity-id');\n                            var sName = jquery_1.default('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');\n                            var sFace = 'https:' + jquery_1.default('img.photo_img', item).attr('src');\n                            arTemp.push({\n                                fbID: nID,\n                                title: sName,\n                                face: lodash_1.default.unescape(sFace),\n                            });\n                        });\n                        break;\n                }\n            }\n            else {\n                switch (Fbf.nSMID) {\n                    case 1:\n                        jquery_1.default('li.fbProfileBrowserListItem', div).each(function () {\n                            var item = this;\n                            var a = jquery_1.default('a[data-hovercard]', item).eq(0);\n                            var sID = a.data('hovercard');\n                            var m = sID.match(/hovercard\\/user.php\\?id=(\\d+)/);\n                            if (m && m[1]) {\n                                var nID = m[1];\n                                var sName = jquery_1.default('img[role=\"img\"]', item).attr('aria-label');\n                                var sFace = jquery_1.default('img[role=\"img\"]', item).attr('src');\n                                arTemp.push({\n                                    fbID: nID,\n                                    title: sName,\n                                    face: lodash_1.default.unescape(sFace),\n                                });\n                            }\n                        });\n                        break;\n                    case 2:\n                        jquery_1.default('.friends_user_row', div).each(function () {\n                            var item = this;\n                            var sID = jquery_1.default(item).attr('id');\n                            var m = sID.match(/friends_user_row(\\d+)/);\n                            if (m && m[1]) {\n                                var nID = m[1];\n                                var sName = jquery_1.default('.friends_field_title a', item).html().replace(/<br>/ig, ' ');\n                                var sFace = jquery_1.default('img.friends_photo_img', item).attr('src');\n                                arTemp.push({\n                                    fbID: nID,\n                                    title: sName,\n                                    face: lodash_1.default.unescape(sFace),\n                                });\n                            }\n                        });\n                        break;\n                    case 3:\n                        jquery_1.default('.ugrid_i', div).each(function () {\n                            var item = this;\n                            var nID = jquery_1.default('.__l', item).data('id');\n                            var sName = jquery_1.default('.caption .ellip a', item).html().replace(/<br>/ig, ' ');\n                            var sFace = 'https:' + jquery_1.default('img.photo_img', item).attr('src');\n                            arTemp.push({\n                                fbID: nID,\n                                title: sName,\n                                face: lodash_1.default.unescape(sFace),\n                            });\n                        });\n                        break;\n                }\n            }\n            Fbf.arFriends = arTemp.map(function (friend) {\n                friend.smID = Fbf.nSMID;\n                friend.relationType = Fbf.nRelationType;\n                return friend;\n            });\n        }\n        Fbf.drawUsers();\n        jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);\n    };\n    Fbf.drawUsers = function () {\n        if (Fbf.nSMID === 0 || Fbf.nRelationType === 0) {\n            jquery_1.default('#relationType').focus().closest('.form-group').addClass('has-error');\n            ;\n            alert('Не можливо визначити тип відношень для даної соціальної мережі. Оберіть, будь ласка, тип відношень');\n            return;\n        }\n        jquery_1.default('span', jquery_1.default('#btnFriends')).text('(' + Fbf.arFriends.length + ')');\n        ReactDOM.render((React.createElement(FriendList_1.FriendList, { friends: Fbf.arFriends, SMID: Fbf.nSMID, relationType: Fbf.nRelationType })), document.getElementById(\"divFriends\"));\n    };\n    Fbf.prototype.loadFriends = function () {\n        if (Fbf.arFriends.length === 0) {\n            alert('Список друзів пустий. Можливо, Ви забули натиснути на кнопку показу друзів.');\n            return false;\n        }\n        if (jquery_1.default.trim(jquery_1.default('#filename').val()) === '') {\n            alert('Введіть, будь ласка, назву вихідного файлу');\n            jquery_1.default('#filename').focus();\n            return false;\n        }\n        var s = encodeURIComponent(JSON.stringify(Fbf.arFriends));\n        if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length) {\n            jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', false);\n        }\n        jquery_1.default('input[name=data]', jquery_1.default('#fmGetFriends')).val(s);\n        setTimeout(function () {\n            jquery_1.default('#ta,#filename').val('');\n            jquery_1.default('#divFriends').empty();\n            jquery_1.default('span', jquery_1.default('#btnFriends')).text('');\n            Fbf.setDataTypeValues(0, 0);\n            Fbf.arFriends = [];\n        }, 1000);\n        return true;\n    };\n    Fbf.prototype.onChangeRelationType = function () {\n        if (Fbf.nSMID == 2) {\n            jquery_1.default(this).closest('.form-group').removeClass('has-error');\n            exports.fbf.changeRelationType(parseInt(jquery_1.default(this).val()));\n        }\n        else {\n            jquery_1.default(this).val(Fbf.nRelationType.toString());\n            alert('Не можливо змінити тип відношень для даної соціальної мережі!');\n        }\n    };\n    Fbf.WITH_FACES_MAX_COUNT = 200;\n    Fbf.arFriends = [];\n    Fbf.nSMID = 0;\n    Fbf.nRelationType = 0;\n    return Fbf;\n}());\nexports.Fbf = Fbf;\n;\nexports.fbf = new Fbf();\n\n\n//# sourceURL=webpack:///./js/fbf.js?");
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var jquery_1 = __importDefault(__webpack_require__(/*! jquery */ "jquery"));
+var lodash_1 = __importDefault(__webpack_require__(/*! lodash */ "lodash"));
+var React = __importStar(__webpack_require__(/*! react */ "react"));
+var ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "react-dom"));
+var FriendList_1 = __webpack_require__(/*! ./сomponents/FriendList */ "./js/сomponents/FriendList.js");
+var Fbf = (function () {
+    function Fbf() {
+    }
+    Fbf.setDataTypeValues = function (ASMID, ARelationType) {
+        Fbf.nSMID = ASMID;
+        Fbf.nRelationType = ARelationType;
+        jquery_1.default('#smID,#fake_smID').val(Fbf.nSMID.toString());
+        jquery_1.default('#relationType,#fake_relationType').val(Fbf.nRelationType.toString());
+        return 0;
+    };
+    Fbf.prototype.changeRelationType = function (nNewRelationType) {
+        Fbf.setDataTypeValues(Fbf.nSMID, nNewRelationType);
+        this.getFriends(false);
+    };
+    Fbf.defineDataType = function (sHTML) {
+        if (/id="friends_user_row\d+"/i.test(sHTML))
+            return Fbf.setDataTypeValues(2, 0);
+        if (/i\.mycdn\.me/i.test(sHTML)) {
+            if (/friendSubscribers/i.test(sHTML))
+                return Fbf.setDataTypeValues(3, 2);
+            else
+                return Fbf.setDataTypeValues(3, 1);
+        }
+        if (/friend_list_item/i.test(sHTML))
+            return Fbf.setDataTypeValues(1, 1);
+        if (/fbProfileBrowserListItem/i.test(sHTML))
+            return Fbf.setDataTypeValues(1, 2);
+        return Fbf.setDataTypeValues(0, 0);
+    };
+    Fbf.prototype.getFriends = function (fNeedDefineType) {
+        if (fNeedDefineType === void 0) { fNeedDefineType = true; }
+        var sElementHTML = jquery_1.default('#ta').val();
+        if (fNeedDefineType)
+            Fbf.defineDataType(sElementHTML);
+        exports.fbf.fillFriendTable(sElementHTML);
+    };
+    Fbf.prototype.fillFriendTable = function (sElementHTML) {
+        var arTemp = [];
+        var div = jquery_1.default(sElementHTML);
+        Fbf.arFriends = [];
+        if (Fbf.nRelationType !== 0) {
+            if (Fbf.nRelationType === 1) {
+                switch (Fbf.nSMID) {
+                    case 1:
+                        jquery_1.default('li>[data-testid="friend_list_item"]', div).each(function () {
+                            var item = this;
+                            var a = jquery_1.default('a[data-hovercard]', item).eq(0);
+                            var sID = a.data('hovercard');
+                            var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
+                            if (m && m[1]) {
+                                var nID = m[1];
+                                var sName = jquery_1.default('img[role="img"]', item).attr('aria-label');
+                                var sFace = jquery_1.default('img[role="img"]', item).attr('src');
+                                arTemp.push({
+                                    fbID: nID,
+                                    title: sName,
+                                    face: lodash_1.default.unescape(sFace),
+                                });
+                            }
+                        });
+                        break;
+                    case 2:
+                        jquery_1.default('.friends_user_row', div).each(function () {
+                            var item = this;
+                            var sID = jquery_1.default(item).attr('id');
+                            var m = sID.match(/friends_user_row(\d+)/);
+                            if (m && m[1]) {
+                                var nID = m[1];
+                                var sName = jquery_1.default('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+                                var sFace = jquery_1.default('img.friends_photo_img', item).attr('src');
+                                arTemp.push({
+                                    fbID: nID,
+                                    title: sName,
+                                    face: lodash_1.default.unescape(sFace),
+                                });
+                            }
+                        });
+                        break;
+                    case 3:
+                        jquery_1.default('.ugrid_i', div).each(function () {
+                            var item = this;
+                            var nID = jquery_1.default('.entity-item', item).data('entity-id');
+                            var sName = jquery_1.default('.ucard-w_t a', item).html().replace(/<br>/ig, ' ');
+                            var sFace = 'https:' + jquery_1.default('img.photo_img', item).attr('src');
+                            arTemp.push({
+                                fbID: nID,
+                                title: sName,
+                                face: lodash_1.default.unescape(sFace),
+                            });
+                        });
+                        break;
+                }
+            }
+            else {
+                switch (Fbf.nSMID) {
+                    case 1:
+                        jquery_1.default('li.fbProfileBrowserListItem', div).each(function () {
+                            var item = this;
+                            var a = jquery_1.default('a[data-hovercard]', item).eq(0);
+                            var sID = a.data('hovercard');
+                            var m = sID.match(/hovercard\/user.php\?id=(\d+)/);
+                            if (m && m[1]) {
+                                var nID = m[1];
+                                var sName = jquery_1.default('img[role="img"]', item).attr('aria-label');
+                                var sFace = jquery_1.default('img[role="img"]', item).attr('src');
+                                arTemp.push({
+                                    fbID: nID,
+                                    title: sName,
+                                    face: lodash_1.default.unescape(sFace),
+                                });
+                            }
+                        });
+                        break;
+                    case 2:
+                        jquery_1.default('.friends_user_row', div).each(function () {
+                            var item = this;
+                            var sID = jquery_1.default(item).attr('id');
+                            var m = sID.match(/friends_user_row(\d+)/);
+                            if (m && m[1]) {
+                                var nID = m[1];
+                                var sName = jquery_1.default('.friends_field_title a', item).html().replace(/<br>/ig, ' ');
+                                var sFace = jquery_1.default('img.friends_photo_img', item).attr('src');
+                                arTemp.push({
+                                    fbID: nID,
+                                    title: sName,
+                                    face: lodash_1.default.unescape(sFace),
+                                });
+                            }
+                        });
+                        break;
+                    case 3:
+                        jquery_1.default('.ugrid_i', div).each(function () {
+                            var item = this;
+                            var nID = jquery_1.default('.__l', item).data('id');
+                            var sName = jquery_1.default('.caption .ellip a', item).html().replace(/<br>/ig, ' ');
+                            var sFace = 'https:' + jquery_1.default('img.photo_img', item).attr('src');
+                            arTemp.push({
+                                fbID: nID,
+                                title: sName,
+                                face: lodash_1.default.unescape(sFace),
+                            });
+                        });
+                        break;
+                }
+            }
+            Fbf.arFriends = arTemp.map(function (friend) {
+                friend.smID = Fbf.nSMID;
+                friend.relationType = Fbf.nRelationType;
+                return friend;
+            });
+        }
+        Fbf.drawUsers();
+        jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', Fbf.arFriends.length <= Fbf.WITH_FACES_MAX_COUNT);
+    };
+    Fbf.drawUsers = function () {
+        if (Fbf.nSMID === 0 || Fbf.nRelationType === 0) {
+            jquery_1.default('#relationType').focus().closest('.form-group').addClass('has-error');
+            ;
+            alert('Не можливо визначити тип відношень для даної соціальної мережі. Оберіть, будь ласка, тип відношень');
+            return;
+        }
+        jquery_1.default('span', jquery_1.default('#btnFriends')).text('(' + Fbf.arFriends.length + ')');
+        ReactDOM.render((React.createElement(FriendList_1.FriendList, { friends: Fbf.arFriends, SMID: Fbf.nSMID, relationType: Fbf.nRelationType })), document.getElementById("divFriends"));
+    };
+    Fbf.prototype.loadFriends = function () {
+        if (Fbf.arFriends.length === 0) {
+            alert('Список друзів пустий. Можливо, Ви забули натиснути на кнопку показу друзів.');
+            return false;
+        }
+        if (jquery_1.default.trim(jquery_1.default('#filename').val()) === '') {
+            alert('Введіть, будь ласка, назву вихідного файлу');
+            jquery_1.default('#filename').focus();
+            return false;
+        }
+        var s = encodeURIComponent(JSON.stringify(Fbf.arFriends));
+        if (Fbf.WITH_FACES_MAX_COUNT < Fbf.arFriends.length) {
+            jquery_1.default('input[name=withfaces]', jquery_1.default('#fmGetFriends')).prop('checked', false);
+        }
+        jquery_1.default('input[name=data]', jquery_1.default('#fmGetFriends')).val(s);
+        setTimeout(function () {
+            jquery_1.default('#ta,#filename').val('');
+            jquery_1.default('#divFriends').empty();
+            jquery_1.default('span', jquery_1.default('#btnFriends')).text('');
+            Fbf.setDataTypeValues(0, 0);
+            Fbf.arFriends = [];
+        }, 1000);
+        return true;
+    };
+    Fbf.prototype.onChangeRelationType = function () {
+        if (Fbf.nSMID == 2) {
+            jquery_1.default(this).closest('.form-group').removeClass('has-error');
+            exports.fbf.changeRelationType(parseInt(jquery_1.default(this).val()));
+        }
+        else {
+            jquery_1.default(this).val(Fbf.nRelationType.toString());
+            alert('Не можливо змінити тип відношень для даної соціальної мережі!');
+        }
+    };
+    Fbf.WITH_FACES_MAX_COUNT = 200;
+    Fbf.arFriends = [];
+    Fbf.nSMID = 0;
+    Fbf.nRelationType = 0;
+    return Fbf;
+}());
+exports.Fbf = Fbf;
+;
+exports.fbf = new Fbf();
+
 
 /***/ }),
 
@@ -106,7 +330,15 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar fbf_1 = __webpack_require__(/*! ./fbf */ \"./js/fbf.js\");\n$(document).ready(function () {\n    $('#btnFriends').click(function () { return fbf_1.fbf.getFriends(); });\n    $('#fmGetFriends').submit(fbf_1.fbf.loadFriends);\n    $('#relationType').change(fbf_1.fbf.onChangeRelationType);\n});\n\n\n//# sourceURL=webpack:///./js/main.js?");
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var fbf_1 = __webpack_require__(/*! ./fbf */ "./js/fbf.js");
+$(document).ready(function () {
+    $('#btnFriends').click(function () { return fbf_1.fbf.getFriends(); });
+    $('#fmGetFriends').submit(fbf_1.fbf.loadFriends);
+    $('#relationType').change(fbf_1.fbf.onChangeRelationType);
+});
+
 
 /***/ }),
 
@@ -118,7 +350,32 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar fb
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __importStar(__webpack_require__(/*! react */ \"react\"));\nexports.Friend = function (props) {\n    var friend = props.friend, SMID = props.SMID, icon = props.icon, link = props.link;\n    return (React.createElement(\"div\", { className: \"col-md-4\" },\n        React.createElement(\"a\", { target: \"_blank\", href: link },\n            React.createElement(\"div\", { className: \"media\", \"data-id\": \"{friend.fbID}\" },\n                React.createElement(\"div\", { className: \"media-left\" },\n                    React.createElement(\"img\", { className: \"media-object img-thumbnail imf-rounded\", src: SMID === 1 ? friend.face : 'img/man.jpg' })),\n                React.createElement(\"div\", { className: \"media-body media-middle\" },\n                    React.createElement(\"h4\", null, friend.title),\n                    React.createElement(\"small\", null,\n                        \"(ID: \",\n                        friend.fbID,\n                        \")\"),\n                    React.createElement(\"i\", { className: icon }))))));\n};\n\n\n//# sourceURL=webpack:///./js/%D1%81omponents/Friend.js?");
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __importStar(__webpack_require__(/*! react */ "react"));
+exports.Friend = function (props) {
+    var friend = props.friend, SMID = props.SMID, icon = props.icon, link = props.link;
+    return (React.createElement("div", { className: "col-md-4" },
+        React.createElement("a", { target: "_blank", href: link },
+            React.createElement("div", { className: "media", "data-id": "{friend.fbID}" },
+                React.createElement("div", { className: "media-left" },
+                    React.createElement("img", { className: "media-object img-thumbnail imf-rounded", src: SMID === 1 ? friend.face : 'img/man.jpg' })),
+                React.createElement("div", { className: "media-body media-middle" },
+                    React.createElement("h4", null, friend.title),
+                    React.createElement("small", null,
+                        "(ID: ",
+                        friend.fbID,
+                        ")"),
+                    React.createElement("i", { className: icon }))))));
+};
+
 
 /***/ }),
 
@@ -130,7 +387,39 @@ eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    if (mod && mod.__esModule) return mod;\n    var result = {};\n    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];\n    result[\"default\"] = mod;\n    return result;\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __importStar(__webpack_require__(/*! react */ \"react\"));\nvar Friend_1 = __webpack_require__(/*! ./Friend */ \"./js/сomponents/Friend.js\");\nexports.FriendList = function (props) {\n    var arSM = {\n        1: {\n            site: 'https://www.facebook.com/',\n            idPrefix: '',\n        },\n        2: {\n            site: 'https://vk.com/',\n            idPrefix: 'id',\n        },\n        3: {\n            site: 'https://ok.ru/',\n            idPrefix: 'profile/',\n        },\n    };\n    var friends = props.friends, SMID = props.SMID, relationType = props.relationType;\n    var icon = 'fa fa-lg fa-fw fa-' + (relationType === 1 ? 'handshake-o' : 'rss');\n    return (React.createElement(\"div\", null, friends.map(function (friend) {\n        return (React.createElement(Friend_1.Friend, { key: friend.fbID, friend: friend, SMID: SMID, icon: icon, link: arSM[SMID].site + arSM[SMID].idPrefix + friend.fbID }));\n    })));\n};\n\n\n//# sourceURL=webpack:///./js/%D1%81omponents/FriendList.js?");
+
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __importStar(__webpack_require__(/*! react */ "react"));
+var Friend_1 = __webpack_require__(/*! ./Friend */ "./js/сomponents/Friend.js");
+exports.FriendList = function (props) {
+    var arSM = {
+        1: {
+            site: 'https://www.facebook.com/',
+            idPrefix: '',
+        },
+        2: {
+            site: 'https://vk.com/',
+            idPrefix: 'id',
+        },
+        3: {
+            site: 'https://ok.ru/',
+            idPrefix: 'profile/',
+        },
+    };
+    var friends = props.friends, SMID = props.SMID, relationType = props.relationType;
+    var icon = 'fa fa-lg fa-fw fa-' + (relationType === 1 ? 'handshake-o' : 'rss');
+    return (React.createElement("div", null, friends.map(function (friend) {
+        return (React.createElement(Friend_1.Friend, { key: friend.fbID, friend: friend, SMID: SMID, icon: icon, link: arSM[SMID].site + arSM[SMID].idPrefix + friend.fbID }));
+    })));
+};
+
 
 /***/ }),
 
@@ -141,7 +430,7 @@ eval("\nvar __importStar = (this && this.__importStar) || function (mod) {\n    
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = $;\n\n//# sourceURL=webpack:///external_%22$%22?");
+module.exports = $;
 
 /***/ }),
 
@@ -152,7 +441,7 @@ eval("module.exports = $;\n\n//# sourceURL=webpack:///external_%22$%22?");
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = _;\n\n//# sourceURL=webpack:///external_%22_%22?");
+module.exports = _;
 
 /***/ }),
 
@@ -163,7 +452,7 @@ eval("module.exports = _;\n\n//# sourceURL=webpack:///external_%22_%22?");
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = React;\n\n//# sourceURL=webpack:///external_%22React%22?");
+module.exports = React;
 
 /***/ }),
 
@@ -174,8 +463,9 @@ eval("module.exports = React;\n\n//# sourceURL=webpack:///external_%22React%22?"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = ReactDOM;\n\n//# sourceURL=webpack:///external_%22ReactDOM%22?");
+module.exports = ReactDOM;
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=bundle.js.map
