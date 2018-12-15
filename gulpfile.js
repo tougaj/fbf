@@ -126,7 +126,6 @@ gulp.task('production', ['ts', 'sass'], function(){
 			// }))
 			.pipe(gulp.dest(`${sDistDir}/css`)),
 		gulp.src('js/**/*.js')
-			.pipe(uglify())
 			.pipe(webpack({
 				entry: './js/main.js',
 				// mode: 'none',
@@ -143,6 +142,7 @@ gulp.task('production', ['ts', 'sass'], function(){
 					lodash: '_',
 				}
 			}))
+			.pipe(uglify())
 			.pipe(gulp.dest(`${sDistDir}/js`)),
 		gulp.src('./*.php')
 			.pipe(replace(/ts=\[\[0000000000\]\]/ig, `ts=${new Date().valueOf()}`))
