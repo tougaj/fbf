@@ -398,7 +398,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(__webpack_require__(/*! react */ "react"));
 var Friend_1 = __webpack_require__(/*! ./Friend */ "./js/сomponents/Friend.js");
-exports.FriendList = function (props) {
+exports.FriendList = function (_a) {
+    var friends = _a.friends, SMID = _a.SMID, relationType = _a.relationType;
     var arSM = {
         1: {
             site: 'https://www.facebook.com/',
@@ -413,7 +414,6 @@ exports.FriendList = function (props) {
             idPrefix: 'profile/',
         },
     };
-    var friends = props.friends, SMID = props.SMID, relationType = props.relationType;
     var icon = 'fa fa-lg fa-fw fa-' + (relationType === 1 ? 'handshake-o' : 'rss');
     return (React.createElement("div", null, friends.map(function (friend) {
         return (React.createElement(Friend_1.Friend, { key: friend.fbID, friend: friend, SMID: SMID, icon: icon, link: arSM[SMID].site + arSM[SMID].idPrefix + friend.fbID }));
