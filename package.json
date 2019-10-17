@@ -48,7 +48,7 @@
     "@types/react-dom": "^16.0.9",
     "csstype": "^2.5.7",
     "gulp-less": "^4.0.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "lodash": "^4.17.11",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
