@@ -1,11 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import moment = require("moment");
-import App from "./сomponents/app";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import moment = require('moment');
+import App from './components/app';
 
-moment.locale("uk");
+moment.locale('uk');
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById('app'));
 
 // $(document).ready(function () {
 // 	$("#btnFriends").click(() => fbf.getFriends());

@@ -14,10 +14,14 @@ export interface ISocialMedia {
 }
 
 enum ESocialMedia {
-	esmFacebook = 'fb',
-	esmVkontakte = 'vk',
-	esmOdnoklassniki = 'ok',
+	fb,
+	vk,
+	ok,
+	// esmFacebook = 'fb',
+	// esmVkontakte = 'vk',
+	// esmOdnoklassniki = 'ok',
 }
+type TSocialMedia = keyof typeof ESocialMedia;
 
 const SOCIAL_MEDIA: { [key: string]: ISocialMedia } = {
 	fb: {
