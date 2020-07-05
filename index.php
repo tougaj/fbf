@@ -20,16 +20,15 @@ header('Content-Type: text/html; charset=utf-8');
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Facebook Friends</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Sans+Pro" rel="stylesheet">
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"> -->
-        <link rel="stylesheet" href="css/eden.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/fbf.css?ts=[[0000000000]]">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">
+        <div id="app"></div>
+
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="text-center">Додайте html-код в текстову область та оберіть дію</h3>
@@ -76,35 +75,17 @@ header('Content-Type: text/html; charset=utf-8');
                     <div class="row" id="divFriends"></div>
                 </div>
             </div>
-        </div>
+        </div> -->
+
+<?php
+include_once 'includes/symbol-defs.svg';
+?>        
+    <!-- <svg >
+		<use xlink:href="#icon-download"></use>
+	</svg> -->
         <!-- Load React. -->
-        <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+        <script src="js/vendors~main.bundle.js?ts=[[0000000000]]"></script>
+        <script src="js/main.bundle.js?ts=[[0000000000]]"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js"></script>
-
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>		
-        <script src="js/bundle.js?ts=[[0000000000]]"></script>
-
-        <!-- Шаблон для отрисовки пользователя -->
-        <script type="text/template" id="tmplUserAccount">
-            <div class="col-md-4">
-                <a target="_blank" href="<%-link%>">
-                    <div class="media" data-id="<%-id%>">
-                        <div class="media-left">
-                            <img class="media-object img-thumbnail imf-rounded" src="<%-img%>">
-                        </div>
-                        <div class="media-body media-middle">
-                            <h4><%-title%></h4>
-                            <small>(ID: <%-id%>)</small>
-                            <i class="fa fa-<%-icon%> fa-lg fa-fw"></i>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </script>
     </body>
 </html>

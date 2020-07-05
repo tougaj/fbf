@@ -1,180 +1,203 @@
-var gulp = require('gulp');
-// var rename = require('gulp-rename');
-var changed = require('gulp-changed');
-var merge = require('merge2');
-let browserSync = require('browser-sync').create();
-const replace = require('gulp-replace');
+const gulp = require("gulp");
+let browserSync = require("browser-sync").create();
+const autoprefixer = require("gulp-autoprefixer");
+const csslint = require("gulp-csslint");
+const sass = require("gulp-sass");
+const ts = require("gulp-typescript");
+var changed = require("gulp-changed");
+const replace = require("gulp-replace");
+var cleanCSS = require("gulp-clean-css");
+const webpack = require("webpack-stream");
+const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+const del = require("del");
+const plumber = require("gulp-plumber");
 
-var ts = require('gulp-typescript');
-// var babel = require('gulp-babel');
-var uglify = require('gulp-uglify');
-const webpack = require('webpack-stream');
+let paths = {
+	styles: {
+		src: "src/css/*.sass",
+		dest: "css",
+	},
+	scripts: {
+		src: ["src/js/**/*.ts", "src/js/**/*.tsx", "!src/**/*.d.ts"],
+		dest: "js",
+	},
+};
 
-// var less = require('gulp-less');
-var cleanCSS = require('gulp-clean-css');
-// var path = require('path');
-var csslint = require('gulp-csslint');
-// var eslint = require('gulp-eslint');
-const autoprefixer = require('gulp-autoprefixer');
+const styles = () =>
+	gulp
+		.src(paths.styles.src)
+		.pipe(plumber())
+		.pipe(sass().on("error", sass.logError))
+		.pipe(
+			csslint({
+				lookup: false,
+				ids: false,
+				shorthand: true,
+				"order-alphabetical": false,
+				"qualified-headings": false,
+				"box-model": false,
+				"adjoining-classes": false,
+				important: false,
+			})
+		)
+		.pipe(csslint.formatter())
+		.pipe(autoprefixer({}))
+		.pipe(gulp.dest(paths.styles.dest))
+		.pipe(
+			browserSync.reload({
+				stream: true,
+			})
+		);
 
-var sass = require('gulp-sass');
+let tsProject = ts.createProject("./src/js/tsconfig.json");
 
-// function onFilesChange(event) {
-// 	console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-// }
-
-var sTSSource = ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.d.ts'];
-let tsProject = ts.createProject('src/js/tsconfig.json');
-
-gulp.task('ts', function () {
-	let tsResult = gulp.src(sTSSource)
-		.pipe(changed('./js', {extension: '.js'}))
+function typeScripts() {
+	let tsResult = gulp
+		.src(paths.scripts.src)
+		.pipe(plumber())
+		.pipe(
+			changed(".", {
+				extension: ".js",
+			})
+		)
 		.pipe(tsProject());
 
-	return merge([
-		tsResult.js.pipe(gulp.dest('.')),
-		// .pipe(browserSync.reload({stream: true}))
-		// .pipe(uglify())
-		// .pipe(rename({
-		// 	suffix: '.min',
-		// }))
-		// .pipe(gulp.dest('dist')),
-		tsResult.dts.pipe(gulp.dest('js/definition'))
-	]);
-});
+	return tsResult.js.pipe(plumber()).pipe(gulp.dest(paths.scripts.dest));
+}
 
-gulp.task('webpack', ['ts'], function(){
-	return gulp.src('js/**/*.js')
-		.pipe(webpack({
-			entry: './js/main.js',
-			// mode: 'none',
-			mode: 'development',
-			// mode: 'production',
-			output: {
-				filename: 'bundle.js',
-				// path: __dirname + '/test'
-			},
-			externals: {
-				'react': 'React',
-				'react-dom': 'ReactDOM',
-				jquery: '$',
-				lodash: '_',
-			},
-			devtool: 'source-map'
-		}))
-		.pipe(gulp.dest('js'))
-		.pipe(browserSync.reload({stream: true}));
-});
+const sDistDir = "./dist";
 
-// let sLessSource = 'src/*.less';
-// gulp.task('less', function () {
-// 	return gulp.src(sLessSource)
-// 		.pipe(changed('.', {extension: '.css'}))
-// 		.pipe(less({
-// 			paths: [ path.join(__dirname, 'less', 'includes') ]
-// 		}))
-// 		.pipe(autoprefixer({
-// 			browsers: ['last 2 versions'],
-// 			// cascade: false
-// 		}))		
-// 		.pipe(csslint({
-// 			lookup: false,
-// 			ids: false,
-// 			shorthand: true
-// 		}))
-// 		.pipe(csslint.formatter())
-// 		.pipe(gulp.dest('.'))
-// 		.pipe(browserSync.reload({stream: true}))
-// 		.pipe(cleanCSS())
-// 		.pipe(rename({
-// 			suffix: '.min',
-// 		}))
-// 		.pipe(gulp.dest('dist'));
+const clean = () => del([sDistDir]);
+const webpackDev = () => runDevWebPack("js/**/*.js", "./js/main.js");
+const webpackProd = () =>
+	runProdWebPack("js/**/*.js", "./js/main.js", `${sDistDir}/js`);
+
+function watch() {
+	browserSync.init({
+		// server: true,
+		// files: ["css/*.css", "js/*.js", "*.html"],
+		proxy: "localhost:8080/fbf/",
+	});
+	gulp.watch(paths.styles.src, styles);
+	gulp.watch(paths.scripts.src, gulp.series(typeScripts, webpackDev));
+	gulp.watch("./index.php").on("change", browserSync.reload);
+}
+
+gulp.task("sass", styles);
+gulp.task("ts", typeScripts);
+gulp.task("webpack", gulp.series(typeScripts, webpackDev));
+
+gulp.task(
+	"build",
+	gulp.series(
+		clean,
+		styles,
+		typeScripts,
+		gulp.parallel(
+			() =>
+				gulp
+					.src(["./index.html"])
+					.pipe(plumber())
+					.pipe(replace(/ts=\[\[0000000000\]\]/g, `ts=${new Date().valueOf()}`))
+					.pipe(gulp.dest(sDistDir)),
+			() =>
+				gulp
+					.src("css/**/*.css")
+					.pipe(plumber())
+					.pipe(cleanCSS())
+					.pipe(gulp.dest(`${sDistDir}/css`)),
+			webpackProd
+		)
+	)
+);
+// Оставлю это пока тут
+// gulp.src(['./**/*.php', '!./internet/**/*.php', '!./dist/**/*.php', '!./index.php'])
+// .pipe(gulp.dest(sDistDir)),
+
+let development = gulp.series(styles, typeScripts, webpackDev, watch);
+gulp.task("default", development);
+
+// gulp.task('default', ['sass'], () => {
+// 	// browserSync.init({
+// 	// 	// server: {
+// 	// 	// 	files: ['./*.css', './*.js', './*.php']
+// 	// 	// 	// serveStatic: ['.', './app/css']
+// 	// 	// },
+// 	// 	// proxy: 'http://localhost/Execute/edr/' // work
+// 	// 	// proxy: 'http://localhost:8080/stater/' // home
+// 	// 	// serveStatic: ['./*.css', './*.js', './*.php']
+// 	// });
+
+// 	gulp.watch(sassSource, ['sass']);
+// 	// gulp.watch('./index.php').on('change', browserSync.reload);
 // });
 
-let sSassSource = 'src/**/*.sass';
-gulp.task('sass', function () {
-	return gulp.src(sSassSource)
-		.pipe(changed('./css', {extension: '.css'}))
-		.pipe(sass().on('error', sass.logError))
-		.pipe(autoprefixer({
-			browsers: ['last 2 versions'],
-			// cascade: false
-		}))		
-		.pipe(csslint({
-			lookup: false,
-			ids: false,
-			shorthand: true
-		}))
-		.pipe(csslint.formatter())
-		.pipe(gulp.dest('.'))
-		.pipe(browserSync.reload({stream: true}));
-	// .pipe(cleanCSS())
-	// .pipe(rename({
-	// 	suffix: '.min',
-	// }))
-	// .pipe(gulp.dest('dist'));
-});
-
-gulp.task('production', ['ts', 'sass'], function(){
-	const sDistDir = './dist';
-	return merge([
-		gulp.src('css/**/*.css')
-			.pipe(cleanCSS())
-			// .pipe(rename({
-			// 	suffix: '.min',
-			// }))
-			.pipe(gulp.dest(`${sDistDir}/css`)),
-		gulp.src('js/**/*.js')
-			.pipe(webpack({
-				entry: './js/main.js',
-				// mode: 'none',
-				// mode: 'development',
-				mode: 'production',
-				output: {
-					filename: 'bundle.js',
-					// path: __dirname + '/test'
+function runDevWebPack(sSource, sEntry) {
+	return gulp
+		.src(sSource)
+		.pipe(plumber())
+		.pipe(
+			webpack({
+				entry: {
+					main: sEntry,
 				},
-				externals: {
-					'react': 'React',
-					'react-dom': 'ReactDOM',
-					jquery: '$',
-					lodash: '_',
-				}
-			}))
-			.pipe(uglify())
-			.pipe(gulp.dest(`${sDistDir}/js`)),
-		gulp.src('./*.php')
-			.pipe(replace(/ts=\[\[0000000000\]\]/ig, `ts=${new Date().valueOf()}`))
-			.pipe(replace(/(\/umd\/react[^.]*\.)development\.js/ig, '$1production.min.js'))
-			.pipe(gulp.dest(sDistDir))
-	]);
-});
+				mode: "development",
+				output: {
+					filename: "[name].bundle.js",
+					// path: __dirname + '/js'
+				},
+				optimization: {
+					splitChunks: {
+						chunks: "all",
+					},
+				},
+				devtool: "source-map",
+				plugins: [
+					new MomentLocalesPlugin({
+						localesToKeep: ["uk"],
+					}),
+				],
+			})
+		)
+		.pipe(gulp.dest("js"))
+		.pipe(
+			browserSync.reload({
+				stream: true,
+			})
+		);
+}
 
-gulp.task('default', ['webpack', 'sass'], function(callback){
-	browserSync.init({
-		// server: {
-		// 	files: ['./*.css', './*.js', './*.php']
-		// 	// serveStatic: ['.', './app/css']			
-		// },
-		// server: {
-		// 	baseDir: "./"
-		// }
-		proxy: 'localhost:8080/fbf/'
-		// serveStatic: ['./*.css', './*.js', './*.php']
-	});
-
-	gulp.watch(sTSSource, ['webpack']);
-	// .on('change', onFilesChange);	
-
-	// const sJSSource = ['js/**/*.js', '!js/bundle.js'];
-	// gulp.watch(sJSSource, ['webpack'])
-	// 	.on('change', onFilesChange);
-
-	gulp.watch(sSassSource, ['sass']);
-	// .on('change', onFilesChange);
-
-	gulp.watch('./index.php').on('change', browserSync.reload);
-
-	return callback;
-});
+function runProdWebPack(sSource, sEntry, sDestination) {
+	return (
+		gulp
+			.src(sSource)
+			.pipe(plumber())
+			.pipe(
+				webpack({
+					entry: {
+						main: sEntry,
+					},
+					mode: "production",
+					output: {
+						filename: "[name].bundle.js",
+					},
+					optimization: {
+						splitChunks: {
+							chunks: "all",
+						},
+					},
+					plugins: [
+						new MomentLocalesPlugin({
+							localesToKeep: ["uk"],
+						}),
+					],
+				})
+			)
+			// .pipe(uglify({
+			// 	compress: {
+			// 		drop_console: true
+			// 	}
+			// }))
+			.pipe(gulp.dest(sDestination))
+	);
+}
