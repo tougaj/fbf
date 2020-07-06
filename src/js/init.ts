@@ -13,26 +13,23 @@ export interface ISocialMedia {
 	idPrefix: string;
 }
 
-enum ESocialMedia {
-	fb,
-	vk,
-	ok,
-	// esmFacebook = 'fb',
-	// esmVkontakte = 'vk',
-	// esmOdnoklassniki = 'ok',
+export enum ESocialMedia {
+	fb = 1,
+	vk = 2,
+	ok = 3,
 }
-type TSocialMedia = keyof typeof ESocialMedia;
+// type TSocialMedia = keyof typeof ESocialMedia;
 
-const SOCIAL_MEDIA: { [key: string]: ISocialMedia } = {
-	fb: {
+export const SOCIAL_MEDIA: { [key: number]: ISocialMedia } = {
+	1: {
 		site: 'https://www.facebook.com/',
 		idPrefix: '',
 	},
-	vk: {
+	2: {
 		site: 'https://vk.com/',
 		idPrefix: 'id',
 	},
-	ok: {
+	3: {
 		site: 'https://ok.ru/',
 		idPrefix: 'profile/',
 	},
