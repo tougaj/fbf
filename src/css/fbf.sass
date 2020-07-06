@@ -2,6 +2,18 @@ body
 	font-family: 'Roboto', sans-serif
 	background-color: #fefbfa
 
+%semi-bold
+	font-weight: 500
+
+%cursor-pointer
+	cursor: pointer
+
+.cursor-pointer
+	@extend %cursor-pointer
+
+label
+	@extend %semi-bold
+
 // #fmGetFriends
 // 	margin-top: 10px;
 // 	.btn-group

@@ -1,0 +1,9 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #fefbfa; }
+
+label {
+  font-weight: 500; }
+
+.cursor-pointer {
+  cursor: pointer; }

@@ -26,7 +26,8 @@ const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
 	// // if (/fans_fan_row/i.test(sHTML)) return Fbf.setDataTypeValues(2, 2);
 	// return Fbf.setDataTypeValues(0, 0);
 
-	if (/fbProfileBrowserListItem/i.test(raw)) return ESocialMedia.fb;
+	// if (/fbProfileBrowserListItem/i.test(raw)) return ESocialMedia.fb;
+	if (/facebook\.com/i.test(raw)) return ESocialMedia.fb;
 	return undefined;
 };
 
