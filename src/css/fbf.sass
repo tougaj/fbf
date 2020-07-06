@@ -8,11 +8,31 @@ body
 %cursor-pointer
 	cursor: pointer
 
+=size($width, $height)
+	width: $width
+	height: $height
+
+=square($size)
+	+size($size, $size)
+
 .cursor-pointer
 	@extend %cursor-pointer
 
 label
 	@extend %semi-bold
+
+.icon
+	display: inline-block
+	stroke-width: 0
+	stroke: currentColor
+	fill: currentColor
+	+square(1em)
+	// margin-top: -0.18em
+	&.icon-lg
+		+square(1.3333em)
+	&.icon-xl
+		+square(1.5em)
+		// vertical-align: -18%
 
 // #fmGetFriends
 // 	margin-top: 10px;

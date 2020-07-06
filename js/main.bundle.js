@@ -170,6 +170,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const init_1 = __webpack_require__(/*! ../init */ "./js/init.js");
+const fontIcon_1 = __importDefault(__webpack_require__(/*! ./fontIcon */ "./js/components/fontIcon.js"));
 const ActionForm = ({ socialMediaId, friends, onFriendsLoaded, }) => {
     const withFaces = init_1.useBooleanField(false);
     const onSubmit = () => onFriendsLoaded();
@@ -189,7 +190,7 @@ const ActionForm = ({ socialMediaId, friends, onFriendsLoaded, }) => {
             react_1.default.createElement("input", Object.assign({ id: "withfaces", name: "withfaces", type: "checkbox" }, withFaces, { autoComplete: "off", className: "form-check-input" })),
             react_1.default.createElement("label", { htmlFor: "withfaces", className: "form-check-label ml-1" }, "\u0414\u043E\u0434\u0430\u0442\u0438 \u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u043D\u044F")),
         react_1.default.createElement("button", { type: "submit", className: "btn btn-primary ml-3", disabled: !socialMediaId || (friends === null || friends === void 0 ? void 0 : friends.length) === 0 },
-            react_1.default.createElement("i", { className: "fa fa-download fa-lg" }),
+            react_1.default.createElement(fontIcon_1.default, { name: "icon-download", variant: "lg" }),
             " \u041E\u0442\u0440\u0438\u043C\u0430\u0442\u0438 \u0444\u0430\u0439\u043B")));
 };
 exports.default = ActionForm;
@@ -259,6 +260,32 @@ const App = ({}) => {
                 react_1.default.createElement(actionForm_1.default, { socialMediaId: socialMediaId, friends: friends, onFriendsLoaded: onFriendsLoaded })))));
 };
 exports.default = App;
+
+
+/***/ }),
+
+/***/ "./js/components/fontIcon.js":
+/*!***********************************!*\
+  !*** ./js/components/fontIcon.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const FontIcon = ({ name, className, style, variant }) => {
+    let sVariant = '';
+    if (variant)
+        sVariant = variant === 'lg' ? 'icon-lg' : 'icon-xl';
+    return (react_1.default.createElement("svg", { className: `icon ${className || ''} ${sVariant}`, style: style },
+        react_1.default.createElement("use", { xlinkHref: `#${name}` })));
+};
+exports.default = FontIcon;
 
 
 /***/ }),

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SOCIAL_MEDIA, useBooleanField, ESocialMedia, IFriend } from '../init';
+import FontIcon from './fontIcon';
 
 interface IActionFormProps extends React.HTMLAttributes<HTMLDivElement> {
 	socialMediaId?: ESocialMedia;
@@ -106,7 +107,7 @@ const ActionForm = ({
 				className="btn btn-primary ml-3"
 				disabled={!socialMediaId || friends?.length === 0}
 			>
-				<i className="fa fa-download fa-lg"></i> Отримати файл
+				<FontIcon name="icon-download" variant="lg" /> Отримати файл
 			</button>
 		</form>
 	);
