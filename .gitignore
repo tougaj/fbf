@@ -1,3 +1,5 @@
 node_modules/
 test_data/
+/css
+/js
 *.7z
