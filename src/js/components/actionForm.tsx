@@ -33,11 +33,7 @@ const ActionForm = ({
 			target="_blank"
 			onSubmit={onSubmit}
 		>
-			<input
-				type="hidden"
-				name="smID"
-				value={socialMediaId || '0'}
-			></input>
+			<input type="hidden" name="smID" value={socialMediaId || '0'}></input>
 			<input
 				type="hidden"
 				name="relationType"
@@ -107,7 +103,7 @@ const ActionForm = ({
 				className="btn btn-primary ml-3"
 				disabled={!socialMediaId || friends?.length === 0}
 			>
-				<FontIcon name="icon-download" variant="lg" /> Отримати файл
+				<FontIcon name="bi-download" variant="lg" /> Отримати файл
 			</button>
 		</form>
 	);

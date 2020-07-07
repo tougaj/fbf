@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useFormField, ESocialMedia, IFriend } from '../init';
 import ActionForm from './actionForm';
 import { convertHTML2Friends } from '../fbf';
+import FontIcon from './fontIcon';
 
 interface IAppProps extends React.HTMLAttributes<HTMLDivElement> {}
 const App = ({}: IAppProps) => {
@@ -39,7 +40,8 @@ const App = ({}: IAppProps) => {
 			<div className="row">
 				<div className="col">
 					<h3 className="text-center">
-						Додайте html-код в текстову область та оберіть дію
+						<FontIcon name="bi-code-slash" /> Додайте html-код в текстову
+						область та оберіть дію
 					</h3>
 					<textarea
 						className="form-control"
