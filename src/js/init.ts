@@ -4,8 +4,6 @@ export interface IFriend {
 	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
 	title: string;
 	face: string;
-	smID?: number;
-	relationType?: number;
 }
 
 export enum ESocialMedia {
@@ -19,30 +17,9 @@ export interface ISocialMedia {
 	site: string;
 	idPrefix: string;
 	title: string;
+	parser: (test: string) => IFriend[];
 }
 
-// type TSocialMedia = keyof typeof ESocialMedia;
-
-export const SOCIAL_MEDIA: ISocialMedia[] = [
-	{
-		id: ESocialMedia.fb,
-		site: 'https://www.facebook.com/',
-		idPrefix: '',
-		title: 'Facebook',
-	},
-	{
-		id: ESocialMedia.vk,
-		site: 'https://vk.com/',
-		idPrefix: 'id',
-		title: 'Вконтакте',
-	},
-	{
-		id: ESocialMedia.ok,
-		site: 'https://ok.ru/',
-		idPrefix: 'profile/',
-		title: 'Одноклассники',
-	},
-];
 // export const SOCIAL_MEDIA: { [key: string]: ISocialMedia } = {
 // 	'1': {
 // 		site: 'https://www.facebook.com/',

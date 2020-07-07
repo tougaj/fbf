@@ -19,6 +19,7 @@ header('Content-Disposition: attachement; filename="' . $sOutputFileName . '";')
 
 $sWF = filter_input(INPUT_POST, 'withfaces');
 $fWithFaces = (!empty($sWF) && $sWF);
+echo $fWithFaces;
 
 $sData = urldecode(filter_input(INPUT_POST, 'data', FILTER_DEFAULT));
 // $sData = iconv('UTF-8', 'windows-1251', filter_input(INPUT_POST, 'data', FILTER_DEFAULT));
@@ -30,7 +31,7 @@ $data = json_decode($sData);
 foreach ($data as $value) {
     $handle = $fWithFaces ? @fopen($value->face, 'rb') : null;
     $value->face = '';
-    if ($handle){
+    if ($handle) {
         $buf = stream_get_contents($handle);
         fclose($handle);
 
@@ -44,6 +45,4 @@ foreach ($data as $value) {
     // usleep(10*1000);
 }
 
-echo json_encode($data);
-
-?>
+echo json_encode($data, JSON_UNESCAPED_UNICODE);

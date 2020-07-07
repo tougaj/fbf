@@ -1,11 +1,17 @@
-import { ESocialMedia, IFriend } from './init';
+import { ESocialMedia, IFriend, ISocialMedia } from './init';
+import $ from 'jquery';
+var lodashUnescape = require('lodash.unescape');
 
 export const convertHTML2Friends = (
 	raw: string
-): [ESocialMedia | undefined, IFriend[]] => {
-	const sm = defineSocialMedia(raw);
-	return [sm, []];
+): Promise<[ISocialMedia | undefined, IFriend[]]> => {
+	const socialMediaId = defineSocialMedia(raw);
+	const socialMedia = findSocialMediaById(socialMediaId);
+	return Promise.resolve([socialMedia, socialMedia?.parser(raw) || []]);
 };
+
+const findSocialMediaById = (socialMediaId?: ESocialMedia) =>
+	SOCIAL_MEDIA.find(({ id }) => id === socialMediaId);
 
 const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
 	// // Вконтакте
@@ -27,8 +33,66 @@ const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
 	// return Fbf.setDataTypeValues(0, 0);
 
 	// if (/fbProfileBrowserListItem/i.test(raw)) return ESocialMedia.fb;
-	if (/facebook\.com/i.test(raw)) return ESocialMedia.fb;
+	if (/ajax\/hovercard\/user\.php/i.test(raw)) return ESocialMedia.fb;
 	return undefined;
 };
 
 // const getFriends = (raw: string, socialMedia: ESocialMedia)
+
+const stubParser = (text: string) => [];
+
+const facebookParser = (text: string) => {
+	let friends: IFriend[] = [];
+	const container = $(text);
+	$('li', container).each(function (this: Element) {
+		const li = this;
+		// fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
+		// title: string;
+		// face: string;
+		var a = $('a[data-hovercard]', li).eq(0);
+		var hovercard: string = a.data('hovercard');
+		if (hovercard) {
+			var m = hovercard.match(/hovercard\/user.php\?id=(\d+)/);
+			if (m && m[1]) {
+				var fbID: string = m[1];
+				const title: string = $('img[role="img"]', li).attr(
+					'aria-label'
+				) as string;
+				var face: string = lodashUnescape(
+					$('img[role="img"]', li).attr('src') as string
+				);
+				friends.push({
+					fbID,
+					title,
+					face,
+				});
+			}
+		}
+	});
+
+	return friends;
+};
+
+export const SOCIAL_MEDIA: ISocialMedia[] = [
+	{
+		id: ESocialMedia.fb,
+		site: 'https://www.facebook.com/',
+		idPrefix: '',
+		title: 'Facebook',
+		parser: facebookParser,
+	},
+	{
+		id: ESocialMedia.vk,
+		site: 'https://vk.com/',
+		idPrefix: 'id',
+		title: 'Вконтакте',
+		parser: stubParser,
+	},
+	{
+		id: ESocialMedia.ok,
+		site: 'https://ok.ru/',
+		idPrefix: 'profile/',
+		title: 'Одноклассники',
+		parser: stubParser,
+	},
+];

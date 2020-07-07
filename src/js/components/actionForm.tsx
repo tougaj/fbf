@@ -1,27 +1,36 @@
-import React, { useState } from 'react';
-import { SOCIAL_MEDIA, useBooleanField, ESocialMedia, IFriend } from '../init';
+import React, { useState, useEffect } from 'react';
+import { useBooleanField, ESocialMedia, IFriend } from '../init';
 import FontIcon from './fontIcon';
+import { SOCIAL_MEDIA } from '../fbf';
 
 interface IActionFormProps extends React.HTMLAttributes<HTMLDivElement> {
 	socialMediaId?: ESocialMedia;
-	friends?: IFriend[];
-	onFriendsLoaded: () => boolean;
+	friends: IFriend[];
+	onFriendsLoaded: () => void;
 }
 const ActionForm = ({
 	socialMediaId,
 	friends,
 	onFriendsLoaded,
 }: IActionFormProps) => {
-	const withFaces = useBooleanField(false);
+	const WITH_FACES_MAX_COUNT = 200;
+	const facesEnabled =
+		0 < friends.length && friends.length <= WITH_FACES_MAX_COUNT;
+	const withFaces = useBooleanField(facesEnabled);
+	const [fileName, setFileName] = useState('');
 
-	// if (text === '')
-	// 	return (
-	// 		<div className="text-info h5 text-center mt-3">
-	// 			Відсутній текст для аналізу
-	// 		</div>
-	// 	);
+	const onSubmit = () => {
+		setTimeout(() => {
+			onFriendsLoaded();
+			setFileName('');
+		}, 100);
+		return true;
+	};
 
-	const onSubmit = () => onFriendsLoaded();
+	const onFileNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const target = event.target;
+		setFileName(target.value);
+	};
 
 	return (
 		<form
@@ -33,7 +42,11 @@ const ActionForm = ({
 			target="_blank"
 			onSubmit={onSubmit}
 		>
-			<input type="hidden" name="smID" value={socialMediaId || '0'}></input>
+			<input
+				type="hidden"
+				name="smID"
+				value={socialMediaId || '0'}
+			></input>
 			<input
 				type="hidden"
 				name="relationType"
@@ -79,6 +92,8 @@ const ActionForm = ({
 					id="filename"
 					placeholder="Ім'я вихідного файлу"
 					autoComplete="off"
+					value={fileName}
+					onChange={onFileNameChange}
 				/>
 			</div>
 			<div
@@ -92,6 +107,7 @@ const ActionForm = ({
 					{...withFaces}
 					autoComplete="off"
 					className="form-check-input"
+					disabled={!facesEnabled}
 				/>
 				<label htmlFor="withfaces" className="form-check-label ml-1">
 					{/* Додати до вихідного файлу зображення обліковок */}
@@ -101,7 +117,7 @@ const ActionForm = ({
 			<button
 				type="submit"
 				className="btn btn-primary ml-3"
-				disabled={!socialMediaId || friends?.length === 0}
+				disabled={!socialMediaId || friends.length === 0}
 			>
 				<FontIcon name="bi-download" variant="lg" /> Отримати файл
 			</button>

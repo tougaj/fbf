@@ -1,33 +1,54 @@
 import * as React from 'react';
-import { IFriend } from '../init';
+import { IFriend, ESocialMedia } from '../init';
+import FontIcon from './fontIcon';
 
 export interface IFriendProps {
 	friend: IFriend;
-	SMID: number;
-	icon: string;
+	socialMediaId: string;
 	link: string;
 }
 
-export const Friend = (props: IFriendProps) => {
-	const { friend, SMID, icon, link } = props;
+export const Friend = ({ friend, socialMediaId, link }: IFriendProps) => {
 	return (
-		<div className="col-md-4">
-			<a target="_blank" href={link}>
-				<div className="media" data-id="{friend.fbID}">
-					<div className="media-left">
-						<img
-							className="media-object img-thumbnail imf-rounded"
-							src={SMID === 1 ? friend.face : 'img/man.jpg'}
-						/>
-					</div>
-					<div className="media-body media-middle">
-						<h4>{friend.title}</h4>
-						<small>(ID: {friend.fbID})</small>
-						<i className={icon}></i>
-					</div>
-				</div>
-			</a>
-		</div>
+		<a
+			target="_blank"
+			href={link}
+			className="d-flex flex-row align-items-center border rounded"
+		>
+			<img
+				src={
+					socialMediaId === ESocialMedia.fb
+						? friend.face || 'img/man.jpg'
+						: 'img/man.jpg'
+				}
+				className="rounded-left"
+			/>
+			<div className="ml-2">
+				<h6 className="mb-0">{friend.title}</h6>
+				<small>(ID: {friend.fbID})</small>
+			</div>
+		</a>
+		// <div className="col-md-4">
+		// 	<a target="_blank" href={link}>
+		// 		<div className="media" data-id="{friend.fbID}">
+		// 			<div className="media-left">
+		// 				<img
+		// 					className="media-object img-thumbnail imf-rounded"
+		// 					src={
+		// 						socialMediaId === ESocialMedia.fb
+		// 							? friend.face
+		// 							: 'img/man.jpg'
+		// 					}
+		// 				/>
+		// 			</div>
+		// 			<div className="media-body media-middle">
+		// 				<h4>{friend.title}</h4>
+		// 				<small>(ID: {friend.fbID})</small>
+		// 				<FontIcon name="bi-people-fill" variant="lg" />
+		// 			</div>
+		// 		</div>
+		// 	</a>
+		// </div>
 	);
 };
 
