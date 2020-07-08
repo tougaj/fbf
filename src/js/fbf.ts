@@ -37,8 +37,6 @@ const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
 	return undefined;
 };
 
-// const getFriends = (raw: string, socialMedia: ESocialMedia)
-
 const stubParser = (text: string) => [];
 
 const facebookParser = (text: string) => {
@@ -46,9 +44,6 @@ const facebookParser = (text: string) => {
 	const container = $(text);
 	$('li', container).each(function (this: Element) {
 		const li = this;
-		// fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
-		// title: string;
-		// face: string;
 		var a = $('a[data-hovercard]', li).eq(0);
 		var hovercard: string = a.data('hovercard');
 		if (hovercard) {
