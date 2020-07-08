@@ -14,30 +14,13 @@ const findSocialMediaById = (socialMediaId?: ESocialMedia) =>
 	SOCIAL_MEDIA.find(({ id }) => id === socialMediaId);
 
 const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
-	// Вконтакте
 	if (/\.userapi\.com/i.test(raw)) return ESocialMedia.vk;
-	// if (/id="friends_user_row\d+"/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
-	// // Одноклассники
-	// if (/i\.mycdn\.me/i.test(sHTML)){
-	// 	if (/friendSubscribers/i.test(sHTML))
-	// 		return Fbf.setDataTypeValues(3, 2);
-	// 	else
-	// 		return Fbf.setDataTypeValues(3, 1);
-	// }
-	// // Фейсбук дрвзья
-	// if (/friend_list_item/i.test(sHTML)) return Fbf.setDataTypeValues(1, 1);
-
-	// // Фейсбук подписчики
-	// if (/fbProfileBrowserListItem/i.test(sHTML)) return Fbf.setDataTypeValues(1, 2);
-	// // if (/fans_fan_row/i.test(sHTML)) return Fbf.setDataTypeValues(2, 2);
-	// return Fbf.setDataTypeValues(0, 0);
-
-	// if (/fbProfileBrowserListItem/i.test(raw)) return ESocialMedia.fb;
+	if (/i\.mycdn\.me/i.test(raw)) return ESocialMedia.ok;
 	if (/ajax\/hovercard\/user\.php/i.test(raw)) return ESocialMedia.fb;
 	return undefined;
 };
 
-const stubParser = (text: string) => [];
+// const stubParser = (text: string) => [];
 
 const fbParser = (text: string) => {
 	let friends: IFriend[] = [];
@@ -94,6 +77,26 @@ const vkParser = (text: string) => {
 	return friends;
 };
 
+const okParser = (text: string) => {
+	let friends: IFriend[] = [];
+	const container = $(text);
+	$('.ugrid_i', container).each(function (this: Element) {
+		let item = this;
+		var fbID: string = $('.entity-item', item).data('entity-id');
+		var title: string = $('.ucard-w_t a', item)
+			.html()
+			.replace(/<br>/gi, ' ');
+		var face: string = 'https:' + $('img.photo_img', item).attr('src');
+		friends.push({
+			fbID,
+			title,
+			face,
+		});
+	});
+
+	return friends;
+};
+
 export const SOCIAL_MEDIA: ISocialMedia[] = [
 	{
 		id: ESocialMedia.fb,
@@ -114,6 +117,6 @@ export const SOCIAL_MEDIA: ISocialMedia[] = [
 		site: 'https://ok.ru/',
 		idPrefix: 'profile/',
 		title: 'Одноклассники',
-		parser: stubParser,
+		parser: okParser,
 	},
 ];

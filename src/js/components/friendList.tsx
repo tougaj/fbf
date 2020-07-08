@@ -18,9 +18,9 @@ export const FriendList = ({ friends, socialMedia }: IFriendListProps) => {
 			<div className="col-12">
 				<h4 className="text-center text-info mb-2">
 					<FontIcon
-						name="bi-people-fill"
-						className="mr-2"
+						name={`icon-sm-${id}`}
 						variant="lg"
+						className="mr-2"
 					/>
 					Загальна кількість друзів: {friends.length}
 					{listReduced && (
