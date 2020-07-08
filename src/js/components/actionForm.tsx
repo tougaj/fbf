@@ -57,7 +57,15 @@ const ActionForm = ({
 			<input
 				type="hidden"
 				name="data"
-				value={encodeURIComponent(JSON.stringify(friends))}
+				value={encodeURIComponent(
+					JSON.stringify(
+						friends.map((friend) => ({
+							...friend,
+							smID: parseInt(socialMediaId || '0', 10),
+							relationType: 1,
+						}))
+					)
+				)}
 			/>
 			{/* <input type="hidden" name="fileno" value="0" /> */}
 			<div className="form-group">
