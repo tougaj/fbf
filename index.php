@@ -1,5 +1,5 @@
 <?php
-header('Cache-Control: public, max-age=900');
+header('Cache-Control: public, max-age=300');
 header('Content-Type: text/html; charset=utf-8');
 ?>
 <!DOCTYPE html>

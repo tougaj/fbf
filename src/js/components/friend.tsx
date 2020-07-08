@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { IFriend, ESocialMedia } from '../init';
-import FontIcon from './fontIcon';
 
 export interface IFriendProps {
 	friend: IFriend;

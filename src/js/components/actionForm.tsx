@@ -36,10 +36,10 @@ const ActionForm = ({
 		<form
 			// name="fmGetFriends"
 			// id="fmGetFriends"
-			action="getFriends.php"
+			action={`getFriends.php?ts=${new Date().valueOf()}`}
 			method="post"
 			className="form-inline justify-content-center mt-3"
-			target="_blank"
+			// target="_blank"
 			onSubmit={onSubmit}
 		>
 			<input
