@@ -20,24 +20,6 @@ export interface ISocialMedia {
 	parser: (test: string) => IFriend[];
 }
 
-// export const SOCIAL_MEDIA: { [key: string]: ISocialMedia } = {
-// 	'1': {
-// 		site: 'https://www.facebook.com/',
-// 		idPrefix: '',
-// 		name: 'Facebook',
-// 	},
-// 	'2': {
-// 		site: 'https://vk.com/',
-// 		idPrefix: 'id',
-// 		name: 'Вконтакте',
-// 	},
-// 	'3': {
-// 		site: 'https://ok.ru/',
-// 		idPrefix: 'profile/',
-// 		name: 'Одноклассники',
-// 	},
-// };
-
 export const useFormField = (initialValue: string) => {
 	const [value, setValue] = useState(initialValue);
 

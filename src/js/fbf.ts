@@ -14,8 +14,8 @@ const findSocialMediaById = (socialMediaId?: ESocialMedia) =>
 	SOCIAL_MEDIA.find(({ id }) => id === socialMediaId);
 
 const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
-	// // Вконтакте
-	// // if (/\.userapi\.com/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
+	// Вконтакте
+	if (/\.userapi\.com/i.test(raw)) return ESocialMedia.vk;
 	// if (/id="friends_user_row\d+"/i.test(sHTML)) return Fbf.setDataTypeValues(2, 0);
 	// // Одноклассники
 	// if (/i\.mycdn\.me/i.test(sHTML)){
@@ -39,7 +39,7 @@ const defineSocialMedia = (raw: string): ESocialMedia | undefined => {
 
 const stubParser = (text: string) => [];
 
-const facebookParser = (text: string) => {
+const fbParser = (text: string) => {
 	let friends: IFriend[] = [];
 	const container = $(text);
 	$('li', container).each(function (this: Element) {
@@ -68,20 +68,46 @@ const facebookParser = (text: string) => {
 	return friends;
 };
 
+const vkParser = (text: string) => {
+	let friends: IFriend[] = [];
+	const container = $(text);
+	$('.friends_user_row', container).each(function (this: Element) {
+		let li = this;
+		var sID: string = $(li).attr('id') as string;
+		var m = sID.match(/friends_user_row(\d+)/);
+		if (m && m[1]) {
+			var fbID: string = m[1];
+			var title: string = $('.friends_field_title a', li)
+				.html()
+				.replace(/<br>/gi, ' ');
+			var face: string = $('img.friends_photo_img', li).attr(
+				'src'
+			) as string;
+			friends.push({
+				fbID,
+				title,
+				face,
+			});
+		}
+	});
+
+	return friends;
+};
+
 export const SOCIAL_MEDIA: ISocialMedia[] = [
 	{
 		id: ESocialMedia.fb,
 		site: 'https://www.facebook.com/',
 		idPrefix: '',
 		title: 'Facebook',
-		parser: facebookParser,
+		parser: fbParser,
 	},
 	{
 		id: ESocialMedia.vk,
 		site: 'https://vk.com/',
 		idPrefix: 'id',
 		title: 'Вконтакте',
-		parser: stubParser,
+		parser: vkParser,
 	},
 	{
 		id: ESocialMedia.ok,

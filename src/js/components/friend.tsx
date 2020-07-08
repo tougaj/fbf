@@ -25,13 +25,11 @@ export const Friend = ({ friend, socialMediaId, link }: IFriendProps) => {
 			/>
 			<div className="ml-2">
 				<h6 className="mb-0">{friend.title}</h6>
-				<small>(ID: {friend.fbID})</small>
+				<small>
+					<FontIcon name={`icon-sm-${socialMediaId}`} variant="lg" />{' '}
+					ID: {friend.fbID}
+				</small>
 			</div>
-			<FontIcon
-				name="bi-people-fill"
-				variant="lg"
-				className="ml-auto mx-1"
-			/>
 		</a>
 		// <div className="col-md-4">
 		// 	<a target="_blank" href={link}>

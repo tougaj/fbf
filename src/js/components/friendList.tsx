@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Friend } from './Friend';
 import { IFriend, ISocialMedia } from '../init';
+import FontIcon from './fontIcon';
 
 interface IFriendListProps {
 	socialMedia: ISocialMedia;
@@ -16,6 +17,11 @@ export const FriendList = ({ friends, socialMedia }: IFriendListProps) => {
 		<div className="row mt-2">
 			<div className="col-12">
 				<h4 className="text-center text-info mb-2">
+					<FontIcon
+						name="bi-people-fill"
+						className="mr-2"
+						variant="lg"
+					/>
 					Загальна кількість друзів: {friends.length}
 					{listReduced && (
 						<small className="ml-2">
