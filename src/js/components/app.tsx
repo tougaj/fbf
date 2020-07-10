@@ -1,0 +1,72 @@
+import React, { useState, useEffect } from 'react';
+import { useFormField, ESocialMedia, IFriend, ISocialMedia } from '../init';
+import ActionForm from './actionForm';
+import { convertHTML2Friends } from '../fbf';
+import FontIcon from './fontIcon';
+import { FriendList } from './friendList';
+
+interface IAppProps extends React.HTMLAttributes<HTMLDivElement> {}
+const App = ({}: IAppProps) => {
+	const [rawText, setRawText] = useState('');
+	const [socialMedia, setSocialMedia] = useState<ISocialMedia | undefined>();
+	const [friends, setFriends] = useState<IFriend[]>([]);
+
+	// for debug
+	// useEffect(() => {
+	// 	fetch('test_data/fbf.txt')
+	// 		.then((response) => response.text())
+	// 		.then(setRawText);
+	// }, []);
+
+	useEffect(() => {
+		const parseFriends = async (rawText: string) => {
+			try {
+				const [socialMedia, f] = await convertHTML2Friends(rawText);
+				setSocialMedia(socialMedia);
+				setFriends(f);
+			} catch (error) {
+				alert(error);
+				setSocialMedia(undefined);
+				setFriends([]);
+			}
+		};
+
+		parseFriends(rawText);
+	}, [rawText]);
+
+	const onRawChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+		setRawText(event.target.value.trim());
+
+	const onFriendsLoaded = () => setRawText('');
+
+	return (
+		<div className="container mb-3">
+			<div className="row">
+				<div className="col">
+					<h3 className="text-center">
+						<FontIcon name="bi-code-slash" /> Додайте html-код в
+						текстову область та отримайте файл
+					</h3>
+					<textarea
+						className="form-control"
+						rows={10}
+						placeholder="html-код елементу, що містить записи про друзів"
+						autoComplete="off"
+						value={rawText}
+						onChange={onRawChange}
+					></textarea>
+					<ActionForm
+						socialMediaId={socialMedia?.id}
+						friends={friends}
+						onFriendsLoaded={onFriendsLoaded}
+					/>
+				</div>
+			</div>
+			{socialMedia && (
+				<FriendList socialMedia={socialMedia} friends={friends} />
+			)}
+		</div>
+	);
+};
+
+export default App;
