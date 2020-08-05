@@ -47,6 +47,9 @@ const App = ({}: IAppProps) => {
 						<FontIcon name="bi-code-slash" /> Додайте html-код в
 						текстову область та отримайте файл
 					</h3>
+					<label htmlFor="htmlCode" className="control-label">
+						Код елементу, що містить записи про друзів
+					</label>
 					<textarea
 						className="form-control"
 						rows={10}
@@ -54,6 +57,7 @@ const App = ({}: IAppProps) => {
 						autoComplete="off"
 						value={rawText}
 						onChange={onRawChange}
+						id="htmlCode"
 					></textarea>
 					<ActionForm
 						socialMediaId={socialMedia?.id}

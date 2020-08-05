@@ -3,9 +3,10 @@ header('Cache-Control: public, max-age=300');
 header('Content-Type: text/html; charset=utf-8');
 ?>
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 
 <head>
+    <meta name="Description" content="Форма для парсингу списку друзів обліковки соціальної мережі.">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114710599-1"></script>
