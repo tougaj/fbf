@@ -9,8 +9,8 @@ rules:
     - warn
     - tab
   linebreak-style:
-    - error
-    - unix
+    - warn
+    - windows
   quotes: off
   semi:
     - error
