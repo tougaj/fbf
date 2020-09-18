@@ -14,7 +14,7 @@ const plumber = require('gulp-plumber');
 
 let paths = {
 	styles: {
-		src: 'src/css/*.sass',
+		src: ['src/css/*.sass', 'src/css/*.scss'],
 		dest: 'css',
 	},
 	scripts: {
@@ -25,29 +25,29 @@ let paths = {
 
 const styles = () =>
 	gulp
-		.src(paths.styles.src)
-		.pipe(plumber())
-		.pipe(sass().on('error', sass.logError))
-		.pipe(
-			csslint({
-				lookup: false,
-				ids: false,
-				shorthand: true,
-				'order-alphabetical': false,
-				'qualified-headings': false,
-				'box-model': false,
-				'adjoining-classes': false,
-				important: false,
-			})
-		)
-		.pipe(csslint.formatter())
-		.pipe(autoprefixer({}))
-		.pipe(gulp.dest(paths.styles.dest))
-		.pipe(
-			browserSync.reload({
-				stream: true,
-			})
-		);
+	.src(paths.styles.src)
+	.pipe(plumber())
+	.pipe(sass().on('error', sass.logError))
+	.pipe(
+		csslint({
+			lookup: false,
+			ids: false,
+			shorthand: true,
+			'order-alphabetical': false,
+			'qualified-headings': false,
+			'box-model': false,
+			'adjoining-classes': false,
+			important: false,
+		})
+	)
+	.pipe(csslint.formatter())
+	.pipe(autoprefixer({}))
+	.pipe(gulp.dest(paths.styles.dest))
+	.pipe(
+		browserSync.reload({
+			stream: true,
+		})
+	);
 
 let tsProject = ts.createProject('./src/js/tsconfig.json');
 
@@ -95,32 +95,32 @@ gulp.task(
 		typeScripts,
 		gulp.parallel(
 			() =>
-				gulp
-					.src(['./*.php'])
-					.pipe(plumber())
-					.pipe(
-						replace(
-							/ts=\[\[0000000000\]\]/g,
-							`ts=${new Date().valueOf()}`
-						)
-					)
-					.pipe(gulp.dest(sDistDir)),
+			gulp
+			.src(['./*.php'])
+			.pipe(plumber())
+			.pipe(
+				replace(
+					/ts=\[\[0000000000\]\]/g,
+					`ts=${new Date().valueOf()}`
+				)
+			)
+			.pipe(gulp.dest(sDistDir)),
 			() =>
-				gulp
-					.src(['includes/**/*.*'])
-					.pipe(plumber())
-					.pipe(gulp.dest(`${sDistDir}/includes`)),
+			gulp
+			.src(['includes/**/*.*'])
+			.pipe(plumber())
+			.pipe(gulp.dest(`${sDistDir}/includes`)),
 			() =>
-				gulp
-					.src(['img/**/*.*'])
-					.pipe(plumber())
-					.pipe(gulp.dest(`${sDistDir}/img`)),
+			gulp
+			.src(['img/**/*.*'])
+			.pipe(plumber())
+			.pipe(gulp.dest(`${sDistDir}/img`)),
 			() =>
-				gulp
-					.src('css/**/*.css')
-					.pipe(plumber())
-					.pipe(cleanCSS())
-					.pipe(gulp.dest(`${sDistDir}/css`)),
+			gulp
+			.src('css/**/*.css')
+			.pipe(plumber())
+			.pipe(cleanCSS())
+			.pipe(gulp.dest(`${sDistDir}/css`)),
 			webpackProd
 		)
 	)
@@ -185,34 +185,34 @@ function runDevWebPack(sSource, sEntry) {
 function runProdWebPack(sSource, sEntry, sDestination) {
 	return (
 		gulp
-			.src(sSource)
-			.pipe(plumber())
-			.pipe(
-				webpack({
-					entry: {
-						main: sEntry,
+		.src(sSource)
+		.pipe(plumber())
+		.pipe(
+			webpack({
+				entry: {
+					main: sEntry,
+				},
+				mode: 'production',
+				output: {
+					filename: '[name].bundle.js',
+				},
+				optimization: {
+					splitChunks: {
+						chunks: 'all',
 					},
-					mode: 'production',
-					output: {
-						filename: '[name].bundle.js',
-					},
-					optimization: {
-						splitChunks: {
-							chunks: 'all',
-						},
-					},
-					plugins: [
-						new MomentLocalesPlugin({
-							localesToKeep: ['uk'],
-						}),
-					],
-				})
-			)
-			// .pipe(uglify({
-			// 	compress: {
-			// 		drop_console: true
-			// 	}
-			// }))
-			.pipe(gulp.dest(sDestination))
+				},
+				plugins: [
+					new MomentLocalesPlugin({
+						localesToKeep: ['uk'],
+					}),
+				],
+			})
+		)
+		// .pipe(uglify({
+		// 	compress: {
+		// 		drop_console: true
+		// 	}
+		// }))
+		.pipe(gulp.dest(sDestination))
 	);
 }
