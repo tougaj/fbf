@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useFormField, ESocialMedia, IFriend, ISocialMedia } from '../init';
-import ActionForm from './actionForm';
+import React, { useEffect, useState } from 'react';
 import { convertHTML2Friends } from '../fbf';
+import { IFriend, ISocialMedia } from '../init';
+import ActionForm from './actionForm';
 import FontIcon from './fontIcon';
 import { FriendList } from './friendList';
 

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useBooleanField, ESocialMedia, IFriend } from '../init';
-import FontIcon from './fontIcon';
+import React, { useState } from 'react';
 import { SOCIAL_MEDIA } from '../fbf';
+import { ESocialMedia, IFriend, useBooleanField } from '../init';
+import FontIcon from './fontIcon';
 
 interface IActionFormProps extends React.HTMLAttributes<HTMLDivElement> {
 	socialMediaId?: ESocialMedia;

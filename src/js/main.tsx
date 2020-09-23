@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import moment = require('moment');
 import App from './components/app';
+import moment = require('moment');
 
 moment.locale('uk');
 

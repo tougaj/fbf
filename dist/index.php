@@ -25,7 +25,7 @@ header('Content-Type: text/html; charset=utf-8');
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/fbf.css?ts=1599304139397">
+    <link rel="stylesheet" href="css/fbf.css?ts=1600830456475">
 </head>
 
 <body>
@@ -34,8 +34,8 @@ header('Content-Type: text/html; charset=utf-8');
     <?php
     include_once 'includes/symbol-defs.svg';
     ?>
-    <script src="js/vendors~main.bundle.js?ts=1599304139397"></script>
-    <script src="js/main.bundle.js?ts=1599304139397"></script>
+    <script src="js/vendors~main.bundle.js?ts=1600830456475"></script>
+    <script src="js/main.bundle.js?ts=1600830456475"></script>
 
     <!-- http://fbf.epizy.com/ -->
 </body>

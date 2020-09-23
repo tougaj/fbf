@@ -1,5 +1,5 @@
-import { ESocialMedia, IFriend, ISocialMedia } from './init';
 import $ from 'jquery';
+import { ESocialMedia, IFriend, ISocialMedia } from './init';
 var lodashUnescape = require('lodash.unescape');
 
 export const convertHTML2Friends = (

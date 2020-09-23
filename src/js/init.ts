@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export interface IFriend {
 	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
