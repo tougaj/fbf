@@ -7,6 +7,13 @@ moment.locale('uk');
 
 ReactDOM.render(<App />, document.getElementById('app'));
 
+// ReactDOM.render(
+// 	<IconContext.Provider value={{ className: 'icon' }}>
+// 		<App />
+// 	</IconContext.Provider>,
+// 	document.getElementById('app')
+// );
+
 // $(document).ready(function () {
 // 	$("#btnFriends").click(() => fbf.getFriends());
 // 	$("#fmGetFriends").submit(fbf.loadFriends);

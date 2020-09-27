@@ -33,20 +33,28 @@ label {
 	margin-top: -0.25em;
 }
 
-.icon {
-	display: inline-block;
-	stroke-width: 0;
-	stroke: currentColor;
-	fill: currentColor;
-	@include square(1em);
+// .icon {
+// 	display: inline-block;
+// 	stroke-width: 0;
+// 	stroke: currentColor;
+// 	fill: currentColor;
+// 	@include square(1em);
 
-	&.icon-lg {
-		@include square(1.3333em);
-	}
+// 	&.icon-lg {
+// 		@include square(1.3333em);
+// 	}
 
-	&.icon-xl {
-		@include square(1.5em);
-	}
+// 	&.icon-xl {
+// 		@include square(1.5em);
+// 	}
+// }
+
+.icon-lg {
+	@include square(1.3333em);
+}
+
+.icon-xl {
+	@include square(1.5em);
 }
 
 .friend-list {

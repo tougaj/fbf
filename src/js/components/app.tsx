@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { BsCodeSlash } from 'react-icons/bs';
 import { convertHTML2Friends } from '../fbf';
 import { IFriend, ISocialMedia } from '../init';
 import ActionForm from './actionForm';
-import FontIcon from './fontIcon';
 import { FriendList } from './friendList';
 
 interface IAppProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -34,8 +34,7 @@ const App = ({}: IAppProps) => {
 		parseFriends(rawText);
 	}, [rawText]);
 
-	const onRawChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-		setRawText(event.target.value.trim());
+	const onRawChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => setRawText(event.target.value.trim());
 
 	const onFriendsLoaded = () => setRawText('');
 
@@ -44,8 +43,7 @@ const App = ({}: IAppProps) => {
 			<div className="row">
 				<div className="col">
 					<h3 className="text-center">
-						<FontIcon name="bi-code-slash" /> Додайте html-код в
-						текстову область та отримайте файл
+						<BsCodeSlash /> Додайте html-код в текстову область та отримайте файл
 					</h3>
 					<label htmlFor="htmlCode" className="control-label">
 						Код елементу, що містить записи про друзів
@@ -59,16 +57,10 @@ const App = ({}: IAppProps) => {
 						onChange={onRawChange}
 						id="htmlCode"
 					></textarea>
-					<ActionForm
-						socialMediaId={socialMedia?.id}
-						friends={friends}
-						onFriendsLoaded={onFriendsLoaded}
-					/>
+					<ActionForm socialMediaId={socialMedia?.id} friends={friends} onFriendsLoaded={onFriendsLoaded} />
 				</div>
 			</div>
-			{socialMedia && (
-				<FriendList socialMedia={socialMedia} friends={friends} />
-			)}
+			{socialMedia && <FriendList socialMedia={socialMedia} friends={friends} />}
 		</div>
 	);
 };

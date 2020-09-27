@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
+import { BsDownload } from 'react-icons/bs';
 import { SOCIAL_MEDIA } from '../fbf';
 import { ESocialMedia, IFriend, useBooleanField } from '../init';
-import FontIcon from './fontIcon';
 
 interface IActionFormProps extends React.HTMLAttributes<HTMLDivElement> {
 	socialMediaId?: ESocialMedia;
 	friends: IFriend[];
 	onFriendsLoaded: () => void;
 }
-const ActionForm = ({
-	socialMediaId,
-	friends,
-	onFriendsLoaded,
-}: IActionFormProps) => {
+const ActionForm = ({ socialMediaId, friends, onFriendsLoaded }: IActionFormProps) => {
 	const WITH_FACES_MAX_COUNT = 200;
-	const facesEnabled =
-		0 < friends.length && friends.length <= WITH_FACES_MAX_COUNT;
+	const facesEnabled = 0 < friends.length && friends.length <= WITH_FACES_MAX_COUNT;
 	const withFaces = useBooleanField(facesEnabled);
 	const [fileName, setFileName] = useState('');
 
@@ -42,11 +37,7 @@ const ActionForm = ({
 			// target="_blank"
 			onSubmit={onSubmit}
 		>
-			<input
-				type="hidden"
-				name="smID"
-				value={socialMediaId || '0'}
-			></input>
+			<input type="hidden" name="smID" value={socialMediaId || '0'}></input>
 			<input
 				type="hidden"
 				name="relationType"
@@ -67,7 +58,6 @@ const ActionForm = ({
 					)
 				)}
 			/>
-			{/* <input type="hidden" name="fileno" value="0" /> */}
 			<div className="form-group">
 				<label className="control-label" htmlFor="fake_smID">
 					Соціальна мережа
@@ -104,10 +94,7 @@ const ActionForm = ({
 					onChange={onFileNameChange}
 				/>
 			</div>
-			<div
-				className="form-check ml-3"
-				title="Додати до вихідного файлу зображення обліковок"
-			>
+			<div className="form-check ml-3" title="Додати до вихідного файлу зображення обліковок">
 				<input
 					id="withfaces"
 					name="withfaces"
@@ -122,12 +109,8 @@ const ActionForm = ({
 					Додати зображення
 				</label>
 			</div>
-			<button
-				type="submit"
-				className="btn btn-primary ml-3"
-				disabled={!socialMediaId || friends.length === 0}
-			>
-				<FontIcon name="bi-download" variant="lg" /> Отримати файл
+			<button type="submit" className="btn btn-primary ml-3" disabled={!socialMediaId || friends.length === 0}>
+				<BsDownload className="icon-lg" /> Отримати файл
 			</button>
 		</form>
 	);

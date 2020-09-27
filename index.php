@@ -31,9 +31,6 @@ header('Content-Type: text/html; charset=utf-8');
 <body>
     <div id="app"></div>
 
-    <?php
-    include_once 'includes/symbol-defs.svg';
-    ?>
     <script src="js/vendors~main.bundle.js?ts=[[0000000000]]"></script>
     <script src="js/main.bundle.js?ts=[[0000000000]]"></script>
 
