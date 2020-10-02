@@ -69,8 +69,7 @@ const sDistDir = './dist';
 
 const clean = () => del([sDistDir]);
 const webpackDev = () => runDevWebPack('js/**/*.js', './js/main.js');
-const webpackProd = () =>
-	runProdWebPack('js/**/*.js', './js/main.js', `${sDistDir}/js`);
+const webpackProd = () => runProdWebPack('js/**/*.js', './js/main.js', `${sDistDir}/js`);
 
 function watch() {
 	browserSync.init({
@@ -98,12 +97,7 @@ gulp.task(
 			gulp
 			.src(['./*.php'])
 			.pipe(plumber())
-			.pipe(
-				replace(
-					/ts=\[\[0000000000\]\]/g,
-					`ts=${new Date().valueOf()}`
-				)
-			)
+			.pipe(replace(/ts=\[\[0000000000\]\]/g, `ts=${new Date().valueOf()}`))
 			.pipe(gulp.dest(sDistDir)),
 			() =>
 			gulp
@@ -165,6 +159,9 @@ function runDevWebPack(sSource, sEntry) {
 					splitChunks: {
 						chunks: 'all',
 					},
+					usedExports: true,
+					providedExports: true,
+					sideEffects: false,
 				},
 				devtool: 'source-map',
 				plugins: [

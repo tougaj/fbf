@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { IconContext } from 'react-icons/lib';
 import App from './components/app';
 import moment = require('moment');
 
 moment.locale('uk');
 
-ReactDOM.render(<App />, document.getElementById('app'));
-
-// ReactDOM.render(
-// 	<IconContext.Provider value={{ className: 'icon' }}>
-// 		<App />
-// 	</IconContext.Provider>,
-// 	document.getElementById('app')
-// );
+ReactDOM.render(
+	<IconContext.Provider value={{ className: 'react-icons' }}>
+		<App />
+	</IconContext.Provider>,
+	document.getElementById('app')
+);
 
 // $(document).ready(function () {
 // 	$("#btnFriends").click(() => fbf.getFriends());

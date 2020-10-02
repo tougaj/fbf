@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FaFacebookF, FaOdnoklassniki, FaQuestionCircle, FaVk } from 'react-icons/fa';
 import { IFriend, ISocialMedia } from '../init';
 import { Friend } from './Friend';
+import { FaFacebookF, FaOdnoklassniki, FaQuestionCircle, FaVk } from './icons';
 
 interface IFriendListProps {
 	socialMedia: ISocialMedia;

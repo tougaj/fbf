@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { BsDownload } from 'react-icons/bs';
 import { SOCIAL_MEDIA } from '../fbf';
 import { ESocialMedia, IFriend, useBooleanField } from '../init';
+import { BsDownload } from './icons';
 
 interface IActionFormProps extends React.HTMLAttributes<HTMLDivElement> {
 	socialMediaId?: ESocialMedia;

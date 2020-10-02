@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BsCodeSlash } from 'react-icons/bs';
 import { convertHTML2Friends } from '../fbf';
 import { IFriend, ISocialMedia } from '../init';
 import ActionForm from './actionForm';
 import { FriendList } from './friendList';
+import { BsCodeSlash } from './icons';
 
 interface IAppProps extends React.HTMLAttributes<HTMLDivElement> {}
 const App = ({}: IAppProps) => {

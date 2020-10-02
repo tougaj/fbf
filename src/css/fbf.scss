@@ -49,8 +49,12 @@ label {
 // 	}
 // }
 
+.react-icons {
+	@include square(1em);
+}
+
 .icon-lg {
-	@include square(1.3333em);
+	@include square(1.3em);
 }
 
 .icon-xl {
