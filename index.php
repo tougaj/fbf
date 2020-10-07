@@ -9,14 +9,14 @@ header('Content-Type: text/html; charset=utf-8');
     <meta name="Description" content="Форма для парсингу списку друзів обліковки соціальної мережі.">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114710599-1"></script>
-    <script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114710599-1"></script> -->
+    <!-- <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'UA-114710599-1');
-    </script>
+    </script> -->
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -9,14 +9,14 @@ header('Content-Type: text/html; charset=utf-8');
     <meta name="Description" content="Форма для парсингу списку друзів обліковки соціальної мережі.">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114710599-1"></script>
-    <script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114710599-1"></script> -->
+    <!-- <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'UA-114710599-1');
-    </script>
+    </script> -->
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,14 +25,14 @@ header('Content-Type: text/html; charset=utf-8');
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/fbf.css?ts=1601610354237">
+    <link rel="stylesheet" href="css/fbf.css?ts=1602040950628">
 </head>
 
 <body>
     <div id="app"></div>
 
-    <script src="js/vendors~main.bundle.js?ts=1601610354237"></script>
-    <script src="js/main.bundle.js?ts=1601610354237"></script>
+    <script src="js/vendors~main.bundle.js?ts=1602040950628"></script>
+    <script src="js/main.bundle.js?ts=1602040950628"></script>
 
     <!-- http://fbf.epizy.com/ -->
 </body>
