@@ -15,13 +15,6 @@ export const Friend = ({ friend, socialMediaId, link }: IFriendProps) => {
 				className="friend-list__friend-icon rounded-left"
 				img={socialMediaId === ESocialMedia.fb ? friend.face : undefined}
 			/>
-			{/* <div
-				className="friend-list__friend-icon rounded-left"
-				style={{
-					backgroundImage: socialMediaId === ESocialMedia.fb ? `url(${friend.face})` : undefined,
-					backgroundImage: 'url(img/man.jpg)',
-				}}
-			></div> */}
 			<div className="ml-2">
 				<h6 className="mb-0">{friend.title}</h6>
 				<small>ID: {friend.fbID}</small>
