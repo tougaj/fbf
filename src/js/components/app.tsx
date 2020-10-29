@@ -3,6 +3,7 @@ import { convertHTML2Friends } from '../fbf';
 import { IFriend, ISocialMedia } from '../init';
 import ActionForm from './actionForm';
 import { FriendList } from './friendList';
+import HelmetTitle from './helmetTitle';
 import { BsCodeSlash } from './icons';
 
 interface IAppProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -39,29 +40,36 @@ const App = ({}: IAppProps) => {
 	const onFriendsLoaded = () => setRawText('');
 
 	return (
-		<div className="container mb-3">
-			<div className="row">
-				<div className="col">
-					<h3 className="text-center">
-						<BsCodeSlash /> Додайте html-код в текстову область та отримайте файл
-					</h3>
-					<label htmlFor="htmlCode" className="control-label">
-						Код елементу, що містить записи про друзів
-					</label>
-					<textarea
-						className="form-control"
-						rows={10}
-						placeholder="html-код елементу, що містить записи про друзів"
-						autoComplete="off"
-						value={rawText}
-						onChange={onRawChange}
-						id="htmlCode"
-					></textarea>
-					<ActionForm socialMediaId={socialMedia?.id} friends={friends} onFriendsLoaded={onFriendsLoaded} />
+		<>
+			<HelmetTitle />
+			<div className="container mb-3">
+				<div className="row">
+					<div className="col">
+						<h3 className="text-center">
+							<BsCodeSlash /> Додайте html-код в текстову область та отримайте файл
+						</h3>
+						<label htmlFor="htmlCode" className="control-label">
+							Код елементу, що містить записи про друзів
+						</label>
+						<textarea
+							className="form-control"
+							rows={10}
+							placeholder="html-код елементу, що містить записи про друзів"
+							autoComplete="off"
+							value={rawText}
+							onChange={onRawChange}
+							id="htmlCode"
+						></textarea>
+						<ActionForm
+							socialMediaId={socialMedia?.id}
+							friends={friends}
+							onFriendsLoaded={onFriendsLoaded}
+						/>
+					</div>
 				</div>
+				{socialMedia && <FriendList socialMedia={socialMedia} friends={friends} />}
 			</div>
-			{socialMedia && <FriendList socialMedia={socialMedia} friends={friends} />}
-		</div>
+		</>
 	);
 };
 

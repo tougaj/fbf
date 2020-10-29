@@ -73,3 +73,12 @@ label {
 		@include square(64px);
 	}
 }
+
+.friend-list__friend-icon {
+	@include square(64px);
+	background-color: #eee;
+	background-image: url('../img/man.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}

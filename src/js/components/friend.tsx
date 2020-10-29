@@ -10,10 +10,12 @@ export interface IFriendProps {
 export const Friend = ({ friend, socialMediaId, link }: IFriendProps) => {
 	return (
 		<a target="_blank" href={link} className="d-flex flex-row align-items-center border rounded">
-			<img
-				src={socialMediaId === ESocialMedia.fb ? friend.face || 'img/man.jpg' : 'img/man.jpg'}
-				className="rounded-left"
-			/>
+			<div
+				className="friend-list__friend-icon rounded-left"
+				style={{
+					backgroundImage: socialMediaId === ESocialMedia.fb ? `url(${friend.face})` : undefined,
+				}}
+			></div>
 			<div className="ml-2">
 				<h6 className="mb-0">{friend.title}</h6>
 				<small>ID: {friend.fbID}</small>

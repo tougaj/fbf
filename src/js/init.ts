@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+export const APP_MAIN_TITLE = 'SM Friends';
+
 export interface IFriend {
 	fbID: string; // Хоть это поле имеет тип number, но, учитывая величину числа, сделаем его string
 	title: string;
@@ -27,12 +29,9 @@ export const useFormField = (initialValue: string) => {
 		setValue(initialValue);
 	}, [initialValue]);
 
-	const onChange = useCallback(
-		(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-			setValue(event.target.value);
-		},
-		[]
-	);
+	const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setValue(event.target.value);
+	}, []);
 
 	return { value, onChange };
 };
@@ -44,12 +43,9 @@ export const useBooleanField = (initialChecked: boolean) => {
 		setChecked(initialChecked);
 	}, [initialChecked]);
 
-	const onChange = useCallback(
-		(event: React.ChangeEvent<HTMLInputElement>) => {
-			setChecked(event.target.checked);
-		},
-		[]
-	);
+	const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+		setChecked(event.target.checked);
+	}, []);
 
 	return { checked, onChange };
 };
