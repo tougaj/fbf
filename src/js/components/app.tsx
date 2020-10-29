@@ -52,7 +52,7 @@ const App = ({}: IAppProps) => {
 							Код елементу, що містить записи про друзів
 						</label>
 						<textarea
-							className="form-control"
+							className="form-control form__raw-data"
 							rows={10}
 							placeholder="html-код елементу, що містить записи про друзів"
 							autoComplete="off"

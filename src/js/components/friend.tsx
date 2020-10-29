@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { ESocialMedia, IFriend } from '../init';
 
 export interface IFriendProps {
@@ -10,12 +11,17 @@ export interface IFriendProps {
 export const Friend = ({ friend, socialMediaId, link }: IFriendProps) => {
 	return (
 		<a target="_blank" href={link} className="d-flex flex-row align-items-center border rounded">
-			<div
+			<ImgUser
+				className="friend-list__friend-icon rounded-left"
+				img={socialMediaId === ESocialMedia.fb ? friend.face : undefined}
+			/>
+			{/* <div
 				className="friend-list__friend-icon rounded-left"
 				style={{
 					backgroundImage: socialMediaId === ESocialMedia.fb ? `url(${friend.face})` : undefined,
+					backgroundImage: 'url(img/man.jpg)',
 				}}
-			></div>
+			></div> */}
 			<div className="ml-2">
 				<h6 className="mb-0">{friend.title}</h6>
 				<small>ID: {friend.fbID}</small>
@@ -23,3 +29,10 @@ export const Friend = ({ friend, socialMediaId, link }: IFriendProps) => {
 		</a>
 	);
 };
+
+interface IImgUser {
+	img?: string;
+}
+const ImgUser = styled.div<IImgUser>`
+	background-image: ${(props) => `url(${props.img || 'img/man.jpg'})`};
+`;
