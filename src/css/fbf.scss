@@ -1,25 +1,10 @@
+@import '_common';
+
 $main-bg-color: #fefbfa;
 
 body {
 	font-family: 'Roboto', sans-serif;
 	background-color: $main-bg-color;
-}
-
-%semi-bold {
-	font-weight: 500;
-}
-
-%cursor-pointer {
-	cursor: pointer;
-}
-
-@mixin size($width, $height) {
-	width: $width;
-	height: $height;
-}
-
-@mixin square($size) {
-	@include size($size, $size);
 }
 
 .cursor-pointer {
@@ -51,7 +36,7 @@ label {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	// justify-content: space-between;
 }
 
 // .main-container {
@@ -69,7 +54,7 @@ label {
 // }
 
 .navbar-bottom__brand {
-	@include square(2.5em);
+	@include square(75px);
 	filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
 }
 
@@ -90,6 +75,13 @@ label {
 	img {
 		@include square(64px);
 	}
+}
+
+.friend-list__friend {
+	background-color: #fff;
+	/* csslint ignore:start */
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	/* csslint ignore:end */
 }
 
 .friend-list__friend-icon {
