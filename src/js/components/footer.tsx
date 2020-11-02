@@ -4,7 +4,7 @@ import { FcMindMap } from './icons';
 interface IFooterProps extends React.AllHTMLAttributes<HTMLDivElement> {}
 const Footer = ({}: IFooterProps) => {
 	return (
-		<nav className="navbar navbar-dark bg-secondary navbar-bottom">
+		<nav className="navbar navbar-dark bg-secondary navbar-bottom mt-auto">
 			<span className="navbar-brand">
 				{/* <FaUserFriends className="navbar-bottom__brand" /> */}
 				{/* <LottieAnimation

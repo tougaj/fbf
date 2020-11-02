@@ -6,7 +6,6 @@ import Footer from './footer';
 import { FriendList } from './friendList';
 import HelmetTitle from './helmetTitle';
 import { BsCodeSlash } from './icons';
-import LottieAnimation from './lottieAnimation';
 
 interface IAppProps extends React.HTMLAttributes<HTMLDivElement> {}
 const App = ({}: IAppProps) => {
@@ -44,7 +43,7 @@ const App = ({}: IAppProps) => {
 	return (
 		<>
 			<HelmetTitle />
-			<div className="container-fluid mb-3 main-container flex-grow-1 d-flex flex-column">
+			<div className="container-fluid mb-3 main-container">
 				<div className="row">
 					<div className="col">
 						<h3 className="text-center mt-3">
@@ -69,7 +68,8 @@ const App = ({}: IAppProps) => {
 						/>
 					</div>
 				</div>
-				{socialMedia ? (
+				{socialMedia && <FriendList socialMedia={socialMedia} friends={friends} />}
+				{/* {socialMedia ? (
 					<FriendList socialMedia={socialMedia} friends={friends} />
 				) : (
 					<LottieAnimation
@@ -78,7 +78,7 @@ const App = ({}: IAppProps) => {
 						lottieFileName="img/lottie/30762-social-media-network.json"
 						className="my-auto"
 					/>
-				)}
+				)} */}
 			</div>
 			<Footer />
 		</>
