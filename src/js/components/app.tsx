@@ -49,18 +49,22 @@ const App = ({}: IAppProps) => {
 						<h3 className="text-center mt-3">
 							<BsCodeSlash /> Додайте html-код в текстову область та отримайте файл
 						</h3>
-						<label htmlFor="htmlCode" className="control-label">
-							Код елементу, що містить записи про друзів
-						</label>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-9 form-group d-flex flex-column mb-0">
+						<label htmlFor="htmlCode">Код елементу, що містить записи про друзів</label>
 						<textarea
-							className="form-control form__raw-data"
-							rows={10}
-							placeholder="html-код елементу, що містить записи про друзів"
+							className="form-control form__raw-data flex-grow-1"
+							// rows={10}
+							placeholder="вставте html-код елементу, що містить записи про друзів, до цього текстового блоку"
 							autoComplete="off"
 							value={rawText}
 							onChange={onRawChange}
 							id="htmlCode"
 						></textarea>
+					</div>
+					<div className="col-3">
 						<ActionForm
 							socialMediaId={socialMedia?.id}
 							friends={friends}

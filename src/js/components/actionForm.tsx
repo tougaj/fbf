@@ -31,7 +31,7 @@ const ActionForm = ({ socialMediaId, friends, onFriendsLoaded }: IActionFormProp
 		<form
 			action={`getFriends.php?ts=${new Date().valueOf()}`}
 			method="post"
-			className="form-inline justify-content-center mt-3"
+			// className="form-inline justify-content-center mt-3"
 			onSubmit={onSubmit}
 		>
 			<input type="hidden" name="smID" value={socialMediaId || '0'}></input>
@@ -56,12 +56,10 @@ const ActionForm = ({ socialMediaId, friends, onFriendsLoaded }: IActionFormProp
 				)}
 			/>
 			<div className="form-group">
-				<label className="control-label" htmlFor="fake_smID">
-					Соціальна мережа
-				</label>
+				<label htmlFor="fake_smID">Соціальна мережа</label>
 				<select
 					id="fake_smID"
-					className="form-control ml-1"
+					className="form-control"
 					autoComplete="off"
 					disabled
 					value={socialMediaId || '0'}
@@ -76,22 +74,20 @@ const ActionForm = ({ socialMediaId, friends, onFriendsLoaded }: IActionFormProp
 					))}
 				</select>
 			</div>
-			<div className="form-group ml-3">
-				<label className="control-label" htmlFor="filename">
-					Ім'я вихідного файлу
-				</label>
+			<div className="form-group">
+				<label htmlFor="filename">Ім’я вихідного файлу</label>
 				<input
 					type="text"
-					className="form-control ml-1"
+					className="form-control"
 					name="filename"
 					id="filename"
-					placeholder="Ім'я вихідного файлу"
+					placeholder="Ім’я вихідного файлу"
 					autoComplete="off"
 					value={fileName}
 					onChange={onFileNameChange}
 				/>
 			</div>
-			<div className="form-check ml-3" title="Додати до вихідного файлу зображення обліковок">
+			<div className="form-check" title="Додати до вихідного файлу зображення обліковок">
 				<input
 					id="withfaces"
 					name="withfaces"
@@ -106,9 +102,11 @@ const ActionForm = ({ socialMediaId, friends, onFriendsLoaded }: IActionFormProp
 					Додати зображення
 				</label>
 			</div>
-			<button type="submit" className="btn btn-primary ml-3" disabled={!socialMediaId || friends.length === 0}>
-				<BsDownload className="icon-lg" /> Отримати файл
-			</button>
+			<div className="text-center mt-3">
+				<button type="submit" className="btn btn-primary" disabled={!socialMediaId || friends.length === 0}>
+					<BsDownload className="icon-lg" /> Отримати файл
+				</button>
+			</div>
 		</form>
 	);
 };
