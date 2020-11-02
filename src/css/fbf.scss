@@ -1,6 +1,8 @@
+$main-bg-color: #fefbfa;
+
 body {
 	font-family: 'Roboto', sans-serif;
-	background-color: #fefbfa;
+	background-color: $main-bg-color;
 }
 
 %semi-bold {
@@ -33,22 +35,6 @@ label {
 	margin-top: -0.25em;
 }
 
-// .icon {
-// 	display: inline-block;
-// 	stroke-width: 0;
-// 	stroke: currentColor;
-// 	fill: currentColor;
-// 	@include square(1em);
-
-// 	&.icon-lg {
-// 		@include square(1.3333em);
-// 	}
-
-// 	&.icon-xl {
-// 		@include square(1.5em);
-// 	}
-// }
-
 .react-icons {
 	@include square(1em);
 }
@@ -59,6 +45,32 @@ label {
 
 .icon-xl {
 	@include square(1.5em);
+}
+
+#app {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+// .main-container {
+// 	min-height: 100vh;
+// 	position: relative;
+// 	z-index: 1;
+// 	background-color: $main-bg-color;
+// }
+
+// .navbar-bottom {
+// 	/* csslint ignore:start */
+// 	position: sticky;
+// 	/* csslint ignore:end */
+// 	bottom: 0;
+// }
+
+.navbar-bottom__brand {
+	@include square(2.5em);
+	filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
 }
 
 .form__raw-data {

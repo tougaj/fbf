@@ -29,12 +29,9 @@ const ActionForm = ({ socialMediaId, friends, onFriendsLoaded }: IActionFormProp
 
 	return (
 		<form
-			// name="fmGetFriends"
-			// id="fmGetFriends"
 			action={`getFriends.php?ts=${new Date().valueOf()}`}
 			method="post"
 			className="form-inline justify-content-center mt-3"
-			// target="_blank"
 			onSubmit={onSubmit}
 		>
 			<input type="hidden" name="smID" value={socialMediaId || '0'}></input>

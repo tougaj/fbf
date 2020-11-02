@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { convertHTML2Friends } from '../fbf';
 import { IFriend, ISocialMedia } from '../init';
 import ActionForm from './actionForm';
+import Footer from './footer';
 import { FriendList } from './friendList';
 import HelmetTitle from './helmetTitle';
 import { BsCodeSlash } from './icons';
@@ -42,10 +43,10 @@ const App = ({}: IAppProps) => {
 	return (
 		<>
 			<HelmetTitle />
-			<div className="container mb-3">
+			<div className="container-fluid mb-3 main-container">
 				<div className="row">
 					<div className="col">
-						<h3 className="text-center">
+						<h3 className="text-center mt-3">
 							<BsCodeSlash /> Додайте html-код в текстову область та отримайте файл
 						</h3>
 						<label htmlFor="htmlCode" className="control-label">
@@ -69,6 +70,7 @@ const App = ({}: IAppProps) => {
 				</div>
 				{socialMedia && <FriendList socialMedia={socialMedia} friends={friends} />}
 			</div>
+			<Footer />
 		</>
 	);
 };
