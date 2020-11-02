@@ -15,11 +15,11 @@ const App = ({}: IAppProps) => {
 	const [friends, setFriends] = useState<IFriend[]>([]);
 
 	// for debug
-	useEffect(() => {
-		fetch('test_data/fbf.txt')
-			.then((response) => response.text())
-			.then(setRawText);
-	}, []);
+	// useEffect(() => {
+	// 	fetch('test_data/fbf.txt')
+	// 		.then((response) => response.text())
+	// 		.then(setRawText);
+	// }, []);
 
 	useEffect(() => {
 		const parseFriends = async (rawText: string) => {
