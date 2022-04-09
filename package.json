@@ -44,7 +44,7 @@
     "gulp-uglify": "^3.0.2",
     "jquery": "^3.6.0",
     "lodash.unescape": "^4.0.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "moment-locales-webpack-plugin": "^1.2.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
