@@ -27,7 +27,7 @@
     "@types/react-helmet": "^6.1.1",
     "@types/react-lottie": "^1.2.5",
     "@types/styled-components": "^5.1.9",
-    "browser-sync": "^2.27.11",
+    "browser-sync": "^2.29.3",
     "csstype": "^2.6.17",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
